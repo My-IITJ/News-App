@@ -1,0 +1,4 @@
+// For development purposes im providing the mongodb uri here. 
+// make sure to use this in the .env file to connect to database.
+
+MONGO_DB_URI=mongodb+srv://neil:neil140301@cluster0.g5a3e.mongodb.net/myiitj?retryWrites=true&w=majority
