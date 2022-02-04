@@ -8,6 +8,8 @@ const dbConnect = require("./db/mongoConnect");
 const path = require("path");
 const upload = require("./middlewares/multer");
 
+const postRoute = require("./routes/post");
+
 //dotenv
 dotenv.config();
 
@@ -34,6 +36,8 @@ app.use(
   "/api/media/images",
   express.static(path.join(__dirname, "/media/images")) //render our media
 );
+
+app.use("/api/post",postRoute);
 
 app.use("/api/posts", require("./routes/posts"));
 
