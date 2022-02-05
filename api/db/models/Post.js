@@ -11,10 +11,14 @@ const PostSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        tags:{
-            type: Array,
-            required: true,
-        },
+        tags:[
+            {
+                tag: {
+                    type: mongoose.Schema.types.ObjectId,
+                    ref: "Tag",
+                },
+            },
+        ],
         thumbnail:{
             type: String,
             required: false,
@@ -23,13 +27,30 @@ const PostSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
-        comments:{
-            type: Array,
-            required: true,
-        },
+        comments:[
+            {
+                comment: {
+                    type: mongoose.Schema.types.ObjectId,
+                    ref: "Comment",
+                },
+            },
+        ],
         visibility:{
             type: String,
             required: true,
+        },
+        isdeleted:{
+            type: Boolean,
+            required: true,
+        },
+        deleted:{
+            at: {
+                type: Date,
+            },
+            by: {
+                type: mongoose.Schema.types.ObjectId,
+                ref: "User",
+            },
         },
     },
     { timestamps: true }
