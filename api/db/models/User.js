@@ -6,14 +6,14 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		Username: {
+		username: {
 			type: String,
 			required: true,
 		},
-		Bio: {
+		bio: {
 			type: String,
 		},
-		Title: {
+		title: {
 			type: String,
 		},
 		subscribedTags: [
@@ -54,4 +54,4 @@ const UserSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-module.exports = mongoose.model('user', UserSchema);
+module.exports = mongoose.model('User', UserSchema);

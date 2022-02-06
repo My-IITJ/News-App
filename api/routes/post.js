@@ -8,14 +8,6 @@ router.get('/', async (req, res) => {
 
 		let query = {};
 
-		switch (key) {
-			case value:
-				break;
-
-			default:
-				break;
-		}
-
 		let posts = await Post.find(query)
 			.sort({ createdAt: -1 })
 			.skip(parseInt(page) * parseInt(limit))
