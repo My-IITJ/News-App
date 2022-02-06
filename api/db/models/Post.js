@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const PostSchema = new mongoose.Schema(
     {
         author:{
-            type: mongoose.Schema.types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             required: true,
             ref: "User",
         },
@@ -14,7 +14,7 @@ const PostSchema = new mongoose.Schema(
         tags:[
             {
                 tag: {
-                    type: mongoose.Schema.types.ObjectId,
+                    type: mongoose.Schema.Types.ObjectId,
                     ref: "Tag",
                 },
             },
@@ -30,7 +30,7 @@ const PostSchema = new mongoose.Schema(
         comments:[
             {
                 comment: {
-                    type: mongoose.Schema.types.ObjectId,
+                    type: mongoose.Schema.Types.ObjectId,
                     ref: "Comment",
                 },
             },
@@ -48,7 +48,7 @@ const PostSchema = new mongoose.Schema(
                 type: Date,
             },
             by: {
-                type: mongoose.Schema.types.ObjectId,
+                type: mongoose.Schema.Types.ObjectId,
                 ref: "User",
             },
         },
