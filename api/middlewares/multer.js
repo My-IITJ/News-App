@@ -1,3 +1,4 @@
+// middleware that will upload our files to the server.
 const multer = require('multer');
 
 const storage = multer.diskStorage({
