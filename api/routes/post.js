@@ -2,6 +2,12 @@ const router = require('express').Router();
 const Post = require('../db/models/Post');
 const {isValidObjectId} = require('mongoose')
 
+//create a new Post : Sakshi
+router.post((req, res) => {
+	const {author, content, tags, upvotes, visibility, isdeleted} = req.body
+	const newPost = new Post({author, content, tags, upvotes, visibility, isdeleted});
+});
+
 // fetch a list of posts: shivam
 router.get('/', async (req, res) => {
 	try {
