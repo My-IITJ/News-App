@@ -20,11 +20,9 @@ const commentSchema = new mongoose.Schema({
     ],
     upvotes :{
         type : Number,
-        required : true,
     },
     isDeleted : {
         type : Boolean,
-        required: true,
     },
     deleted : {
         at : {
