@@ -10,6 +10,8 @@ const path = require('path');
 const upload = require('./middlewares/multer');
 
 const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
+const commentRouter = require('./routes/comment');
 
 //dotenv
 dotenv.config();
@@ -38,6 +40,8 @@ app.use(
 	express.static(path.join(__dirname, '/media/images')) //render our media
 );
 app.use('/api/post', postRouter);
+app.use('/api/user', userRouter);
+app.use('/api/comment', commentRouter);
 
 //test: delete later
 app.post('/upload', upload.single('file'), async (req, res) => {
