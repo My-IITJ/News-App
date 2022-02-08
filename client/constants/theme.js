@@ -1,31 +1,22 @@
-// This is an example. we will edit the same for our app.
+// App theme
 
 import { Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 export const COLORS = {
-	primary: '#42C6A5', // Green
-	primary2: '#FBB344', // Orange
-	primary3: '#33354E', // Dark Blue
-	secondary: '#FC2626', // Red
-	gray10: '#E5E5E5',
-	gray20: '#CCCCCC',
-	gray30: '#A1A1A1',
-	gray40: '#999999',
-	gray50: '#7F7F7F',
-	gray60: '#666666',
-	gray70: '#4C4C4C',
-	gray80: '#333333',
-	gray85: '#242526',
-	gray90: '#191919',
+	darkPurple: '#0E0B3A',
+	darkgrey: '#080522',
+	purple: '#B438BD',
+	white1: '#FEFEFF',
+	gray10: '#C4C4C4',
 
-	additionalColor4: '#C3C3C3',
-	additionalColor9: '#F3F3F3',
-	additionalColor11: '#F0FFFB',
-	additionalColor13: '#EBF3EF',
+	white2: '#F5F6FA',
+	gray50: '#737373',
+	deepBlue: '#233B7A',
+	blue: '#2683F9',
 
 	white: '#FFFFFF',
-	black: '#000000',
+	black: '#282A38',
 
 	transparent: 'transparent',
 	transparentWhite1: 'rgba(255, 255, 255, 0.1)',
@@ -59,34 +50,34 @@ export const SIZES = {
 };
 
 export const FONTS = {
-	largeTitle: { fontFamily: 'Roboto-Black', fontSize: SIZES.largeTitle },
-	h1: { fontFamily: 'Roboto-Black', fontSize: SIZES.h1, lineHeight: 36 },
-	h2: { fontFamily: 'Roboto-Bold', fontSize: SIZES.h2, lineHeight: 30 },
-	h3: { fontFamily: 'Roboto-Bold', fontSize: SIZES.h3, lineHeight: 22 },
-	h4: { fontFamily: 'Roboto-Bold', fontSize: SIZES.h4, lineHeight: 22 },
-	h5: { fontFamily: 'Roboto-Bold', fontSize: SIZES.h5, lineHeight: 22 },
+	largeTitle: { fontFamily: 'Poppins-Black', fontSize: SIZES.largeTitle },
+	h1: { fontFamily: 'Poppins-Black', fontSize: SIZES.h1, lineHeight: 36 },
+	h2: { fontFamily: 'Poppins-Bold', fontSize: SIZES.h2, lineHeight: 30 },
+	h3: { fontFamily: 'Poppins-Bold', fontSize: SIZES.h3, lineHeight: 22 },
+	h4: { fontFamily: 'Poppins-Bold', fontSize: SIZES.h4, lineHeight: 22 },
+	h5: { fontFamily: 'Poppins-Bold', fontSize: SIZES.h5, lineHeight: 22 },
 	body1: {
-		fontFamily: 'Roboto-Regular',
+		fontFamily: 'Poppins-Regular',
 		fontSize: SIZES.body1,
 		lineHeight: 36,
 	},
 	body2: {
-		fontFamily: 'Roboto-Regular',
+		fontFamily: 'Poppins-Regular',
 		fontSize: SIZES.body2,
 		lineHeight: 30,
 	},
 	body3: {
-		fontFamily: 'Roboto-Regular',
+		fontFamily: 'Poppins-Regular',
 		fontSize: SIZES.body3,
 		lineHeight: 22,
 	},
 	body4: {
-		fontFamily: 'Roboto-Regular',
+		fontFamily: 'Poppins-Regular',
 		fontSize: SIZES.body4,
 		lineHeight: 22,
 	},
 	body5: {
-		fontFamily: 'Roboto-Regular',
+		fontFamily: 'Poppins-Regular',
 		fontSize: SIZES.body5,
 		lineHeight: 22,
 	},
@@ -94,23 +85,21 @@ export const FONTS = {
 
 export const darkTheme = {
 	name: 'dark',
-	backgroundColor1: COLORS.gray85,
-	backgroundColor2: COLORS.gray90,
-	backgroundColor3: COLORS.gray90,
-	backgroundColor4: COLORS.primary,
-	textColor: COLORS.white,
-	textColor2: COLORS.white,
-	tintColor: COLORS.white,
+	backgroundColor1: COLORS.darkPurple,
+	backgroundColor2: COLORS.darkgrey,
+	backgroundColor3: COLORS.purple,
+	backgroundColor4: COLORS.gray10,
+	textColor: COLORS.white1,
+	tintColor: COLORS.white1,
 };
 
 export const lightTheme = {
 	name: 'light',
-	backgroundColor1: COLORS.white,
-	backgroundColor2: COLORS.primary3,
-	backgroundColor3: COLORS.additionalColor11,
-	backgroundColor4: COLORS.white,
+	backgroundColor1: COLORS.white1,
+	backgroundColor2: COLORS.white2,
+	backgroundColor3: COLORS.deepBlue,
+	backgroundColor4: COLORS.blue,
 	textColor: COLORS.black,
-	textColor2: COLORS.primary,
 	tintColor: COLORS.black,
 };
 

@@ -11,11 +11,16 @@ import { Provider } from 'react-redux';
 import { persistor, store } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 
+// theme related imports
+import { selectedTheme } from './constants';
+import { ThemeProvider } from 'styled-components'; // allows us to pass the current theme to all components
+
 export default function App() {
 	// loading all required fonts.
-	//This is an example. The font might be different for the app.
 	const [isLoaded] = useFonts({
-		'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
+		'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
+		'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf'),
+		'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
 	});
 
 	if (!isLoaded) {
@@ -25,9 +30,11 @@ export default function App() {
 	return (
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
-				<NavigationContainer>
-					<AppStack />
-				</NavigationContainer>
+				<ThemeProvider theme={selectedTheme}>
+					<NavigationContainer>
+						<AppStack />
+					</NavigationContainer>
+				</ThemeProvider>
 			</PersistGate>
 		</Provider>
 	);

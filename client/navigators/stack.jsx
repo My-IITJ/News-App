@@ -11,7 +11,12 @@ const Stack = createStackNavigator();
 const AppStack = () => {
 	return (
 		<>
-			<Stack.Navigator>
+			<Stack.Navigator
+				screenOptions={{
+					// to toggle the header. best to keep false
+					headerShown: true,
+				}}
+			>
 				<Stack.Screen name="Landing">{(p) => <Tabs {...p} />}</Stack.Screen>
 
 				<Stack.Screen name="Profile">{(p) => <Profile {...p} />}</Stack.Screen>

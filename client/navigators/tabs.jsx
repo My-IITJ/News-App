@@ -8,7 +8,7 @@ import Explore from '../screens/Explore';
 import { AntDesign, Feather } from '@expo/vector-icons';
 
 // a list of all tabs. We may add more in future.
-//For the options object:  you see a list of available options from the docs.
+//For the options object:  you can see a list of available options from the docs.
 const tabs = [
 	{
 		name: 'Home',
@@ -49,7 +49,7 @@ const Tabs = () => {
 							padding: 5,
 							paddingBottom: 15,
 						},
-						//hide or show the header
+						//hide or show the header. best to keep false
 						headerShown: true,
 					};
 				}}
