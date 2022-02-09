@@ -12,6 +12,7 @@ const upload = require('./middlewares/multer');
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 const commentRouter = require('./routes/comment');
+const tagRouter = require('./routes/tag');
 
 //dotenv
 dotenv.config();
@@ -42,6 +43,7 @@ app.use(
 app.use('/api/post', postRouter);
 app.use('/api/user', userRouter);
 app.use('/api/comment', commentRouter);
+app.use('/api/tag', tagRouter);
 
 //test: delete later
 app.post('/upload', upload.single('file'), async (req, res) => {
