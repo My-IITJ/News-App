@@ -40,10 +40,10 @@ app.use(
 	'/api/media/images',
 	express.static(path.join(__dirname, '/media/images')) //render our media
 );
-app.use('/api/post', postRouter);
-app.use('/api/user', userRouter);
-app.use('/api/comment', commentRouter);
-app.use('/api/tag', tagRouter);
+app.use('/api/posts', postRouter);
+app.use('/api/users', userRouter);
+app.use('/api/comments', commentRouter);
+app.use('/api/tags', tagRouter);
 
 //test: delete later
 app.post('/upload', upload.single('file'), async (req, res) => {

@@ -2,29 +2,31 @@ const router = require('express').Router();
 const Post = require('../db/models/Post');
 const { isValidObjectId } = require('mongoose');
 const upload = require('../middlewares/multer');
-const {check} = require('express-validator');
+const { newPostValidator, validate } = require('../middlewares/validators');
 
 //create a new Post : Sakshi
-router.post('/newPost',upload.single('thumbnail'), async (req, res) => {
-	try {
-		const {author, content, tags, visibility} = req.body;
-		const post = {author, content, tags, visibility};
+router.post(
+	'/new',
+	upload.single('thumbnail'),
+	newPostValidator,
+	validate,
+	async (req, res) => {
+		try {
+			const { author, content, tags, visibility } = req.body;
+			const post = { author, content, tags, visibility };
 
-		if(req.file){
-			post.thumbnail = req.file.filename
-		};
+			if (req.file) {
+				post.thumbnail = req.file?.filename;
+			}
 
-		check(post.author).trim().not().isEmpty().withMessage("Author is missing!");
-		check(post.content).trim().not().isEmpty().withMessage("Content is missing!");
-		check(post.visibility).trim().not().isEmpty().withMessage("Invalid visibility!");
-
-		const newPost = new Post(post);
-		await newPost.save();
-		res.status(200).json(newPost);
-	} catch (error) {
-		res.status(500).json(error);
+			const newPost = new Post(post);
+			await newPost.save();
+			res.status(200).json(newPost);
+		} catch (error) {
+			res.status(500).json(error);
+		}
 	}
-});
+);
 
 // fetch a list of posts: shivam
 router.get('/', async (req, res) => {

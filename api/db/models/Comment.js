@@ -25,6 +25,7 @@ const commentSchema = new mongoose.Schema(
 		],
 		upvotes: {
 			type: Number,
+			default: 0,
 		},
 		isDeleted: {
 			type: Boolean,
@@ -37,6 +38,10 @@ const commentSchema = new mongoose.Schema(
 				type: mongoose.Schema.Types.ObjectId,
 				ref: 'User',
 			},
+		},
+		updatedBy: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
 		},
 	},
 	{
