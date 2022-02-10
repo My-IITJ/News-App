@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 		},
 		resume: {
-			tyle: String,
+			type: String,
 		},
 		posts: [
 			{
@@ -46,10 +46,6 @@ const UserSchema = new mongoose.Schema(
 				},
 			},
 		],
-		// createdAt: {
-		// 	type: Date,
-		// 	default: Date.now,
-		// },
 	},
 	{ timestamps: true }
 );

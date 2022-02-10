@@ -24,6 +24,7 @@ const PostSchema = new mongoose.Schema(
 		},
 		upvotes: {
 			type: Number,
+			default: 0,
 		},
 		comments: [
 			{
@@ -48,6 +49,10 @@ const PostSchema = new mongoose.Schema(
 				type: mongoose.Schema.Types.ObjectId,
 				ref: 'User',
 			},
+		},
+		updatedBy: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
 		},
 	},
 	{ timestamps: true }
