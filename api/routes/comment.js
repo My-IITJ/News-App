@@ -4,7 +4,7 @@ const Comment = require("../db/models/Comment");
 const { isValidObjectId } = require("mongoose");
 
 // create a comment
-router.post("/:id/create", async (req, res) => {
+router.post("/new", async (req, res) => {
   try {
     const { parent } = req.body;
     let userId = req.params.userId;
@@ -12,9 +12,12 @@ router.post("/:id/create", async (req, res) => {
     if (!isValidObjectId(parent))
       return res.status(401).json("Invalid parent id");
 
+    if (!isValidObjectId(userId))
+      return res.status(401).json("Invalid user id");
+
     let newCommentDocument = new Comment({
       content: req.body.content,
-      parent: parent,
+      parent: { parentDetails: parent, parentType: req.body.type },
       author: userId,
     });
 
