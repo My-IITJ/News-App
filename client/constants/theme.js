@@ -15,6 +15,8 @@ export const COLORS = {
 	deepBlue: '#233B7A',
 	blue: '#2683F9',
 
+	deepBlue1: '#103564',
+
 	white: '#FFFFFF',
 	black: '#282A38',
 
