@@ -13,7 +13,6 @@ export default NavBar;
 
 //styles
 const Container = styled.View`
-	flex: 1;
-	justify-content: center;
-	align-items: center;
+	height: 60px;
+	padding: 20px;
 `;

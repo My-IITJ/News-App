@@ -3,7 +3,7 @@ const User = require('../db/models/User');
 const upload = require('../middlewares/multer');
 
 // create a new user : Neil
-router.post('/new-user', async (req, res) => {
+router.post('/new', async (req, res) => {
 	try {
 		const { userId, username } = req.body;
 
