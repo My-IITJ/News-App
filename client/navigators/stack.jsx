@@ -6,15 +6,28 @@ import Profile from '../screens/Profile';
 import NewPost from '../screens/NewPost';
 import PostComments from '../screens/PostComments';
 
+// theme related imports
+import { ThemeProvider } from 'styled-components'; // allows us to pass the current theme to all components
+import { useSelector } from 'react-redux';
+import { StatusBar } from 'expo-status-bar';
+
 const Stack = createStackNavigator();
 
 const AppStack = () => {
+	const currentTheme = useSelector((s) => s.user.theme);
 	return (
-		<>
+		<ThemeProvider theme={currentTheme}>
+			{
+				// eslint-disable-next-line react/style-prop-object
+				<StatusBar
+					translucent
+					style={currentTheme.name === 'dark' && 'light'}
+				/>
+			}
 			<Stack.Navigator
 				screenOptions={{
 					// to toggle the header. best to keep false
-					headerShown: true,
+					headerShown: false,
 				}}
 			>
 				<Stack.Screen name="Landing">{(p) => <Tabs {...p} />}</Stack.Screen>
@@ -25,7 +38,7 @@ const AppStack = () => {
 					{(p) => <PostComments {...p} />}
 				</Stack.Screen>
 			</Stack.Navigator>
-		</>
+		</ThemeProvider>
 	);
 };
 

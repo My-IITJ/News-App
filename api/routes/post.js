@@ -73,7 +73,7 @@ router.delete('/:id', async (req, res) => {
 
 	try {
 		await post.save();
-		res.json({ message: 'Post Deleted successfully!' });
+		res.status(200).json({ message: 'Post Deleted successfully!' });
 	} catch (err) {
 		res.status(500).json(err);
 	}
