@@ -35,16 +35,24 @@ const SinglePost = ({ post }) => {
 				</TouchableOpacity>
 			</Header>
 
-			<Content numberOfLines={2}>
-				lorem ipsum dolor sit amet, consectetur adipis lorem ipsum dolor sit
-				amet, consectetur adipis lorem ipsum dolor sit amet, consectetur adipis
-				lorem ipsum dolor sit amet, consectetur adipis lorem ipsum dolor sit
-				amet, consectetur adipis lorem ipsum dolor sit amet, consectetur adipis
-			</Content>
+			<TouchableOpacity
+				onPress={() => navigation.navigate('PostComments', { postId: post })}
+			>
+				<Content numberOfLines={2}>
+					lorem ipsum dolor sit amet, consectetur adipis lorem ipsum dolor sit
+					amet, consectetur adipis lorem ipsum dolor sit amet, consectetur
+					adipis lorem ipsum dolor sit amet, consectetur adipis lorem ipsum
+					dolor sit amet, consectetur adipis lorem ipsum dolor sit amet,
+					consectetur adipis
+				</Content>
+			</TouchableOpacity>
 
 			<Tags>
 				{tempTags.map((t, idx) => (
-					<Tag key={idx}>
+					<Tag
+						onPress={() => navigation.navigate('TagDetails', { tagId: t })}
+						key={idx}
+					>
 						<Label>{t}</Label>
 					</Tag>
 				))}
@@ -64,7 +72,7 @@ const SinglePost = ({ post }) => {
 				</ActionBtn>
 
 				<ActionBtn
-					onPress={() => navigation.navigate('PostComments', { post })}
+					onPress={() => navigation.navigate('PostComments', { postId: post })}
 				>
 					<Ionicons name="chatbubble-outline" size={25} color={COLORS.white1} />
 					<ActionLabel>{'2'}</ActionLabel>
@@ -78,7 +86,8 @@ export default SinglePost;
 
 //styles
 const Container = styled.View`
-	flex: 1;
+	/* flex: 1; */
+	height: 502px;
 	justify-content: center;
 	align-items: center;
 	background-color: ${({ theme }) =>

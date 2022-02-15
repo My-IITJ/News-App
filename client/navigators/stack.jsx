@@ -5,16 +5,57 @@ import Tabs from './tabs';
 import Profile from '../screens/Profile';
 import NewPost from '../screens/NewPost';
 import PostComments from '../screens/PostComments';
+import TagDetails from '../screens/TagDetails';
 
 // theme related imports
 import { ThemeProvider } from 'styled-components'; // allows us to pass the current theme to all components
 import { useSelector } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
+import { COLORS } from '../constants';
+import BackBtn from '../components/BackBtn';
+
+const screens = (theme) => {
+	return [
+		{
+			name: 'Landing',
+			Component: Tabs,
+		},
+		{
+			name: 'Profile',
+			Component: Profile,
+		},
+		{
+			name: 'NewPost',
+			Component: NewPost,
+		},
+		{
+			name: 'PostComments',
+			Component: PostComments,
+		},
+		{
+			name: 'TagDetails',
+			Component: TagDetails,
+			options: ({ navigation }) => ({
+				headerShown: true,
+				headerShadowVisible: false,
+				title: '',
+				headerLeft: (p) => {
+					return <BackBtn {...p} navigation={navigation} />;
+				},
+				headerStyle: {
+					backgroundColor:
+						theme.name === 'dark' ? COLORS.darkPurple : COLORS.white1,
+				},
+			}),
+		},
+	];
+};
 
 const Stack = createStackNavigator();
 
 const AppStack = () => {
 	const currentTheme = useSelector((s) => s.user.theme);
+
 	return (
 		<ThemeProvider theme={currentTheme}>
 			{
@@ -26,17 +67,14 @@ const AppStack = () => {
 			}
 			<Stack.Navigator
 				screenOptions={{
-					// to toggle the header. best to keep false
 					headerShown: false,
 				}}
 			>
-				<Stack.Screen name="Landing">{(p) => <Tabs {...p} />}</Stack.Screen>
-
-				<Stack.Screen name="Profile">{(p) => <Profile {...p} />}</Stack.Screen>
-				<Stack.Screen name="NewPost">{(p) => <NewPost {...p} />}</Stack.Screen>
-				<Stack.Screen name="PostComments">
-					{(p) => <PostComments {...p} />}
-				</Stack.Screen>
+				{screens(currentTheme).map(({ name, Component, options, props }) => (
+					<Stack.Screen key={name} name={name} options={options}>
+						{(p) => <Component {...p} {...props} />}
+					</Stack.Screen>
+				))}
 			</Stack.Navigator>
 		</ThemeProvider>
 	);

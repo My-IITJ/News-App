@@ -1,33 +1,24 @@
-import { FlatList, View } from 'react-native';
-import { useTheme } from 'styled-components';
 import styled from 'styled-components/native';
 import { COLORS } from '../constants';
 import Navbar from '../components/Navbar';
-import SinglePost from '../components/SinglePost';
 import { useEffect, useState } from 'react';
+import Constants from 'expo-constants';
+import PostsList from '../components/PostsList';
+import ThemeBtn from '../components/ThemeBtn';
 
 const Home = ({ navigation }) => {
-	const theme = useTheme(); // gets the current theme
-	const [posts, setPosts] = useState([1, 2, 3]);
+	const [posts, setPosts] = useState([]);
+
+	useEffect(() => {
+		const posts = [...Array(20).keys()];
+		setPosts(posts);
+	}, []);
 
 	return (
-		<Container dark={theme.name === 'dark'}>
+		<Container>
 			<Navbar />
-			<View>
-				<FlatList
-					data={posts}
-					keyExtractor={(_, idx) => `post-${idx}`}
-					renderItem={({ item }) => <SinglePost post={item} />}
-					showsVerticalScrollIndicator={false}
-					ListFooterComponent={
-						<View
-							style={{
-								height: 40,
-							}}
-						/>
-					}
-				/>
-			</View>
+			<ThemeBtn />
+			<PostsList posts={posts} page="Home" />
 		</Container>
 	);
 };
@@ -37,6 +28,7 @@ export default Home;
 //styles
 const Container = styled.View`
 	flex: 1;
-	background-color: ${({ dark }) => (dark ? COLORS.darkPurple : COLORS.white1)};
-	padding: 20px;
+	background-color: ${({ theme }) =>
+		theme.name === 'dark' ? COLORS.darkPurple : COLORS.white1};
+	padding-top: ${Constants.statusBarHeight}px;
 `;

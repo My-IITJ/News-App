@@ -15,6 +15,8 @@ export const COLORS = {
 	deepBlue: '#233B7A',
 	blue: '#2683F9',
 
+	gray20: '#F8F8F8',
+
 	deepBlue1: '#103564',
 
 	white: '#FFFFFF',
@@ -97,9 +99,9 @@ export const darkTheme = {
 
 export const lightTheme = {
 	name: 'light',
-	backgroundColor1: COLORS.white1,
-	backgroundColor2: COLORS.white2,
-	backgroundColor3: COLORS.deepBlue,
+	backgroundColor1: COLORS.white2,
+	backgroundColor2: COLORS.deepBlue,
+	backgroundColor3: COLORS.white1,
 	backgroundColor4: COLORS.blue,
 	textColor: COLORS.black,
 	tintColor: COLORS.black,

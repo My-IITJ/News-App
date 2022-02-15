@@ -51,6 +51,7 @@ const Tabs = () => {
 								theme.name === 'dark' ? COLORS.darkPurple : COLORS.white1,
 							height: 70,
 							paddingBottom: 10,
+							borderColor: COLORS.black,
 						},
 						headerShown: false,
 					};
