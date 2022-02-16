@@ -13,9 +13,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 export default function App() {
 	// loading all required fonts.
-	//This is an example. The font might be different for the app.
 	const [isLoaded] = useFonts({
-		'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
+		'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
+		'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf'),
+		'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
 	});
 
 	if (!isLoaded) {

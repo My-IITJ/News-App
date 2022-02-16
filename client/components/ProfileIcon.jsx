@@ -1,18 +1,19 @@
 import { Text } from 'react-native';
 import styled from 'styled-components/native';
 
-const NavBar = () => {
+const ProfileIcon = () => {
 	return (
 		<Container>
-			<Text>NavBar</Text>
+			<Text>ProfileIcon</Text>
 		</Container>
 	);
 };
 
-export default NavBar;
+export default ProfileIcon;
 
 //styles
 const Container = styled.View`
-	height: 60px;
-	padding: 20px;
+	flex: 1;
+	justify-content: center;
+	align-items: center;
 `;
