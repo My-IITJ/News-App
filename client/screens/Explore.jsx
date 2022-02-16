@@ -1,28 +1,19 @@
-import React, { useState } from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
-import SearchBar from "../components/SearchBar";
+import { Text } from 'react-native';
+import styled from 'styled-components/native';
 
 const Explore = () => {
-	const [searchPhrase, setSearchPhrase] = useState("");
-	const [clicked, setClicked] = useState(false);
 	return (
-		<SafeAreaView style={styles.root}>
-			<SearchBar
-				searchPhrase={searchPhrase}
-				setSearchPhrase={setSearchPhrase}
-				clicked={clicked}
-				setClicked={setClicked}
-			/>
-		</SafeAreaView>
+		<Container>
+			<Text>Explore</Text>
+		</Container>
 	);
 };
 
 export default Explore;
 
 //styles
-const styles = StyleSheet.create({
-	root: {
-		justifyContent: "center",
-		alignItems: "center",
-	},
-});
+const Container = styled.View`
+	flex: 1;
+	justify-content: center;
+	align-items: center;
+`;

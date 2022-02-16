@@ -21,10 +21,10 @@ const PostSchema = new mongoose.Schema(
 		],
 		thumbnail: {
 			type: String,
+			required: false,
 		},
 		upvotes: {
 			type: Number,
-			default: 0,
 		},
 		comments: [
 			{
@@ -49,10 +49,6 @@ const PostSchema = new mongoose.Schema(
 				type: mongoose.Schema.Types.ObjectId,
 				ref: 'User',
 			},
-		},
-		updatedBy: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'User',
 		},
 	},
 	{ timestamps: true }

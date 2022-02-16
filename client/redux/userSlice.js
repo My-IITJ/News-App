@@ -2,12 +2,10 @@
 // user's data.
 
 import { createSlice } from '@reduxjs/toolkit';
-import { lightTheme, darkTheme } from '../constants';
 
 const initialState = {
 	token: null, //jwt token for api calls
 	data: null, // store the user settings and other data
-	theme: lightTheme,
 	error: null, // if any api error
 	isLoading: false, // whether im fetching data or not
 };
@@ -40,18 +38,9 @@ const userSlice = createSlice({
 		apiStart: (state) => {
 			state.isLoading = true;
 		},
-		toggleTheme: (state, action) => {
-			state.theme = action.payload.type === 'dark' ? darkTheme : lightTheme;
-		},
 	},
 });
 
-export const {
-	updateData,
-	updateError,
-	updateToken,
-	logout,
-	apiStart,
-	toggleTheme,
-} = userSlice.actions;
+export const { updateData, updateError, updateToken, logout, apiStart } =
+	userSlice.actions;
 export default userSlice.reducer;
