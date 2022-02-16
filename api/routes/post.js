@@ -90,4 +90,46 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+//Update Post
+
+router.put("/:id", async (req, res) => {
+		const id = req.params.id
+		const userId = req.body.userId
+	
+		if (!isValidObjectId(id) || !isValidObjectId(userId))
+	
+			return res.status(401).json({ error: "Invalid request!" })
+	
+		const post = await Post.findById(req.params.id)
+	
+		if (!post)
+			return res.status(404).json({ error: "Post not found!" })
+	
+		try {
+			const post = await Post.findById(req.params.id);
+			if (post.author.equals(req.body.userId)) {
+				try {
+					const updatedPost = await Post.findByIdAndUpdate(
+						req.params.id,
+						{
+							$set: req.body,
+							updated: { at: Date.now(), by: userId }
+						},
+						{ new: true }
+					);
+					res.status(200).json(updatedPost);
+				} catch (err) {
+					res.status(500).json(err);
+				}
+			} else {
+				res.status(401).json("You can update only your post!");
+			}
+		} catch (err) {
+			res.status(500).json(err);
+		}
+	
+	});
+	
+	
+
 module.exports = router;
