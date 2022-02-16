@@ -25,6 +25,16 @@ router.post('/new', async (req, res) => {
 	}
 });
 
+// fetch a single user : Sakshi
+router.get("/:id", async (req, res) => {
+	try {
+	  const user = await User.findById(req.params.id);
+	  res.status(200).json(user);
+	}catch (err) {
+	  res.status(500).json(err);
+	}
+});
+
 // update user settings
 
 module.exports = router;
