@@ -35,6 +35,32 @@ router.get("/:id", async (req, res) => {
 	}
 });
 
+// fetch a list of users : Sakshi
+router.get("/", async (req, res) => {
+	try {
+	  const { limit = 10, search_q = "", page = 1, names = "" } = req.query;
+	  page--;  
+	  let nameArray = names.split(",");
+  
+	  let users;
+	  let findUser;
+	  for (let i = 0; i < nameArray.length; i++) {
+		findUser = await User.find({
+		  userId: { $search: search_q },
+		  username: { $contains: nameArray[i] },
+		})
+		  .sort({ createdAt: -1 })
+		  .skip(parseInt(page) * parseInt(limit))
+		  .limit(parseInt(limit));
+		posts.push(findUser);
+	  }  
+	  res.json(users);
+	} catch (err) {
+	  console.error(err);
+	  res.status(500).json(err);
+	}
+  });
+
 // update user settings
 
 module.exports = router;
