@@ -16,7 +16,7 @@ const tagSchema = mongoose.Schema(
 			required: true,
 			trim: true,
 		},
-		isdeleted: {
+		isDeleted: {
 			type: Boolean,
 			default: false,
 		},
