@@ -1,91 +1,92 @@
-const router = require("express").Router();
-const Comment = require("../db/models/Comment");
+const router = require('express').Router();
+const Comment = require('../db/models/Comment');
 
-const { isValidObjectId } = require("mongoose");
+const { isValidObjectId } = require('mongoose');
 
 // create a comment
-router.post("/new", async (req, res) => {
-  try {
-    const { parent } = req.body;
-    let userId = req.params.userId;
+router.post('/new', async (req, res) => {
+	try {
+		const { parent } = req.body;
+		let userId = req.body.userId; // check this route
 
-    if (!isValidObjectId(parent))
-      return res.status(401).json("Invalid parent id");
+		if (!isValidObjectId(parent))
+			return res.status(401).json('Invalid parent id');
 
-    if (!isValidObjectId(userId))
-      return res.status(401).json("Invalid user id");
+		if (!isValidObjectId(userId))
+			return res.status(401).json('Invalid user id');
 
-    let newCommentDocument = new Comment({
-      content: req.body.content,
-      parent: { parentDetails: parent, parentType: req.body.type },
-      author: userId,
-    });
+		let newCommentDocument = new Comment({
+			content: req.body.content,
+			parent: { parentDetails: parent, parentType: req.body.type },
+			author: userId,
+		});
 
-    let commentData = await newCommentDocument.save();
-    return res.status(200).send({
-      message: "comment successfully added",
-      data: commentData,
-    });
-  } catch (error) {
-    res.status(500).json(error);
-  }
+		await newCommentDocument.save();
+		return res.status(200).json({
+			message: 'comment successfully added',
+			data: newCommentDocument,
+		});
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error });
+	}
 });
 
 // get a single comment
-router.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
+router.get('/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
 
-    if (!isValidObjectId(id)) return res.status(401).json("Invalid Comment ID");
+		if (!isValidObjectId(id)) return res.status(401).json('Invalid Comment ID');
 
-    const comment = await Comment.findById(id);
+		const comment = await Comment.findById(id);
 
-    if (!comment) return res.status(404).json("Comment not found");
+		if (!comment) return res.status(404).json('Comment not found');
 
-    res.status(200).json({ comment });
-  } catch (error) {
-    res.status(500).json(error);
-  }
+		res.status(200).json({ comment });
+	} catch (error) {
+		res.status(500).json(error);
+	}
 });
 
 // get a list of comments
-router.get("/", async (req, res) => {
-  try {
-    const comments = await Comment.find();
+router.get('/', async (req, res) => {
+	try {
+		const comments = await Comment.find();
 
-    res.status(200).json({ comments, count: comments.length });
-  } catch (error) {
-    res.status(500).json(error);
-  }
+		res.status(200).json({ comments, count: comments.length });
+	} catch (error) {
+		res.status(500).json(error);
+	}
 });
 
 // delete a comment : Neil
-router.delete("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { author } = req.body;
+router.delete('/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+		const { author } = req.body;
 
-    if (!isValidObjectId(id)) return res.status(401).json("Invalid comment id");
+		if (!isValidObjectId(id)) return res.status(401).json('Invalid comment id');
 
-    if (!isValidObjectId(author))
-      return res.status(401).json("Invalid author id");
+		if (!isValidObjectId(author))
+			return res.status(401).json('Invalid author id');
 
-    const comment = await Comment.findById(id);
+		const comment = await Comment.findById(id);
 
-    if (!comment) return res.status(404).json("Comment not found");
+		if (!comment) return res.status(404).json('Comment not found');
 
-    if (!comment.author.equals(author))
-      return res.status(401).json("Only author can delete this comment");
+		if (!comment.author.equals(author))
+			return res.status(401).json('Only author can delete this comment');
 
-    comment.isDeleted = true;
-    comment.deleted = { at: Date.now(), by: author };
+		comment.isDeleted = true;
+		comment.deleted = { at: Date.now(), by: author };
 
-    await comment.save();
+		await comment.save();
 
-    res.status(200).json("comment deleted");
-  } catch (error) {
-    res.status(500).json(error);
-  }
+		res.status(200).json('comment deleted');
+	} catch (error) {
+		res.status(500).json(error);
+	}
 });
 
 module.exports = router;

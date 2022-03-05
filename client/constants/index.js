@@ -1,7 +1,7 @@
 import theme, {
 	COLORS,
 	SIZES,
-	FONTS,
+	// FONTS,
 	darkTheme,
 	lightTheme,
 	selectedTheme,
@@ -12,7 +12,7 @@ export {
 	theme,
 	COLORS,
 	SIZES,
-	FONTS,
+	// FONTS,
 	darkTheme,
 	lightTheme,
 	selectedTheme,

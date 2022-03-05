@@ -18,6 +18,7 @@ const tagSchema = mongoose.Schema(
 		},
 		isdeleted: {
 			type: Boolean,
+			default: false,
 		},
 		deleted: {
 			at: {
