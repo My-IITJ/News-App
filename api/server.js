@@ -1,6 +1,7 @@
 require('express-async-errors');
 
 const dotenv = require('dotenv');
+const morgan = require('morgan');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -31,6 +32,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
+app.use(morgan('dev'));
 app.use((err, req, res, next) => {
 	res.status(500).json(err.message);
 });

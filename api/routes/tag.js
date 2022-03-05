@@ -9,7 +9,8 @@ router.get('/', async (req, res) => {
 
 		res.status(200).json({ tags, count: tags.length });
 	} catch (error) {
-		res.status(500).json(error);
+		console.error(error);
+		res.status(500).json({ error });
 	}
 });
 
@@ -26,7 +27,8 @@ router.get('/:id', async (req, res) => {
 
 		res.status(200).json({ tag });
 	} catch (error) {
-		res.status(500).json(error);
+		console.error(error);
+		res.status(500).json({ error });
 	}
 });
 

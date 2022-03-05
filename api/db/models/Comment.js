@@ -29,6 +29,7 @@ const commentSchema = new mongoose.Schema(
 		},
 		isDeleted: {
 			type: Boolean,
+			default: false,
 		},
 		deleted: {
 			at: {

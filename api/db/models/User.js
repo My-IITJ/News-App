@@ -18,10 +18,8 @@ const UserSchema = new mongoose.Schema(
 		},
 		subscribedTags: [
 			{
-				tag: {
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'Tag',
-				},
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Tag',
 			},
 		],
 		profileImg: {
@@ -32,18 +30,14 @@ const UserSchema = new mongoose.Schema(
 		},
 		posts: [
 			{
-				post: {
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'Post',
-				},
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Post',
 			},
 		],
 		savedPosts: [
 			{
-				post: {
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'Post',
-				},
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Post',
 			},
 		],
 	},
