@@ -23,7 +23,7 @@ router.get('/:id', async (req, res) => {
 
 		const tag = await Tag.findById(id);
 
-		if (!tag) return res.status(404).json('Tag not found');
+		if (!tag || tag.isDeleted) return res.status(404).json('Tag not found');
 
 		res.status(200).json({ tag });
 	} catch (error) {
