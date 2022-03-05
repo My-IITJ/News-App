@@ -38,26 +38,24 @@ router.get("/:id", async (req, res) => {
 // fetch a list of users : Sakshi
 router.get("/", async (req, res) => {
 	try {
-	  const { limit = 10, search_q = "", page = 1, names = "" } = req.query;
+	  let { limit = 10, search_q = "", page = 1, names = "" } = req.query;
 	  page--;  
-	  let nameArray = names.split(",");
+	  let nameArray = names.split(",").map((item)=>{
+		  return new RegExp(item,"i")
+	  });
   
 	  let users;
-	  let findUser;
-	  for (let i = 0; i < nameArray.length; i++) {
-		findUser = await User.find({
-		  userId: { $search: search_q },
-		  username: { $contains: nameArray[i] },
-		})
-		  .sort({ createdAt: -1 })
-		  .skip(parseInt(page) * parseInt(limit))
-		  .limit(parseInt(limit));
-		posts.push(findUser);
-	  }  
-	  res.json(users);
+	  let query = names?{
+		username : {$in : nameArray}
+	  }:{}
+	  users = await User.find(query)
+	  	.sort({ createdAt: -1 })
+		.skip(parseInt(page) * parseInt(limit))
+		.limit(parseInt(limit));	  
+	  res.status(200).json({users});
 	} catch (err) {
 	  console.error(err);
-	  res.status(500).json(err);
+	  res.status(500).json({error : err?.message});
 	}
   });
 
