@@ -1,5 +1,7 @@
+import { LogBox } from 'react-native';
+
 // font related imports
-import { useFonts } from '@use-expo/font';
+import { useFonts, Poppins_400Regular } from '@expo-google-fonts/poppins';
 import AppLoading from 'expo-app-loading';
 
 // navigation related imports
@@ -11,12 +13,20 @@ import { Provider } from 'react-redux';
 import { persistor, store } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 
+// react query related imports
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { useAppState, useOnlineManager } from './apiCalls/hooks';
+
+LogBox.ignoreLogs(['Setting a timer']);
+const queryClient = new QueryClient();
+
 export default function App() {
+	useOnlineManager();
+	useAppState();
+
 	// loading all required fonts.
 	const [isLoaded] = useFonts({
-		'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
-		'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf'),
-		'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+		Poppins_400Regular,
 	});
 
 	if (!isLoaded) {
@@ -24,12 +34,14 @@ export default function App() {
 	}
 
 	return (
-		<Provider store={store}>
-			<PersistGate loading={null} persistor={persistor}>
-				<NavigationContainer>
-					<AppStack />
-				</NavigationContainer>
-			</PersistGate>
-		</Provider>
+		<QueryClientProvider client={queryClient}>
+			<Provider store={store}>
+				<PersistGate loading={null} persistor={persistor}>
+					<NavigationContainer>
+						<AppStack />
+					</NavigationContainer>
+				</PersistGate>
+			</Provider>
+		</QueryClientProvider>
 	);
 }

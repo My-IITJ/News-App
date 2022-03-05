@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import { COLORS } from '../constants';
 import BackBtn from '../components/BackBtn';
+import Welcome from '../screens/Welcome';
 
 const screens = (theme) => {
 	return [
@@ -47,6 +48,10 @@ const screens = (theme) => {
 						theme.name === 'dark' ? COLORS.darkPurple : COLORS.white1,
 				},
 			}),
+		},
+		{
+			name: 'Welcome',
+			Component: Welcome,
 		},
 	];
 };
