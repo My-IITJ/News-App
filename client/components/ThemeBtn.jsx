@@ -5,6 +5,7 @@ import InsetShadow from 'react-native-inset-shadow';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback } from 'react';
 import { toggleTheme } from '../redux/userSlice';
+import { View } from 'react-native';
 
 const ThemeBtn = () => {
 	const theme = useSelector((s) => s.user.theme);
@@ -17,22 +18,50 @@ const ThemeBtn = () => {
 		[dispatch]
 	);
 
+	const Box = useCallback(
+		({ children }) => {
+			if (theme.name === 'light') {
+				return (
+					<InsetShadow
+						containerStyle={{
+							flexDirection: 'row',
+							alignItems: 'center',
+							justifyContent: 'center',
+							backgroundColor: theme.backgroundColor3,
+							borderRadius: 60,
+							padding: 4,
+						}}
+						shadowOpacity={0.8}
+						shadowOffset={2}
+						shadowRadius={10}
+						elevation={10}
+					>
+						{children}
+					</InsetShadow>
+				);
+			}
+
+			return (
+				<View
+					style={{
+						flexDirection: 'row',
+						alignItems: 'center',
+						justifyContent: 'center',
+						backgroundColor: theme.backgroundColor3,
+						borderRadius: 60,
+						padding: 4,
+					}}
+				>
+					{children}
+				</View>
+			);
+		},
+		[theme]
+	);
+
 	return (
 		<Container>
-			<InsetShadow
-				containerStyle={{
-					flexDirection: 'row',
-					alignItems: 'center',
-					justifyContent: 'center',
-					backgroundColor: theme.backgroundColor3,
-					borderRadius: 60,
-					padding: 4,
-				}}
-				shadowOpacity={0.8}
-				shadowOffset={2}
-				shadowRadius={10}
-				elevation={10}
-			>
+			<Box>
 				<Wrapper
 					onPress={() => updateTheme('light')}
 					selected={theme.name === 'light'}
@@ -54,7 +83,7 @@ const ThemeBtn = () => {
 						color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
 					/>
 				</Wrapper>
-			</InsetShadow>
+			</Box>
 		</Container>
 	);
 };

@@ -5,24 +5,23 @@ import { Ionicons, AntDesign } from '@expo/vector-icons';
 import Icon from './Icon';
 import { useTheme } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
-
-const tempTags = ['Research', 'Academics', 'Electrical', 'Btech'];
+import moment from 'moment';
 
 const SinglePost = ({ post }) => {
 	const theme = useTheme();
 	const navigation = useNavigation();
-	const { username, title, profileImg, createdAt, tags, thumbnail, upvotes } =
+	const { author, content, createdAt, tags, comments, thumbnail, upvotes } =
 		post;
 
 	return (
-		<Container>
+		<Container height={thumbnail}>
 			<Header>
 				<Icon src={require('../assets/images/icon.png')} />
 				<Details>
 					<TouchableOpacity>
-						<Name>{'Suman Kundu'}</Name>
-						<Position>{'Prof. CSE Dept'}</Position>
-						<Time>{'5 min ago'}</Time>
+						<Name>{author?.username || 'Suman Kundu'}</Name>
+						<Position>{author?.title || 'Prof. CSE Dept'}</Position>
+						<Time>{moment(createdAt).fromNow() || '5 min ago'}</Time>
 					</TouchableOpacity>
 				</Details>
 
@@ -38,44 +37,52 @@ const SinglePost = ({ post }) => {
 			<TouchableOpacity
 				onPress={() => navigation.navigate('PostComments', { postId: post })}
 			>
-				<Content numberOfLines={2}>
-					lorem ipsum dolor sit amet, consectetur adipis lorem ipsum dolor sit
+				<Content numberOfLines={!thumbnail ? 4 : 2}>
+					{content ||
+						`lorem ipsum dolor sit amet, consectetur adipis lorem ipsum dolor sit
 					amet, consectetur adipis lorem ipsum dolor sit amet, consectetur
 					adipis lorem ipsum dolor sit amet, consectetur adipis lorem ipsum
 					dolor sit amet, consectetur adipis lorem ipsum dolor sit amet,
-					consectetur adipis
+					consectetur adipis`}
 				</Content>
 			</TouchableOpacity>
 
 			<Tags>
-				{tempTags.map((t, idx) => (
-					<Tag
-						onPress={() => navigation.navigate('TagDetails', { tagId: t })}
-						key={idx}
-					>
-						<Label>{t}</Label>
-					</Tag>
-				))}
+				{tags?.map((t, idx) => {
+					const label = t.name.charAt(0).toUpperCase() + t.name.slice(1);
+					return (
+						<Tag
+							onPress={() =>
+								navigation.navigate('TagDetails', { tagId: t._id })
+							}
+							key={idx}
+						>
+							<Label>{label}</Label>
+						</Tag>
+					);
+				})}
 			</Tags>
 
-			<Thumbnail>
-				<Image
-					source={require('../assets/images/post.png')}
-					resizeMode="contain"
-				/>
-			</Thumbnail>
+			{thumbnail && (
+				<Thumbnail>
+					<Image
+						source={require('../assets/images/post.png')}
+						resizeMode="contain"
+					/>
+				</Thumbnail>
+			)}
 
-			<Action>
+			<Action bottom={thumbnail}>
 				<ActionBtn>
 					<AntDesign name="arrowup" size={25} color={COLORS.white1} />
-					<ActionLabel>{'99'}</ActionLabel>
+					<ActionLabel>{upvotes || '99'}</ActionLabel>
 				</ActionBtn>
 
 				<ActionBtn
 					onPress={() => navigation.navigate('PostComments', { postId: post })}
 				>
 					<Ionicons name="chatbubble-outline" size={25} color={COLORS.white1} />
-					<ActionLabel>{'2'}</ActionLabel>
+					<ActionLabel>{comments?.length || '2'}</ActionLabel>
 				</ActionBtn>
 			</Action>
 		</Container>
@@ -86,9 +93,7 @@ export default SinglePost;
 
 //styles
 const Container = styled.View`
-	/* flex: 1; */
-	height: 502px;
-	justify-content: center;
+	height: ${(p) => (p.height ? 502 : 250)}px;
 	align-items: center;
 	background-color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.darkgrey : COLORS.white2};
@@ -110,7 +115,7 @@ const Details = styled.View`
 `;
 
 const Name = styled.Text`
-	font-family: 'Poppins-Regular';
+	font-family: Poppins_400Regular;
 	font-size: 18px;
 	font-weight: 700;
 	color: ${({ theme }) =>
@@ -118,14 +123,14 @@ const Name = styled.Text`
 `;
 
 const Position = styled.Text`
-	font-family: 'Poppins-Regular';
+	font-family: Poppins_400Regular;
 	font-size: 12px;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
 `;
 
 const Time = styled.Text`
-	font-family: 'Poppins-Regular';
+	font-family: Poppins_400Regular;
 	font-size: 12px;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
@@ -133,7 +138,8 @@ const Time = styled.Text`
 
 const Content = styled.Text`
 	margin: 10px 0px;
-	font-family: 'Poppins-Regular';
+	font-family: Poppins_400Regular;
+	text-align: justify;
 	font-size: 14px;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
@@ -178,7 +184,7 @@ const Action = styled.View`
 	border-radius: ${SIZES.radius + 2}px;
 	position: absolute;
 	z-index: 1;
-	bottom: 25px;
+	bottom: ${(p) => (p.bottom ? 25 : 14)}px;
 	justify-content: center;
 `;
 

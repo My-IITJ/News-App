@@ -2,22 +2,45 @@ import styled from 'styled-components/native';
 import { COLORS, SIZES } from '../constants';
 import { Feather } from '@expo/vector-icons';
 import PostsList from '../components/PostsList';
-import { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
+import { useGetTagDetails, useRelatedPosts } from '../apiCalls/tag';
+import AppLoading from 'expo-app-loading';
+import { Text } from 'react-native';
 
-const dummy = {
-	name: 'Research',
-	desc: 'lorem ipsum dolor sit amet, consectetur adip asbjaK loreem loremamet, consectetur adip asbjaK loreem',
-};
+const limit = 3;
 
-const TagDetails = ({ tagId }) => {
-	const [posts, setPosts] = useState([]);
+const TagDetails = ({ route }) => {
 	const theme = useTheme();
+	const { tagId } = route.params;
 
-	useEffect(() => {
-		const posts = [...Array(20).keys()];
-		setPosts(posts);
-	}, []);
+	const {
+		isLoading: isTagLoading,
+		isError: isTagError,
+		error: tagError,
+		data: tagDetails,
+	} = useGetTagDetails(tagId);
+
+	const {
+		// isLoading: isPostsLoading,
+		isError: isPostsError,
+		error: postsError,
+		data: posts,
+		isFetchingNextPage,
+		fetchNextPage,
+		hasNextPage,
+	} = useRelatedPosts(limit, tagDetails?.data.tag.name);
+
+	const name =
+		tagDetails?.data.tag.name.charAt(0).toUpperCase() +
+		tagDetails?.data.tag.name.slice(1);
+
+	if (isTagLoading) {
+		return <AppLoading />;
+	}
+
+	if (isTagError || isPostsError) {
+		return <Text>{tagError?.message || postsError?.message}</Text>;
+	}
 
 	return (
 		<Container>
@@ -29,7 +52,7 @@ const TagDetails = ({ tagId }) => {
 						color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
 					/>
 					<Title ml={6} size={20}>
-						{dummy.name}
+						{name}
 					</Title>
 
 					<Follow>
@@ -50,7 +73,7 @@ const TagDetails = ({ tagId }) => {
 
 				<Title font={600}>Description:</Title>
 
-				<Desc>{dummy.desc}</Desc>
+				<Desc>{tagDetails?.data.tag.desc}</Desc>
 			</Tag>
 
 			<Title mb={10} size={20}>
@@ -58,7 +81,10 @@ const TagDetails = ({ tagId }) => {
 			</Title>
 
 			<PostsList
-				posts={posts}
+				getMorePosts={fetchNextPage}
+				reachedEnd={!hasNextPage}
+				busy={isFetchingNextPage}
+				data={posts}
 				page="Explore"
 				contentContainerStyle={{ paddingHorizontal: 0, paddingBottom: 5 }}
 			/>
@@ -96,7 +122,7 @@ const Box = styled.View`
 `;
 
 const Title = styled.Text`
-	font-family: 'Poppins-Regular';
+	font-family: Poppins_400Regular;
 	font-size: ${(p) => p.size || 18}px;
 	margin-left: ${(p) => p.ml || 0}px;
 	margin-bottom: ${(p) => p.mb || 0}px;
@@ -111,7 +137,7 @@ const Follow = styled.TouchableOpacity`
 `;
 
 const Desc = styled.Text`
-	font-family: 'Poppins-Regular';
+	font-family: Poppins_400Regular;
 	font-size: 16px;
 	color: ${(p) => color(p.theme.name)};
 	font-weight: 500;

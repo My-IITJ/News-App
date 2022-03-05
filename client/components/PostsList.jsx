@@ -1,20 +1,53 @@
-import { FlatList } from 'react-native';
-import React from 'react';
+import { FlatList, Text } from 'react-native';
+import React, { useCallback } from 'react';
 import SinglePost from './SinglePost';
 import styled from 'styled-components/native';
+import ReachedEnd from './ReachedEnd';
+import NotFound from './NotFound';
 
 // const ITEM_SIZE = 525;
 
-const PostsList = ({ posts, page, contentContainerStyle }) => {
+const PostsList = ({
+	posts,
+	page,
+	contentContainerStyle,
+	getMorePosts,
+	reachedEnd,
+	busy,
+	onRefresh,
+	data,
+}) => {
+	const allPosts = useCallback(() => {
+		if (data) {
+			let p = [];
+			data?.pages.forEach((page) => {
+				p = [...p, ...page.data.posts];
+			});
+			return p;
+		}
+		return posts;
+	}, [data, posts]);
+
 	return (
 		<Container>
 			<FlatList
-				data={posts}
+				data={allPosts()}
 				style={{ flex: 1 }}
 				keyExtractor={(_, idx) => `post-${page}-${idx}`}
-				renderItem={({ item, index }) => {
+				renderItem={({ item }) => {
 					return <SinglePost post={item} />;
 				}}
+				ListFooterComponent={() => {
+					if (reachedEnd) {
+						return <ReachedEnd />;
+					}
+
+					if (busy) {
+						return <Text>Loading...</Text>;
+					}
+					return null;
+				}}
+				ListEmptyComponent={NotFound}
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={[
 					{
@@ -23,6 +56,10 @@ const PostsList = ({ posts, page, contentContainerStyle }) => {
 					},
 					contentContainerStyle,
 				]}
+				onEndReached={getMorePosts}
+				onEndReachedThreshold={0}
+				// refreshing={busy}
+				// onRefresh={onRefresh}
 			/>
 		</Container>
 	);

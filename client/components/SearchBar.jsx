@@ -1,62 +1,72 @@
-import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
-import { Feather, Entypo } from "@expo/vector-icons";
-import React from "react";
+import { StyleSheet, TextInput, View, Keyboard } from 'react-native';
+import { Feather, Entypo } from '@expo/vector-icons';
+import { useTheme } from 'styled-components/native';
+import { COLORS } from '../constants';
+import { useCallback, useRef, useState } from 'react';
 
-const SearchBar = (props) => {
+const SearchBar = ({ searchInPosts }) => {
+	const theme = useTheme();
+	const inputRef = useRef();
+	const [isFocused, setIsFocused] = useState(inputRef?.current?.isFocused);
+
+	const handleSubmit = useCallback(
+		({ nativeEvent: { text } }) => {
+			setIsFocused(false);
+			searchInPosts(text);
+		},
+		[searchInPosts]
+	);
+
 	return (
 		<View style={styles.container}>
 			<View
-				style={
-					!props.clicked
-						? styles.searchBar__unclicked
-						: styles.searchBar__clicked
-				}
+				style={[
+					styles.searchBar,
+					{
+						backgroundColor:
+							theme.name === 'dark' ? COLORS.darkgrey : COLORS.white2,
+					},
+				]}
 			>
 				{/* search Icon */}
 				<Feather
 					name="search"
 					size={20}
-					color="black"
-					style={{ marginLeft: 1 }}
+					color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
 				/>
 				{/* Input field */}
 				<TextInput
-					style={styles.input}
+					ref={inputRef}
+					style={[
+						styles.input,
+						{ color: theme.name === 'dark' ? COLORS.white1 : COLORS.black },
+					]}
 					placeholder="Search here..."
-					value={props.searchPhrase}
-					onChangeText={props.setSearchPhrase}
-					onFocus={() => {
-						props.setClicked(true);
+					placeholderTextColor={
+						theme.name === 'dark' ? COLORS.white1 : COLORS.black
+					}
+					// value={searchPhrase}
+					onChangeText={() => {
+						// setSearchPhrase(text);
+						setIsFocused(true);
 					}}
+					returnKeyType="search"
+					onSubmitEditing={handleSubmit}
 				/>
 				{/* cross Icon, depending on whether the search bar is clicked or not */}
-				{props.clicked && (
+				{isFocused && (
 					<Entypo
 						name="cross"
 						size={20}
-						color="black"
-						style={{ padding: 1 }}
+						color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
 						onPress={() => {
-							props.setSearchPhrase("");
+							inputRef.current?.clear();
+							Keyboard.dismiss();
+							setIsFocused(false);
 						}}
 					/>
 				)}
 			</View>
-			{/* cancel button, depending on whether the search bar is clicked or not */}
-			{props.clicked && (
-				<View>
-					<Button
-						size="sm"
-						color="#F5F6FA"
-						variant="ghost"
-						title="Cancel"
-						onPress={() => {
-							Keyboard.dismiss();
-							props.setClicked(false);
-						}}
-					></Button>
-				</View>
-			)}
 		</View>
 	);
 };
@@ -66,32 +76,18 @@ export default SearchBar;
 // styles
 const styles = StyleSheet.create({
 	container: {
-		margin: 15,
-		justifyContent: "flex-start",
-		alignItems: "center",
-		flexDirection: "row",
-		width: "90%",
+		marginHorizontal: 20,
+		marginTop: 20,
 	},
-	searchBar__unclicked: {
+	searchBar: {
 		padding: 10,
-		flexDirection: "row",
-		width: "95%",
-		backgroundColor: "#F5F6FA",
-		borderRadius: 30,
-		alignItems: "center",
-	},
-	searchBar__clicked: {
-		padding: 10,
-		flexDirection: "row",
-		width: "80%",
-		backgroundColor: "#F5F6FA",
-		borderRadius: 30,
-		alignItems: "center",
-		justifyContent: "space-evenly",
+		flexDirection: 'row',
+		alignItems: 'center',
+		borderRadius: 10,
 	},
 	input: {
-		fontSize: 20,
+		fontSize: 18,
 		marginLeft: 10,
-		width: "90%",
+		flex: 1,
 	},
 });

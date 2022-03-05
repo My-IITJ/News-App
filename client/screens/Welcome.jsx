@@ -1,52 +1,52 @@
-import styled from "styled-components/native";
-import React, { Component } from "react";
-import { AntDesign } from "@expo/vector-icons";
+import styled from 'styled-components/native';
+import { AntDesign } from '@expo/vector-icons';
 
-export default class Welcome extends Component {
-	render() {
-		return (
-			<Container>
-				<OuterBox>
-					<Circle1>
-						<Circle2>
-							<Avatar source={require("../assets/images/iitj.jpg")} />
-						</Circle2>
-					</Circle1>
-					<WelcomeText>Welcome to My IITJ</WelcomeText>
-					<WelcomeText2>
-						lorem ipsum dolor sit aminlorem ipsum dolor sit aminlorem ipsum
-						dolor sit aminlorem ipsum dolor sit
-					</WelcomeText2>
-					<ButtonView>
-						<ButtonContainer
-							// onPress={props.onPress}
-							underlayColor={colors.highlight}
-						>
-							<Label1>Sign In</Label1>
-						</ButtonContainer>
-						<ButtonContainer
-							// onPress={props.onPress}
-							underlayColor={colors.highlight}
-						>
-							<Label1>Register</Label1>
-						</ButtonContainer>
-					</ButtonView>
-					<Line> ────────────────────────────────</Line>
-
-					<ButtonGoogle
+const Welcome = () => {
+	return (
+		<Container>
+			<OuterBox>
+				<Circle1>
+					<Circle2>
+						<Avatar source={require('../assets/images/iitj.jpg')} />
+					</Circle2>
+				</Circle1>
+				<WelcomeText>Welcome to My IITJ</WelcomeText>
+				<WelcomeText2>
+					lorem ipsum dolor sit aminlorem ipsum dolor sit aminlorem ipsum dolor
+					sit aminlorem ipsum dolor sit
+				</WelcomeText2>
+				<ButtonView>
+					<ButtonContainer
 						// onPress={props.onPress}
 						underlayColor={colors.highlight}
 					>
-						<Label2>
-							<AntDesign name="google" size={24} color="white" /> Continue with
-							Google
-						</Label2>
-					</ButtonGoogle>
-				</OuterBox>
-			</Container>
-		);
-	}
-}
+						<Label1>Sign In</Label1>
+					</ButtonContainer>
+					<ButtonContainer
+						// onPress={props.onPress}
+						underlayColor={colors.highlight}
+					>
+						<Label1>Register</Label1>
+					</ButtonContainer>
+				</ButtonView>
+				<Line> ────────────────────────────────</Line>
+
+				<ButtonGoogle
+					// onPress={props.onPress}
+					underlayColor={colors.highlight}
+				>
+					<Label2>
+						<AntDesign name="google" size={24} color="white" /> Continue with
+						Google
+					</Label2>
+				</ButtonGoogle>
+			</OuterBox>
+		</Container>
+	);
+};
+
+export default Welcome;
+
 const Container = styled.View`
 	padding: 3% 3%;
 `;
@@ -97,7 +97,7 @@ const Avatar = styled.Image`
 `;
 
 const WelcomeText = styled.Text`
-	font-family: "Poppins-Regular";
+	font-family: 'Poppins-Regular';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 52px;
@@ -108,7 +108,7 @@ const WelcomeText = styled.Text`
 	color: #13417c;
 `;
 const WelcomeText2 = styled.Text`
-	font-family: "Poppins-Regular";
+	font-family: 'Poppins-Regular';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -120,16 +120,16 @@ const WelcomeText2 = styled.Text`
 	color: #13417c;
 `;
 const colors = {
-	accent: "#233B7A",
-	highlight: "#D22",
-	contrast: "#FFF",
+	accent: '#233B7A',
+	highlight: '#D22',
+	contrast: '#FFF',
 };
 
 const Label1 = styled.Text`
 	color: ${(props) => (!props.outline ? colors.contrast : colors.accent)};
 	align-self: center;
 	padding: 10px;
-	font-family: "Poppins-Regular";
+	font-family: 'Poppins-Regular';
 	font-style: normal;
 	font-weight: bold;
 	font-size: 24px;
@@ -142,7 +142,7 @@ const Label2 = styled.Text`
 	color: ${(props) => (!props.outline ? colors.contrast : colors.accent)};
 	align-self: center;
 	padding: 10px;
-	font-family: "Poppins-Regular";
+	font-family: 'Poppins-Regular';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 24px;
