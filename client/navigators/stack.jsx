@@ -14,9 +14,19 @@ import { StatusBar } from 'expo-status-bar';
 import { COLORS } from '../constants';
 import BackBtn from '../components/BackBtn';
 import Welcome from '../screens/Welcome';
+import Icon from '../components/Icon';
+import Register from '../screens/Register';
 
 const screens = (theme) => {
 	return [
+		{
+			name: 'Welcome',
+			Component: Welcome,
+		},
+		{
+			name: 'Register',
+			Component: Register,
+		},
 		{
 			name: 'Landing',
 			Component: Tabs,
@@ -32,6 +42,28 @@ const screens = (theme) => {
 		{
 			name: 'PostComments',
 			Component: PostComments,
+			options: ({ navigation }) => ({
+				headerShown: true,
+				headerShadowVisible: false,
+				title: '',
+				headerLeft: (p) => {
+					return <BackBtn {...p} navigation={navigation} />;
+				},
+				headerRight: () => {
+					return (
+						<Icon
+							containerStyle={{ marginRight: 20 }}
+							width={10}
+							height={10}
+							src={require('../assets/images/icon.png')}
+						/>
+					);
+				},
+				headerStyle: {
+					backgroundColor:
+						theme.name === 'dark' ? COLORS.darkPurple : COLORS.white1,
+				},
+			}),
 		},
 		{
 			name: 'TagDetails',
@@ -48,10 +80,6 @@ const screens = (theme) => {
 						theme.name === 'dark' ? COLORS.darkPurple : COLORS.white1,
 				},
 			}),
-		},
-		{
-			name: 'Welcome',
-			Component: Welcome,
 		},
 	];
 };

@@ -7,8 +7,8 @@ import PostsList from '../components/PostsList';
 
 import { useSearchPosts } from '../apiCalls/post';
 import PageIndicators from '../components/PageIndicators';
-import AppLoading from 'expo-app-loading';
 import { Text } from 'react-native';
+import Loading from '../components/Loading';
 
 const limit = 3;
 
@@ -29,7 +29,7 @@ const Explore = ({ navigation }) => {
 	};
 
 	if (isLoading) {
-		return <AppLoading />;
+		return <Loading />;
 	}
 
 	if (isError) {

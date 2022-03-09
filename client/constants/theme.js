@@ -18,6 +18,8 @@ export const COLORS = {
 	gray20: '#F8F8F8',
 
 	deepBlue1: '#103564',
+	deepBlue2: '#2D2665',
+	purple2: '#473ca8',
 
 	white: '#FFFFFF',
 	black: '#282A38',

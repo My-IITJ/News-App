@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const Post = require('../db/models/Post');
 const Comment = require('../db/models/Comment');
 
 const { isValidObjectId } = require('mongoose');
@@ -6,25 +7,37 @@ const { isValidObjectId } = require('mongoose');
 // create a comment
 router.post('/new', async (req, res) => {
 	try {
-		const { parent } = req.body;
-		let userId = req.body.userId; // check this route
+		const { parent, userId, content } = req.body;
 
-		if (!isValidObjectId(parent))
+		if (!isValidObjectId(parent?.id))
 			return res.status(401).json('Invalid parent id');
 
 		if (!isValidObjectId(userId))
 			return res.status(401).json('Invalid user id');
 
 		let newCommentDocument = new Comment({
-			content: req.body.content,
-			parent: { parentDetails: parent, parentType: req.body.type },
+			content,
+			parent: { parentDetails: parent?.id, parentType: parent?.type },
 			author: userId,
 		});
 
 		await newCommentDocument.save();
+
+		if (parent?.type === 'post') {
+			await Post.findByIdAndUpdate(parent?.id, {
+				$push: { comments: newCommentDocument._id },
+			});
+		}
+
+		if (parent?.type === 'comment') {
+			await Comment.findByIdAndUpdate(parent?.id, {
+				$push: { replies: newCommentDocument._id },
+			});
+		}
+
 		return res.status(200).json({
 			message: 'comment successfully added',
-			data: newCommentDocument,
+			comment: newCommentDocument,
 		});
 	} catch (error) {
 		console.error(error);

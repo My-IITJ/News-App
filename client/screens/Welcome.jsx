@@ -1,44 +1,62 @@
-import styled, { useTheme } from "styled-components/native";
-import { AntDesign } from "@expo/vector-icons";
-import { COLORS, SIZES } from "../constants";
-import { view, TouchableOpacity } from "react-native";
-const Welcome = () => {
+import styled, { useTheme } from 'styled-components/native';
+import { AntDesign } from '@expo/vector-icons';
+import { COLORS, icons, SIZES } from '../constants';
+import Constants from 'expo-constants';
+
+const Welcome = ({ navigation }) => {
 	const theme = useTheme();
+
 	return (
 		<Container>
 			<OuterBox>
-				<Circle1>
-					<Circle2>
-						<Avatar source={require("../assets/images/iitj.jpg")} />
-					</Circle2>
-				</Circle1>
+				<Circle>
+					<Circle
+						width={140}
+						height={140}
+						color={COLORS.purple2}
+						style={{ opacity: 0.5 }}
+					>
+						<Avatar
+							source={
+								theme.name === 'dark' ? icons.logo_bg_dark : icons.logo_bg_light
+							}
+						/>
+					</Circle>
+				</Circle>
+
 				<WelcomeText>Welcome to My IITJ</WelcomeText>
 				<WelcomeText2>
 					lorem ipsum dolor sit aminlorem ipsum dolor sit aminlorem ipsum dolor
 					sit aminlorem ipsum dolor sit
 				</WelcomeText2>
-				<ButtonView>
-					<ButtonContainer
-					// onPress={props.onPress}
-					>
+
+				<Box>
+					<ButtonContainer onPress={() => navigation.navigate('Register')}>
 						<Label1>Sign In</Label1>
 					</ButtonContainer>
-					<ButtonContainer
-					// onPress={props.onPress}
-					>
+					<ButtonContainer onPress={() => navigation.navigate('Register')}>
 						<Label1>Register</Label1>
 					</ButtonContainer>
-				</ButtonView>
-				<Line> ─────────────────────</Line>
+				</Box>
 
-				<ButtonGoogle
-				// onPress={props.onPress}
-				>
-					<Label2>
-						<AntDesign name="google" size={24} color="white" /> Continue with
-						Google
-					</Label2>
-				</ButtonGoogle>
+				<Line />
+
+				<Google onPress={() => navigation.navigate('Register')}>
+					<Circle
+						width={60}
+						height={60}
+						color={COLORS.purple2}
+						style={{ opacity: 0.5 }}
+					>
+						<AntDesign
+							name="google"
+							size={40}
+							color={theme.name === 'dark' ? COLORS.white1 : COLORS.deepBlue}
+							style={{ opacity: 0.7 }}
+						/>
+					</Circle>
+					<Label2>Continue with Google</Label2>
+				</Google>
 			</OuterBox>
 		</Container>
 	);
@@ -47,136 +65,110 @@ const Welcome = () => {
 export default Welcome;
 
 const Container = styled.View`
-	padding: 3% 3%;
+	flex: 1;
+	padding: 15px;
+	padding-top: ${Constants.statusBarHeight + 10}px;
 	background-color: ${({ theme }) =>
-		theme.name === "dark" ? COLORS.darkPurple : COLORS.white};
+		theme.name === 'dark' ? COLORS.darkPurple : COLORS.white2};
 `;
+
 const OuterBox = styled.View`
-	padding-top: 5%;
+	padding: 25px;
+	flex: 1;
 	align-items: center;
-	width: 100%;
-	height: 100%;
+	justify-content: center;
 	background-color: ${({ theme }) =>
-		theme.name === "dark" ? COLORS.darkgrey : COLORS.white2};
-	border-radius: 10px;
-	shadow-color: #233b7a;
+		theme.name === 'dark' ? COLORS.darkgrey : COLORS.white1};
+	border-radius: ${SIZES.radius}px;
+	shadow-color: ${(p) => COLORS.deepBlue};
 	shadow-opacity: 1.5;
 	shadow-radius: 20px;
 	elevation: 20;
 `;
 
-const Line = styled.Text`
-	color: #233b7a;
+const Circle = styled.View`
+	align-items: center;
+	justify-content: center;
+	width: ${(p) => p.width || 200}px;
+	height: ${(p) => p.height || 200}px;
+	border-radius: 100px;
+	background-color: ${({ theme, color }) =>
+		theme.name === 'dark' ? color || COLORS.darkgrey : COLORS.white1};
+	shadow-color: ${(p) => COLORS.deepBlue};
+	shadow-opacity: 1.5;
+	shadow-radius: 20px;
+	elevation: 20;
 `;
 
-const Circle1 = styled.View`
-	align-items: center;
-	justify-content: center;
-	width: 260px;
-	height: 260px;
-	border-radius: 130px;
-	background-color: ${({ theme }) =>
-		theme.name === "dark" ? COLORS.darkgrey : COLORS.white};
-	shadow-color: #233b7a;
-	shadow-opacity: 1.5;
-	shadow-radius: 20px;
-	elevation: 20;
-`;
-const Circle2 = styled.View`
-	align-items: center;
-	justify-content: center;
-	width: 175px;
-	height: 175px;
-	border-radius: 87.5px;
-	background-color: ${({ theme }) =>
-		theme.name === "dark" ? COLORS.darkgrey : COLORS.white};
-	shadow-color: #233b7a;
-	shadow-opacity: 1.5;
-	shadow-radius: 20px;
-	elevation: 20;
-`;
 const Avatar = styled.Image`
-	width: 113.92px;
-	height: 111px;
+	width: 100px;
+	height: 100px;
 `;
 
 const WelcomeText = styled.Text`
-	font-family: "Poppins-Regular";
-	font-style: normal;
-	font-weight: normal;
-	font-size: 52px;
-	line-height: 60px;
-	display: flex;
-	height: 160px;
-	margin-top: 25px;
-	align-items: center;
+	font-family: Poppins_400Regular;
+	font-size: 50px;
 	text-align: center;
-	color: #13417c;
-`;
-const WelcomeText2 = styled.Text`
-	font-family: "Poppins-Regular";
-	font-style: normal;
-	font-weight: normal;
-	font-size: 18px;
-	line-height: 27px;
-	display: flex;
-	margin-bottom: 55px;
-	align-items: center;
-	text-align: center;
-	width: 85%;
 	color: ${({ theme }) =>
-		theme.name === "dark" ? COLORS.white : COLORS.deepBlue};
+		theme.name === 'dark' ? COLORS.purple2 : COLORS.deepBlue};
+	margin-top: 32px;
+	margin-bottom: 8px;
 `;
 
-const Label1 = styled.Text`
-	color: #fff;
-	align-self: center;
-	padding: 10px;
-	font-family: "Poppins-Regular";
-	font-style: normal;
-	font-weight: bold;
-	font-size: 24px;
-	line-height: 27px;
-	display: flex;
-	align-items: center;
+const WelcomeText2 = styled.Text`
+	font-family: Poppins_400Regular;
+	font-size: 16px;
 	text-align: center;
+	margin: 20px;
+	color: ${({ theme }) =>
+		theme.name === 'dark' ? COLORS.white1 : COLORS.deepBlue};
 `;
-const Label2 = styled.Text`
-	color: #fff;
-	align-self: center;
-	padding: 10px;
-	font-family: "Poppins-Regular";
-	font-style: normal;
-	font-weight: normal;
-	font-size: 24px;
-	line-height: 27px;
-	display: flex;
+
+const Box = styled.View`
+	flex-direction: row;
 	align-items: center;
-	text-align: center;
 `;
 
 const ButtonContainer = styled.TouchableOpacity`
 	background-color: ${({ theme }) =>
-		theme.name === "dark" ? COLORS.deepBlue : COLORS.deepBlue};
-	margin-top: 5px;
-	border-color: #fff;
-	width: 155px;
-	height: 55px;
-	border-radius: 30px;
+		theme.name === 'dark' ? COLORS.purple2 : COLORS.deepBlue};
+	width: 45%;
+	border-radius: ${SIZES.padding}px;
 	margin: 10px;
 `;
 
-const ButtonGoogle = styled.TouchableOpacity`
-	background-color: ${({ theme }) =>
-		theme.name === "dark" ? COLORS.deepBlue : COLORS.deepBlue};
-	margin-top: 5px;
-
-	width: 335px;
-	height: 54px;
-	border-radius: 30px;
-	margin: 10px;
+const Label1 = styled.Text`
+	color: ${(p) => COLORS.white1};
+	padding: 10px;
+	font-family: Poppins_400Regular;
+	font-weight: 600;
+	font-size: 20px;
+	letter-spacing: 1.25px;
+	text-align: center;
 `;
 
-const ButtonView = styled.View`
+const Line = styled.View`
+	background-color: ${(p) =>
+		p.theme.name === 'dark' ? COLORS.purple2 : COLORS.deepBlue};
+	height: 1px;
+	border-radius: 5px;
+	width: 88%;
+	margin: 32px 0;
+`;
+
+const Google = styled.TouchableOpacity`
+	margin: 15px 0;
 	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+	width: 100%;
+	padding: 8px;
+`;
+
+const Label2 = styled.Text`
+	color: ${(p) => (p.theme.name === 'dark' ? COLORS.white1 : COLORS.deepBlue)};
+	font-family: Poppins_400Regular;
+	font-size: 24px;
+	text-align: center;
+	margin-left: 15px;
 `;

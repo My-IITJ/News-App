@@ -17,10 +17,8 @@ const commentSchema = new mongoose.Schema(
 		},
 		replies: [
 			{
-				reply: {
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'Comment',
-				},
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Comment',
 			},
 		],
 		upvotes: {

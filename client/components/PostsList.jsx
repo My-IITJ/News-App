@@ -1,11 +1,25 @@
-import { FlatList, Text } from 'react-native';
+import { FlatList } from 'react-native';
 import React, { useCallback } from 'react';
 import SinglePost from './SinglePost';
 import styled from 'styled-components/native';
 import ReachedEnd from './ReachedEnd';
 import NotFound from './NotFound';
+import LottieView from 'lottie-react-native';
+import { COLORS } from '../constants';
 
 // const ITEM_SIZE = 525;
+
+const Spinner = () => {
+	return (
+		<Wrapper>
+			<LottieView
+				source={require('../assets/images/spinner.json')}
+				autoPlay
+				speed={4}
+			/>
+		</Wrapper>
+	);
+};
 
 const PostsList = ({
 	posts,
@@ -43,7 +57,7 @@ const PostsList = ({
 					}
 
 					if (busy) {
-						return <Text>Loading...</Text>;
+						return <Spinner />;
 					}
 					return null;
 				}}
@@ -58,8 +72,6 @@ const PostsList = ({
 				]}
 				onEndReached={getMorePosts}
 				onEndReachedThreshold={0}
-				// refreshing={busy}
-				// onRefresh={onRefresh}
 			/>
 		</Container>
 	);
@@ -71,4 +83,13 @@ export default PostsList;
 
 const Container = styled.View`
 	flex: 1;
+`;
+
+const Wrapper = styled.View`
+	background-color: ${(p) =>
+		p.theme.name === 'dark' ? COLORS.darkPurple : COLORS.white1};
+	justify-content: center;
+	align-items: center;
+	height: 30px;
+	margin: 8px 0;
 `;
