@@ -6,7 +6,7 @@ import PostsList from '../components/PostsList';
 import ThemeBtn from '../components/ThemeBtn';
 import { useGetPosts } from '../apiCalls/post';
 import { Text } from 'react-native';
-import AppLoading from 'expo-app-loading';
+import Loading from '../components/Loading';
 
 const limit = 3;
 
@@ -21,10 +21,6 @@ const Home = ({ navigation }) => {
 		isFetchingNextPage,
 	} = useGetPosts(limit);
 
-	if (isLoading) {
-		return <AppLoading />;
-	}
-
 	if (isError) {
 		return <Text>{error?.message}</Text>;
 	}
@@ -33,13 +29,17 @@ const Home = ({ navigation }) => {
 		<Container>
 			<Navbar />
 			<ThemeBtn />
-			<PostsList
-				getMorePosts={fetchNextPage}
-				reachedEnd={!hasNextPage}
-				busy={isFetchingNextPage}
-				data={data}
-				page="Home"
-			/>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<PostsList
+					getMorePosts={fetchNextPage}
+					reachedEnd={!hasNextPage}
+					busy={isFetchingNextPage}
+					data={data}
+					page="Home"
+				/>
+			)}
 		</Container>
 	);
 };

@@ -34,3 +34,12 @@ export const useSearchPosts = (page, limit, search) => {
 		{ keepPreviousData: true }
 	);
 };
+
+// get post comments/details
+const getPostComments = (postId) => {
+	return axios.get(`${appUrl}/posts/${postId}`);
+};
+
+export const useGetPostComments = (postId) => {
+	return useQuery(['post-comments', postId], () => getPostComments(postId));
+};

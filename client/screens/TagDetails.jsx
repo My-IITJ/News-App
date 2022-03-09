@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import PostsList from '../components/PostsList';
 import { useTheme } from 'styled-components';
 import { useGetTagDetails, useRelatedPosts } from '../apiCalls/tag';
-import AppLoading from 'expo-app-loading';
+import Loading from '../components/Loading';
 import { Text } from 'react-native';
 
 const limit = 3;
@@ -21,7 +21,7 @@ const TagDetails = ({ route }) => {
 	} = useGetTagDetails(tagId);
 
 	const {
-		// isLoading: isPostsLoading,
+		isLoading: isPostsLoading,
 		isError: isPostsError,
 		error: postsError,
 		data: posts,
@@ -35,7 +35,7 @@ const TagDetails = ({ route }) => {
 		tagDetails?.data.tag.name.slice(1);
 
 	if (isTagLoading) {
-		return <AppLoading />;
+		return <Loading />;
 	}
 
 	if (isTagError || isPostsError) {
@@ -80,14 +80,18 @@ const TagDetails = ({ route }) => {
 				Recent Posts
 			</Title>
 
-			<PostsList
-				getMorePosts={fetchNextPage}
-				reachedEnd={!hasNextPage}
-				busy={isFetchingNextPage}
-				data={posts}
-				page="Explore"
-				contentContainerStyle={{ paddingHorizontal: 0, paddingBottom: 5 }}
-			/>
+			{isPostsLoading ? (
+				<Loading />
+			) : (
+				<PostsList
+					getMorePosts={fetchNextPage}
+					reachedEnd={!hasNextPage}
+					busy={isFetchingNextPage}
+					data={posts}
+					page="Explore"
+					contentContainerStyle={{ paddingHorizontal: 0, paddingBottom: 5 }}
+				/>
+			)}
 		</Container>
 	);
 };

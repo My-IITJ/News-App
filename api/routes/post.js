@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Post = require('../db/models/Post');
+const Comment = require('../db/models/Comment');
 const { isValidObjectId } = require('mongoose');
 const upload = require('../middlewares/multer');
 const subDays = require('date-fns/subDays');
@@ -102,8 +103,26 @@ router.get('/search', async (req, res) => {
 
 // fetch a single post: riyanshu
 router.get('/:id', async (req, res) => {
+	const { id } = req.params;
+
+	if (!isValidObjectId(id))
+		return res.status(401).json({ error: 'Invalid request!' });
+
 	try {
-		const post = await Post.findById(req.params.id);
+		const post = await Post.findById(id)
+			.populate('tags', ['_id', 'name'])
+			.populate('author', ['_id', 'username', 'title'])
+			.populate('comments');
+
+		post.comments = await Promise.all(
+			post.comments.map(async (c, idx) => {
+				const comment = await Comment.findById(c._id).populate('author', [
+					'_id',
+				]);
+				return comment;
+			})
+		);
+
 		res.status(200).json({ post });
 	} catch (error) {
 		console.error(error);

@@ -7,14 +7,28 @@ import { useTheme } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 
-const SinglePost = ({ post }) => {
+const dummy = [
+	{
+		_id: 'test',
+		name: 'Research',
+	},
+];
+
+const SinglePost = ({ post, all }) => {
 	const theme = useTheme();
 	const navigation = useNavigation();
-	const { author, content, createdAt, tags, comments, thumbnail, upvotes } =
-		post;
+	const {
+		author,
+		content,
+		createdAt,
+		tags = dummy,
+		comments,
+		thumbnail,
+		upvotes,
+	} = post;
 
 	return (
-		<Container height={thumbnail}>
+		<Container all={all} height={thumbnail}>
 			<Header>
 				<Icon src={require('../assets/images/icon.png')} />
 				<Details>
@@ -35,9 +49,11 @@ const SinglePost = ({ post }) => {
 			</Header>
 
 			<TouchableOpacity
-				onPress={() => navigation.navigate('PostComments', { postId: post })}
+				onPress={() =>
+					!all && navigation.navigate('PostComments', { postId: post._id })
+				}
 			>
-				<Content numberOfLines={!thumbnail ? 4 : 2}>
+				<Content numberOfLines={all ? 20 : !thumbnail ? 4 : 2}>
 					{content ||
 						`lorem ipsum dolor sit amet, consectetur adipis lorem ipsum dolor sit
 					amet, consectetur adipis lorem ipsum dolor sit amet, consectetur
@@ -79,7 +95,9 @@ const SinglePost = ({ post }) => {
 				</ActionBtn>
 
 				<ActionBtn
-					onPress={() => navigation.navigate('PostComments', { postId: post })}
+					onPress={() =>
+						!all && navigation.navigate('PostComments', { postId: post._id })
+					}
 				>
 					<Ionicons name="chatbubble-outline" size={25} color={COLORS.white1} />
 					<ActionLabel>{comments?.length || '2'}</ActionLabel>
@@ -91,9 +109,17 @@ const SinglePost = ({ post }) => {
 
 export default SinglePost;
 
+const getHeight = (height, all) => {
+	if (all) {
+		return height ? 'auto' : '300px';
+	}
+
+	return `${height ? 502 : 240}px`;
+};
+
 //styles
 const Container = styled.View`
-	height: ${(p) => (p.height ? 502 : 250)}px;
+	height: ${(p) => getHeight(p.height, p.all)};
 	align-items: center;
 	background-color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.darkgrey : COLORS.white2};
@@ -180,11 +206,11 @@ const Action = styled.View`
 		theme.name === 'dark' ? COLORS.purple : COLORS.deepBlue1};
 	flex-direction: row;
 	padding: 8px;
-	width: 55%;
 	border-radius: ${SIZES.radius + 2}px;
-	position: absolute;
+	position: ${(p) => (p.bottom ? 'absolute' : 'relative')};
 	z-index: 1;
-	bottom: ${(p) => (p.bottom ? 25 : 14)}px;
+	margin-top: ${(p) => (p.bottom ? 'auto' : '10px')};
+	bottom: ${(p) => (p.bottom ? 25 : 18)}px;
 	justify-content: center;
 `;
 
