@@ -6,13 +6,8 @@ import Icon from './Icon';
 import { useTheme } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
-
-const dummy = [
-	{
-		_id: 'test',
-		name: 'Research',
-	},
-];
+import { useUpvotePost } from '../apiCalls/post';
+import { useCallback } from 'react';
 
 const SinglePost = ({ post, all }) => {
 	const theme = useTheme();
@@ -21,11 +16,22 @@ const SinglePost = ({ post, all }) => {
 		author,
 		content,
 		createdAt,
-		tags = dummy,
+		tags = [],
 		comments,
 		thumbnail,
 		upvotes,
 	} = post;
+
+	const { mutate } = useUpvotePost();
+
+	const toggleVote = useCallback(() => {
+		const body = {
+			postId: post._id,
+			userId: '62013735b5a9036d44510f68',
+		};
+
+		mutate(body);
+	}, [mutate, post]);
 
 	return (
 		<Container all={all} height={thumbnail}>
@@ -33,9 +39,9 @@ const SinglePost = ({ post, all }) => {
 				<Icon src={require('../assets/images/icon.png')} />
 				<Details>
 					<TouchableOpacity>
-						<Name>{author?.username || 'Suman Kundu'}</Name>
-						<Position>{author?.title || 'Prof. CSE Dept'}</Position>
-						<Time>{moment(createdAt).fromNow() || '5 min ago'}</Time>
+						<Name>{author?.username}</Name>
+						<Position>{author?.title}</Position>
+						<Time>{moment(createdAt).fromNow()}</Time>
 					</TouchableOpacity>
 				</Details>
 
@@ -89,9 +95,9 @@ const SinglePost = ({ post, all }) => {
 			)}
 
 			<Action bottom={thumbnail}>
-				<ActionBtn>
+				<ActionBtn onPress={toggleVote}>
 					<AntDesign name="arrowup" size={25} color={COLORS.white1} />
-					<ActionLabel>{upvotes || '99'}</ActionLabel>
+					<ActionLabel>{upvotes?.length || 0}</ActionLabel>
 				</ActionBtn>
 
 				<ActionBtn
@@ -100,7 +106,7 @@ const SinglePost = ({ post, all }) => {
 					}
 				>
 					<Ionicons name="chatbubble-outline" size={25} color={COLORS.white1} />
-					<ActionLabel>{comments?.length || '2'}</ActionLabel>
+					<ActionLabel>{comments?.length || 0}</ActionLabel>
 				</ActionBtn>
 			</Action>
 		</Container>

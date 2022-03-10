@@ -28,7 +28,7 @@
     "expo-dev-client": "^0.8.4",
     "expo-font": "~10.0.4",
     "expo-linear-gradient": "^11.0.3",
-    "expo-splash-screen": "~0.14.1",
+    "expo-splash-screen": "^0.14.2",
     "expo-status-bar": "~1.2.0",
     "expo-updates": "~0.11.6",
     "lottie-react-native": "5.0.1",

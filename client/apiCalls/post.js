@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { appUrl } from './client';
-import { useInfiniteQuery, useQuery } from 'react-query';
+import {
+	useInfiniteQuery,
+	useMutation,
+	useQuery,
+	useQueryClient,
+} from 'react-query';
 
 // fetching posts for home page
 const fetchPosts = ({ pageParam = 1 }, limit) => {
@@ -42,4 +47,20 @@ const getPostComments = (postId) => {
 
 export const useGetPostComments = (postId) => {
 	return useQuery(['post-comments', postId], () => getPostComments(postId));
+};
+
+// upvote/downvote a post
+const vote = ({ postId, userId }) => {
+	return axios.put(`${appUrl}/posts/votes/${postId}`, { userId });
+};
+
+export const useUpvotePost = () => {
+	const queryClient = useQueryClient();
+	return useMutation(vote, {
+		onSuccess: (_, { postId }) => {
+			queryClient.invalidateQueries('get-latest-posts');
+			queryClient.invalidateQueries('search-posts');
+			queryClient.invalidateQueries(['post-comments', postId]);
+		},
+	});
 };
