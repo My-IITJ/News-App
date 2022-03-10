@@ -187,4 +187,30 @@ router.put('/:id', async (req, res) => {
 	}
 });
 
+// upvote/ downvote a post
+router.put('/votes/:postId', async (req, res) => {
+	try {
+		const { postId } = req.params;
+		const { userId } = req.body;
+
+		if (!isValidObjectId(postId) || !isValidObjectId(userId))
+			return res.status(401).json({ error: 'Invalid request!' });
+
+		const post = await Post.findById(postId);
+		const userIdx = post.upvotes.indexOf(userId);
+
+		if (userIdx !== -1) {
+			post.upvotes.splice(userIdx, 1);
+		} else {
+			post.upvotes.push(userId);
+		}
+		post.save();
+
+		res.status(200).json({ post });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: error?.message });
+	}
+});
+
 module.exports = router;
