@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const User = require('../db/models/User');
 const upload = require('../middlewares/multer');
+const { isValidObjectId } = require('mongoose');
+const { editUserValidator, validate } = require('../middlewares/validators');
 
 // create a new user : Neil
 router.post('/new', async (req, res) => {
@@ -60,33 +62,30 @@ router.get("/", async (req, res) => {
   });
 
 // update user settings : Sakshi
-router.put('/:id', async (req, res) => {
+router.put('/edit/:id', async (req, res) => {
 	const id = req.params.id;
-	const userId = req.body.userId;
 
-	if (!isValidObjectId(id) || !isValidObjectId(userId))
+	if (!isValidObjectId(id))
 		return res.status(401).json({ error: 'Invalid request!' });
 
-	const user = await User.findById(req.params.id);
+	const user = await User.findById(id);
 
 	if (!user) 
 		return res.status(404).json({ error: 'User not found!' });
 
 	try {
-		const user = await User.findById(req.params.id);
-		if (user.userId.equals(req.body.userId)) {
-			const updatedUser = await Post.findByIdAndUpdate(
-				req.params.id,
-				{
-					$set: req.body,
-					updated: { at: Date.now(), by: userId },
-				},
-				{ new: true }
-			);
-			res.status(200).json({ user : updatedUser });
-		} else {
-			res.status(401).json('You can update only your user profile!');
-		}
+		const updatedUser = await User.findByIdAndUpdate(
+			id,
+			{
+				$set: req.body,
+				updated: { at: Date.now(), by: id },
+			},
+			{ new: true }
+		);
+		editUserValidator,
+		validate,
+		res.status(200).json({ user : updatedUser });
+
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ error : err?.message });
