@@ -21,3 +21,17 @@ export const useAddComment = () => {
 		},
 	});
 };
+
+// upvote/downvote a comment
+const vote = ({ commentId, userId }) => {
+	return axios.put(`${appUrl}/comments/votes/${commentId}`, { userId });
+};
+
+export const useUpvoteComment = () => {
+	const queryClient = useQueryClient();
+	return useMutation(vote, {
+		onSuccess: (_, { postId }) => {
+			queryClient.invalidateQueries(['post-comments', postId]);
+		},
+	});
+};
