@@ -102,4 +102,30 @@ router.delete('/:id', async (req, res) => {
 	}
 });
 
+// upvote/ downvote a comment
+router.put('/votes/:commentId', async (req, res) => {
+	try {
+		const { commentId } = req.params;
+		const { userId } = req.body;
+
+		if (!isValidObjectId(commentId) || !isValidObjectId(userId))
+			return res.status(401).json({ error: 'Invalid request!' });
+
+		const comment = await Comment.findById(commentId);
+		const userIdx = comment.upvotes.indexOf(userId);
+
+		if (userIdx !== -1) {
+			comment.upvotes.splice(userIdx, 1);
+		} else {
+			comment.upvotes.push(userId);
+		}
+		comment.save();
+
+		res.status(200).json({ comment });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: error?.message });
+	}
+});
+
 module.exports = router;

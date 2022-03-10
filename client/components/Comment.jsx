@@ -1,11 +1,25 @@
 import styled, { useTheme } from 'styled-components/native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import Icon from './Icon';
 import { COLORS, SIZES } from '../constants';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useUpvoteComment } from '../apiCalls/comment';
 
-const Comment = ({ item }) => {
+const Comment = ({ item, postId }) => {
 	const theme = useTheme();
+
+	const { mutate } = useUpvoteComment();
+
+	const toggleVote = useCallback(() => {
+		const body = {
+			postId,
+			commentId: item._id,
+			userId: '62013735b5a9036d44510f68',
+		};
+
+		mutate(body);
+	}, [mutate, item, postId]);
+
 	return (
 		<Container>
 			<Icon width={8} height={8} src={require('../assets/images/icon.png')} />
@@ -16,13 +30,13 @@ const Comment = ({ item }) => {
 					</CommentText>
 				</Box>
 				<Action>
-					<ActionBtn>
+					<ActionBtn onPress={() => postId && toggleVote()}>
 						<AntDesign
 							name="arrowup"
 							size={18}
 							color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
 						/>
-						<ActionLabel>{item?.upvotes || '9'}</ActionLabel>
+						<ActionLabel>{item?.upvotes?.length || 0}</ActionLabel>
 					</ActionBtn>
 					<ActionLabel style={{ fontSize: 25 }}>|</ActionLabel>
 					<ActionBtn>
