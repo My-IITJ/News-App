@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const User = require('../db/models/User');
 const upload = require('../middlewares/multer');
+const { isValidObjectId } = require('mongoose');
+const { editUserValidator, validate } = require('../middlewares/validators');
 
 // create a new user : Neil
 router.post('/new', async (req, res) => {
@@ -59,6 +61,35 @@ router.get("/", async (req, res) => {
 	}
   });
 
-// update user settings
+// update user settings : Sakshi
+router.put('/edit/:id', async (req, res) => {
+	const id = req.params.id;
+
+	if (!isValidObjectId(id))
+		return res.status(401).json({ error: 'Invalid request!' });
+
+	const user = await User.findById(id);
+
+	if (!user) 
+		return res.status(404).json({ error: 'User not found!' });
+
+	try {
+		const updatedUser = await User.findByIdAndUpdate(
+			id,
+			{
+				$set: req.body,
+				updated: { at: Date.now(), by: id },
+			},
+			{ new: true }
+		);
+		editUserValidator,
+		validate,
+		res.status(200).json({ user : updatedUser });
+
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error : err?.message });
+	}
+});
 
 module.exports = router;
