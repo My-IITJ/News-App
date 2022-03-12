@@ -10,7 +10,7 @@ import Loading from '../components/Loading';
 
 const limit = 3;
 
-const Home = ({ navigation }) => {
+const Home = () => {
 	const {
 		isLoading,
 		isError,

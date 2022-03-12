@@ -31,7 +31,7 @@ const Welcome = ({ navigation }) => {
 				</WelcomeText2>
 
 				<Box>
-					<ButtonContainer onPress={() => navigation.navigate('Register')}>
+					<ButtonContainer onPress={() => navigation.navigate('SignIn')}>
 						<Label1>Sign In</Label1>
 					</ButtonContainer>
 					<ButtonContainer onPress={() => navigation.navigate('Register')}>
@@ -41,7 +41,7 @@ const Welcome = ({ navigation }) => {
 
 				<Line />
 
-				<Google onPress={() => navigation.navigate('Register')}>
+				<Google onPress={() => navigation.navigate('SignIn')}>
 					<Circle
 						width={60}
 						height={60}

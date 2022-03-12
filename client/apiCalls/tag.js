@@ -35,3 +35,18 @@ export const useRelatedPosts = (limit, tag) => {
 		}
 	);
 };
+
+// searching posts in explore page
+const filterByTags = (limit, page = 1, tags = []) => {
+	return axios.get(
+		`${appUrl}/posts/search?limit=${limit}&page=${page}&tags=${tags}`
+	);
+};
+
+export const useFilterByTag = (page, limit, tags) => {
+	return useQuery(
+		['filter-posts-by-tag', page],
+		() => filterByTags(limit, page, tags),
+		{ keepPreviousData: false, enabled: tags.length > 0 }
+	);
+};

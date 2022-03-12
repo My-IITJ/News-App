@@ -30,8 +30,8 @@ const InterestedTags = ({ open, setOpen }) => {
 		(name) => {
 			const idx = selectedTags.indexOf(name);
 			if (idx !== -1) {
-				selectedTags.splice(idx, 1);
-				setSelectedTags(selectedTags);
+				let arr = selectedTags.filter((i) => i !== name);
+				setSelectedTags(arr);
 				return;
 			}
 			setSelectedTags((p) => [...p, name]);

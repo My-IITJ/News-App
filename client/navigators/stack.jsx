@@ -16,6 +16,7 @@ import BackBtn from '../components/BackBtn';
 import Welcome from '../screens/Welcome';
 import Icon from '../components/Icon';
 import Register from '../screens/Register';
+import SignIn from '../screens/SignIn';
 
 const screens = (theme) => {
 	return [
@@ -26,6 +27,10 @@ const screens = (theme) => {
 		{
 			name: 'Register',
 			Component: Register,
+		},
+		{
+			name: 'SignIn',
+			Component: SignIn,
 		},
 		{
 			name: 'Landing',
