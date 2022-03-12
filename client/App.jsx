@@ -1,4 +1,5 @@
 import { LogBox } from 'react-native';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 // font related imports
 import { useFonts, Poppins_400Regular } from '@expo-google-fonts/poppins';
@@ -37,9 +38,11 @@ export default function App() {
 		<QueryClientProvider client={queryClient}>
 			<Provider store={store}>
 				<PersistGate loading={null} persistor={persistor}>
-					<NavigationContainer>
-						<AppStack />
-					</NavigationContainer>
+					<RootSiblingParent>
+						<NavigationContainer>
+							<AppStack />
+						</NavigationContainer>
+					</RootSiblingParent>
 				</PersistGate>
 			</Provider>
 		</QueryClientProvider>

@@ -34,9 +34,9 @@ const searchPosts = (limit, page = 1, search = '') => {
 
 export const useSearchPosts = (page, limit, search) => {
 	return useQuery(
-		['search-posts', page],
-		() => searchPosts(limit, page, search),
-		{ keepPreviousData: true }
+		['search-posts', page, search],
+		() => searchPosts(limit, page, search)
+		// { keepPreviousData: true }
 	);
 };
 

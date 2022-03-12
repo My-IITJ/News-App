@@ -67,9 +67,13 @@ router.get('/', async (req, res) => {
 // search in a list of posts: shivam
 router.get('/search', async (req, res) => {
 	try {
-		let { limit = 10, search = '', page = 1 } = req.query;
+		let { limit = 10, search = '', page = 1, tags = '' } = req.query;
 		page--;
 		search = search.toLowerCase();
+
+		if (tags.length > 0) {
+			tags = tags.split(',').map((i) => i.toLowerCase());
+		}
 
 		const posts = await Post.find({
 			isDeleted: false,
@@ -80,12 +84,20 @@ router.get('/search', async (req, res) => {
 
 		const filteredPosts = posts.filter((p) => {
 			const content = p.content;
-			const tags = p.tags;
+			const tagsList = p.tags;
 
-			return (
-				content.toLowerCase().includes(search) ||
-				tags?.some((i) => i.name.toLowerCase().includes(search))
-			);
+			if (tags.length > 0) {
+				return tagsList?.some((i) => {
+					return tags.includes(i.name.toLowerCase());
+				});
+			} else {
+				return (
+					content.toLowerCase().includes(search) ||
+					tagsList?.some((i) => {
+						return i.name.toLowerCase().includes(search);
+					})
+				);
+			}
 		});
 
 		res.status(200).json({

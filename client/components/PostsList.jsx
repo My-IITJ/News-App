@@ -30,6 +30,7 @@ const PostsList = ({
 	busy,
 	onRefresh,
 	data,
+	setIsUpvote,
 }) => {
 	const allPosts = useCallback(() => {
 		if (data) {
@@ -49,7 +50,7 @@ const PostsList = ({
 				style={{ flex: 1 }}
 				keyExtractor={(_, idx) => `post-${page}-${idx}`}
 				renderItem={({ item }) => {
-					return <SinglePost post={item} />;
+					return <SinglePost post={item} setIsUpvote={setIsUpvote} />;
 				}}
 				ListFooterComponent={() => {
 					if (reachedEnd) {

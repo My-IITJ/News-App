@@ -9,7 +9,7 @@ import moment from 'moment';
 import { useUpvotePost } from '../apiCalls/post';
 import { useCallback } from 'react';
 
-const SinglePost = ({ post, all }) => {
+const SinglePost = ({ post, all, setIsUpvote }) => {
 	const theme = useTheme();
 	const navigation = useNavigation();
 	const {
@@ -31,7 +31,11 @@ const SinglePost = ({ post, all }) => {
 		};
 
 		mutate(body);
-	}, [mutate, post]);
+
+		if (setIsUpvote) {
+			setIsUpvote(true);
+		}
+	}, [mutate, post, setIsUpvote]);
 
 	return (
 		<Container all={all} height={thumbnail}>

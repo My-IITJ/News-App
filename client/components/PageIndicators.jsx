@@ -3,8 +3,6 @@ import { COLORS } from '../constants';
 import { AntDesign } from '@expo/vector-icons';
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import InsetShadow from 'react-native-inset-shadow';
-import { View } from 'react-native';
 
 const PageIndicators = ({ noOfPages, pageNo, setPageNo }) => {
 	const theme = useSelector((s) => s.user.theme);
@@ -30,46 +28,6 @@ const PageIndicators = ({ noOfPages, pageNo, setPageNo }) => {
 		[pageNo, noOfPages, setPageNo]
 	);
 
-	const Box = useCallback(
-		({ children }) => {
-			if (theme.name === 'light') {
-				return (
-					<InsetShadow
-						containerStyle={{
-							flexDirection: 'row',
-							alignItems: 'center',
-							justifyContent: 'center',
-							backgroundColor: theme.backgroundColor3,
-							borderRadius: 8,
-						}}
-						shadowOpacity={0.8}
-						shadowOffset={2}
-						shadowRadius={10}
-						elevation={10}
-					>
-						{children}
-					</InsetShadow>
-				);
-			}
-
-			return (
-				<View
-					style={{
-						flexDirection: 'row',
-						alignItems: 'center',
-						justifyContent: 'center',
-						backgroundColor: theme.backgroundColor3,
-						borderRadius: 8,
-						padding: 10,
-					}}
-				>
-					{children}
-				</View>
-			);
-		},
-		[theme]
-	);
-
 	return (
 		<Container>
 			<Box>
@@ -79,8 +37,8 @@ const PageIndicators = ({ noOfPages, pageNo, setPageNo }) => {
 					onPress={() => changePage('prev')}
 				>
 					<AntDesign
-						name="caretleft"
-						size={20}
+						name="left"
+						size={25}
 						color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
 					/>
 				</Button>
@@ -90,8 +48,8 @@ const PageIndicators = ({ noOfPages, pageNo, setPageNo }) => {
 					onPress={() => changePage('next')}
 				>
 					<AntDesign
-						name="caretright"
-						size={20}
+						name="right"
+						size={25}
 						color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
 					/>
 				</Button>
@@ -110,3 +68,10 @@ const Container = styled.View`
 `;
 
 const Button = styled.TouchableOpacity``;
+
+const Box = styled.View`
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	padding: 8px;
+`;
