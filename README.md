@@ -20,6 +20,12 @@ npm i
 
 ```
 cd client
+```
+- Install eas-cli and expo-cli package globally
+```
+npm i -g eas-cli expo-cli
+```
+```
 npm start
 ```
 - This will run your expo app with the developer tools at http://localhost:19002
