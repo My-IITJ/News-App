@@ -1,11 +1,15 @@
 // Implementing our stack to navigate between screens.
 
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionSpecs } from '@react-navigation/stack';
 import Tabs from './tabs';
 import Profile from '../screens/Profile';
 import NewPost from '../screens/NewPost';
 import PostComments from '../screens/PostComments';
 import TagDetails from '../screens/TagDetails';
+import Register from '../screens/Register';
+import SignIn from '../screens/SignIn';
+import Welcome from '../screens/Welcome';
+import Activity from '../screens/Activity';
 
 // theme related imports
 import { ThemeProvider } from 'styled-components'; // allows us to pass the current theme to all components
@@ -13,10 +17,8 @@ import { useSelector } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import { COLORS } from '../constants';
 import BackBtn from '../components/BackBtn';
-import Welcome from '../screens/Welcome';
 import Icon from '../components/Icon';
-import Register from '../screens/Register';
-import SignIn from '../screens/SignIn';
+import { Animated } from 'react-native';
 
 const screens = (theme) => {
 	return [
@@ -58,8 +60,8 @@ const screens = (theme) => {
 					return (
 						<Icon
 							containerStyle={{ marginRight: 20 }}
-							width={10}
-							height={10}
+							width={40}
+							height={40}
 							src={require('../assets/images/icon.png')}
 						/>
 					);
@@ -86,10 +88,70 @@ const screens = (theme) => {
 				},
 			}),
 		},
+		{
+			name: 'Activity',
+			Component: Activity,
+			options: ({ navigation }) => ({
+				headerShown: true,
+				headerShadowVisible: false,
+				title: 'Activity',
+				headerLeft: (p) => {
+					return <BackBtn {...p} navigation={navigation} />;
+				},
+				headerStyle: {
+					backgroundColor:
+						theme.name === 'dark' ? COLORS.darkPurple : COLORS.white1,
+				},
+				headerTitleStyle: {
+					color: theme.name === 'dark' ? COLORS.white1 : COLORS.black,
+					fontSize: 28,
+					fontFamily: 'Poppins_400Regular',
+					fontWeight: 'bold',
+				},
+			}),
+		},
 	];
 };
 
 const Stack = createStackNavigator();
+
+const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
+	const progress = Animated.add(
+		current.progress.interpolate({
+			inputRange: [0, 1],
+			outputRange: [0, 1],
+			extrapolate: 'clamp',
+		}),
+		next
+			? next.progress.interpolate({
+					inputRange: [0, 1],
+					outputRange: [0, 1],
+					extrapolate: 'clamp',
+			  })
+			: 0
+	);
+
+	return {
+		cardStyle: {
+			transform: [
+				{
+					translateX: Animated.multiply(
+						progress.interpolate({
+							inputRange: [0, 1, 2],
+							outputRange: [
+								screen.width, // Focused, but offscreen in the beginning
+								0, // Fully focused
+								screen.width * -0.3, // Fully unfocused
+							],
+							extrapolate: 'clamp',
+						}),
+						inverted
+					),
+				},
+			],
+		},
+	};
+};
 
 const AppStack = () => {
 	const currentTheme = useSelector((s) => s.user.theme);
@@ -106,6 +168,12 @@ const AppStack = () => {
 			<Stack.Navigator
 				screenOptions={{
 					headerShown: false,
+					transitionSpec: {
+						open: TransitionSpecs.TransitionIOSSpec,
+						close: TransitionSpecs.TransitionIOSSpec,
+					},
+					cardStyleInterpolator: forSlide,
+					detachPreviousScreen: false,
 				}}
 			>
 				{screens(currentTheme).map(({ name, Component, options, props }) => (

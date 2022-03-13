@@ -53,7 +53,7 @@ const PostsList = ({
 					return <SinglePost post={item} setIsUpvote={setIsUpvote} />;
 				}}
 				ListFooterComponent={() => {
-					if (reachedEnd) {
+					if (reachedEnd && allPosts().length > 1) {
 						return <ReachedEnd />;
 					}
 

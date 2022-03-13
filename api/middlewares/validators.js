@@ -8,12 +8,47 @@ exports.newPostValidator = [
 ];
 
 exports.editUserValidator = [
-	check('username').trim().not().isEmpty().withMessage('User name is missing!'),
-	check('bio').trim().not().isEmpty().withMessage('Bio is missing!'),
-	check('title').trim().not().isEmpty().withMessage('Title is missing!'),
+	check('username')
+		.trim()
+		.optional()
+		.not()
+		.isEmpty()
+		.withMessage('User name is missing!'),
+	check('bio').trim().not().optional().isEmpty().withMessage('Bio is missing!'),
+	check('title')
+		.trim()
+		.not()
+		.optional()
+		.isEmpty()
+		.withMessage('Title is missing!'),
 ];
 
-// add any validator chain
+exports.newTagValidator = [
+	check('name').trim().not().isEmpty().withMessage('Tag name is missing!'),
+	check('desc').trim().not().isEmpty().withMessage('Description is missing!'),
+	check('type').trim().not().isEmpty().withMessage('Tag type is missing!'),
+];
+
+exports.updateTagValidator = [
+	check('name')
+		.trim()
+		.optional()
+		.not()
+		.isEmpty()
+		.withMessage('Tag name is missing!'),
+	check('desc')
+		.trim()
+		.optional()
+		.not()
+		.isEmpty()
+		.withMessage('Description is missing!'),
+	check('type')
+		.trim()
+		.optional()
+		.not()
+		.isEmpty()
+		.withMessage('Tag type is missing!'),
+];
 
 // middleware to check if there are any errors
 // from a validator chain

@@ -63,7 +63,7 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 					!all && navigation.navigate('PostComments', { postId: post._id })
 				}
 			>
-				<Content numberOfLines={all ? 20 : !thumbnail ? 4 : 2}>
+				<Content numberOfLines={all ? 20 : !thumbnail ? 4 : 3}>
 					{content ||
 						`lorem ipsum dolor sit amet, consectetur adipis lorem ipsum dolor sit
 					amet, consectetur adipis lorem ipsum dolor sit amet, consectetur
@@ -73,7 +73,7 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 				</Content>
 			</TouchableOpacity>
 
-			<Tags>
+			<Tags mb={thumbnail}>
 				{tags?.map((t, idx) => {
 					const label = t.name.charAt(0).toUpperCase() + t.name.slice(1);
 					return (
@@ -90,12 +90,14 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 			</Tags>
 
 			{thumbnail && (
-				<Thumbnail>
-					<Image
-						source={require('../assets/images/post.png')}
-						resizeMode="contain"
-					/>
-				</Thumbnail>
+				<Thumbnail
+					source={
+						{
+							uri: thumbnail?.url,
+						} || require('../assets/images/post.png')
+					}
+					resizeMode="contain"
+				/>
 			)}
 
 			<Action bottom={thumbnail}>
@@ -124,16 +126,18 @@ const getHeight = (height, all) => {
 		return height ? 'auto' : '300px';
 	}
 
-	return `${height ? 502 : 240}px`;
+	return `${height ? 400 : 240}px`;
 };
 
 //styles
 const Container = styled.View`
-	height: ${(p) => getHeight(p.height, p.all)};
+	/* height: ${(p) => getHeight(p.height, p.all)}; */
+	height: auto;
 	align-items: center;
 	background-color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.darkgrey : COLORS.white2};
 	padding: 20px;
+	padding-bottom: 0px;
 	border-radius: ${SIZES.radius}px;
 	margin: 10px 0px;
 `;
@@ -185,6 +189,8 @@ const Tags = styled.View`
 	flex-direction: row;
 	align-items: center;
 	width: 100%;
+	/* background-color: red; */
+	margin-bottom: ${(p) => (p.mb ? 6 : 12)}px;
 `;
 
 const Tag = styled.TouchableOpacity`
@@ -200,15 +206,14 @@ const Label = styled.Text`
 	font-size: 13px;
 `;
 
-const Thumbnail = styled.View`
+const Thumbnail = styled.Image`
 	width: 100%;
-	height: 300px;
+	min-height: ${(p) => p.height || 200}px;
+	/* flex: 1; */
+	/* width: undefined;
+	height: undefined; */
 	margin: 15px 0px;
-`;
-
-const Image = styled.Image`
-	width: 100%;
-	height: 100%;
+	/* background-color: red; */
 `;
 
 const Action = styled.View`
@@ -218,9 +223,10 @@ const Action = styled.View`
 	padding: 8px;
 	border-radius: ${SIZES.radius + 2}px;
 	position: ${(p) => (p.bottom ? 'absolute' : 'relative')};
+	/* position: absolute; */
 	z-index: 1;
 	margin-top: ${(p) => (p.bottom ? 'auto' : '10px')};
-	bottom: ${(p) => (p.bottom ? 25 : 18)}px;
+	bottom: ${(p) => (p.bottom ? 10 : 10)}px;
 	justify-content: center;
 `;
 

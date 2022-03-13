@@ -51,7 +51,10 @@ const Explore = () => {
 	}, [refetchTags, setPageNo, selectedTags, refetch]);
 
 	const renderPosts = useCallback(() => {
-		if ((isFetching || isTagFetching) && !isUpvote) {
+		if (
+			(isFetching || isTagFetching || isLoading || isTagLoading) &&
+			!isUpvote
+		) {
 			return <Loading />;
 		} else {
 			return selectedTags.length > 0 ? (
@@ -68,7 +71,16 @@ const Explore = () => {
 				/>
 			);
 		}
-	}, [data, isFetching, isTagFetching, tagPosts, selectedTags, isUpvote]);
+	}, [
+		data,
+		isFetching,
+		isTagFetching,
+		tagPosts,
+		selectedTags,
+		isUpvote,
+		isLoading,
+		isTagLoading,
+	]);
 
 	const isDisabled = useCallback(() => {
 		return (
@@ -76,9 +88,9 @@ const Explore = () => {
 		);
 	}, [data, tagPosts]);
 
-	if (isLoading || isTagLoading) {
-		return <Loading />;
-	}
+	// if (isLoading || isTagLoading) {
+	// 	return <Loading />;
+	// }
 
 	if (isError || isTagError) {
 		return <Text>{error?.message || tagError?.message}</Text>;
