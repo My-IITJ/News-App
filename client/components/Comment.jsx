@@ -22,7 +22,7 @@ const Comment = ({ item, postId }) => {
 
 	return (
 		<Container>
-			<Icon width={8} height={8} src={require('../assets/images/icon.png')} />
+			<Icon width={40} height={40} src={require('../assets/images/icon.png')} />
 			<Wrapper>
 				<Box>
 					<CommentText>

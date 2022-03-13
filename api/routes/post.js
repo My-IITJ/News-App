@@ -1,9 +1,11 @@
 const router = require('express').Router();
 const Post = require('../db/models/Post');
 const Comment = require('../db/models/Comment');
+const User = require('../db/models/User');
 const { isValidObjectId } = require('mongoose');
 const upload = require('../middlewares/multer');
 const subDays = require('date-fns/subDays');
+const cloudinary = require('../cloud');
 const { newPostValidator, validate } = require('../middlewares/validators');
 
 //create a new Post : Sakshi
@@ -18,11 +20,16 @@ router.post(
 			const post = { author, content, tags, visibility };
 
 			if (req.file) {
-				post.thumbnail = req.file?.filename;
+				const { secure_url, public_id, width, height } =
+					await cloudinary.uploader.upload(req.file.path);
+				post.thumbnail = { url: secure_url, public_id, width, height };
 			}
 
 			const newPost = new Post(post);
 			await newPost.save();
+
+			await User.findByIdAndUpdate(author, { $push: { posts: newPost._id } });
+
 			res.status(200).json({ post: newPost });
 		} catch (error) {
 			console.error(error);

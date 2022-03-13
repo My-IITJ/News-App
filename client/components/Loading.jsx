@@ -9,6 +9,7 @@ const Loading = () => {
 				source={require('../assets/images/loading.json')}
 				autoPlay
 				style={{ width: 100, height: 100 }}
+				speed={1.5}
 			/>
 		</Container>
 	);

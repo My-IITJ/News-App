@@ -5,10 +5,10 @@ import { SIZES } from '../constants';
 
 // temporary component :  can be replaced/merged with profileIcon
 
-const Icon = ({ src, containerStyle, width = 20, height = 20 }) => {
+const Icon = ({ src, containerStyle, width = 50, height = 50 }) => {
 	return (
 		<Container style={containerStyle}>
-			<Image source={src} width={width} height={height} resizeMode="contain" />
+			<Image source={src} style={{ width, height }} resizeMode="contain" />
 		</Container>
 	);
 };

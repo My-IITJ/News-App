@@ -18,7 +18,7 @@ const PostSchema = new mongoose.Schema(
 			},
 		],
 		thumbnail: {
-			type: String,
+			type: Object,
 		},
 		upvotes: {
 			type: [

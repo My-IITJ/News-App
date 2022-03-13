@@ -88,7 +88,7 @@ const TagDetails = ({ route }) => {
 					reachedEnd={!hasNextPage}
 					busy={isFetchingNextPage}
 					data={posts}
-					page="Explore"
+					page="Tag-details"
 					contentContainerStyle={{ paddingHorizontal: 0, paddingBottom: 5 }}
 				/>
 			)}
