@@ -8,7 +8,9 @@ export const COLORS = {
 	darkgrey: '#080522',
 	purple: '#B438BD',
 	white1: '#FEFEFF',
+	white3: '#e6e6e6',
 	gray10: '#C4C4C4',
+	gray1: '#8C8C8C',
 
 	white2: '#F5F6FA',
 	gray50: '#737373',
@@ -24,6 +26,8 @@ export const COLORS = {
 	white: '#FFFFFF',
 	black: '#282A38',
 	black1: '#000',
+
+	pink: '#B438BD',
 
 	transparent: 'transparent',
 	transparentWhite1: 'rgba(255, 255, 255, 0.1)',
@@ -110,7 +114,7 @@ export const lightTheme = {
 	tintColor: COLORS.black,
 };
 
-export const selectedTheme = lightTheme;
+export const selectedTheme = darkTheme;
 
 const appTheme = { COLORS, SIZES, darkTheme, lightTheme };
 

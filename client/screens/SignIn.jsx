@@ -27,7 +27,7 @@ const SignIn = ({ navigation }) => {
 				</Box>
 			</Fields>
 
-			<ButtonContainer onPress={() => navigation.navigate('Activity')}>
+			<ButtonContainer onPress={() => navigation.navigate('NewPost')}>
 				<Label1>Sign In</Label1>
 			</ButtonContainer>
 		</Container>
