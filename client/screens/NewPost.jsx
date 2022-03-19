@@ -1,26 +1,102 @@
-import { useState} from 'react';
-import {StatusBar, Text, TextInput, ScrollView} from 'react-native';
+import { useState, useEffect} from 'react';
+import {StatusBar, Text, TextInput, ScrollView, View, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import Constants from 'expo-constants';
 import { COLORS, SIZES, selectedTheme, darkTheme, lightTheme, icons} from '../constants';
 import { MaterialIcons } from '@expo/vector-icons';
 import InputScrollView from 'react-native-input-scroll-view';
+import {useSelector } from 'react-redux';
+
+const profile_image = require('../assets/images/me.png');
+const Img_box_light = require('../assets/icons/Img_box_light.png');
+const Video_file_light = require('../assets/icons/Video_file_light.png');
+const Link_light = require('../assets/icons/Link_light.png');
+const Chart_light = require('../assets/icons/Chart_light.png');
+const Img_box_dark = require('../assets/icons/Img_box_dark.png');
+const Video_file_dark = require('../assets/icons/Video_file_dark.png');
+const Link_dark = require('../assets/icons/Link_dark.png');
+const Chart_dark = require('../assets/icons/Chart_dark.png');
+
+const tags = ["Acheivements", "Project", "Research", "Internship", "Advertisements", "Sport", "Promotion"];
+const theme = selectedTheme.name;
+const vis = ["Public", "Private"];
 
 const NewPost = ({navigation}) => {
 	const [showMenu, setShowMenu] = useState(false);
-	const profile_image = require('../assets/images/me.png');
-	const Img_box_light = require('../assets/icons/Img_box_light.png');
-	const Video_file_light = require('../assets/icons/Video_file_light.png');
-	const Link_light = require('../assets/icons/Link_light.png');
-	const Chart_light = require('../assets/icons/Chart_light.png');
-	const Img_box_dark = require('../assets/icons/Img_box_dark.png');
-	const Video_file_dark = require('../assets/icons/Video_file_dark.png');
-	const Link_dark = require('../assets/icons/Link_dark.png');
-	const Chart_dark = require('../assets/icons/Chart_dark.png');
-	const theme = selectedTheme.name;
-	const vis = ["Public", "Private"];
+	const [showTags, setShowTags] = useState(false);
+	const [selectedTags, setSelectedTags] = useState([]);
+	const [activeTags, setActiveTags] = useState(Array(tags.length).fill(false));
+	const [nTags, setNtags] = useState(0);
 	const [visibility, setVisibility] = useState(vis[0]);
 	const [text, onChangeText] = useState('');
+
+	const ToggleTags = (prop) =>{
+		let idx = prop.key1;
+		if(nTags<=4 && !activeTags[idx]){
+			setActiveTags([...activeTags.slice(0,idx), !activeTags[idx], ...activeTags.slice(idx+1)]);
+			setNtags(nTags+1);
+			setSelectedTags([...selectedTags, tags[idx]]);
+		}
+		if(activeTags[idx]){
+			setActiveTags([...activeTags.slice(0,idx), !activeTags[idx], ...activeTags.slice(idx+1)]);
+			setNtags(nTags-1);
+			let idx1 = selectedTags.indexOf(tags[idx]);
+			setSelectedTags([...selectedTags.slice(0,idx1), ...selectedTags.slice(idx1+1)]);
+		}
+	};
+
+	const Tag_option_btn = (prop) =>  {
+		return(
+			activeTags[prop.key1] ?
+				(<TagOptionBtn2 theme = {selectedTheme} onPress = {()=>ToggleTags(prop)}>
+					<TagOptionText theme = {selectedTheme}>{prop.text}</TagOptionText>
+				</TagOptionBtn2>) :
+				(<TagOptionBtn1 theme = {selectedTheme} onPress = {()=>ToggleTags(prop)}>
+					<TagOptionText theme = {selectedTheme}>{prop.text}</TagOptionText>
+				</TagOptionBtn1>)
+		);
+	};
+
+	const Tag_option_container = (prop) => {
+		return(
+			<TagOptionContainer1>
+			{prop.text_list.map((tag,index)=>{
+				return <Tag_option_btn key = {index}  key1 = {index} text = {tag}/>
+			})}
+			</TagOptionContainer1>
+		);
+	};
+
+	const Tag_show_container = (prop) => {
+		return(
+			<TagShowContainer>
+			{prop.text_list.map((tag,index)=>{
+				return <Tag_show_cell key = {index} text = {tag}/>
+			})}
+			</TagShowContainer>
+		);
+	};
+
+	const Tag_show_cell = (prop) =>  {
+		return(
+			activeTags[tags.indexOf(prop.text)] ?
+				(<TagShowCell theme = {selectedTheme}>
+					<TagShowText theme = {selectedTheme}>{prop.text}</TagShowText>
+					<TagShowBtn onPress = {()=>ToggleTags1(prop)}>
+						<MaterialIcons name="cancel" size={16} color={selectedTheme.name=='light' ? COLORS.white1 : COLORS.black}/>
+					</TagShowBtn>
+				</TagShowCell>) :
+				(null)
+		);
+	};
+
+	const ToggleTags1 = (prop) =>{
+		const idx = tags.indexOf(prop.text);
+		setActiveTags([...activeTags.slice(0,idx), !activeTags[idx], ...activeTags.slice(idx+1)]);
+		setNtags(nTags-1);
+		const idx1 = selectedTags.indexOf(tags[idx]);
+		setSelectedTags([...selectedTags.slice(0,idx1), ...selectedTags.slice(idx1+1)]);
+	};
 
 	return (
 		<Container theme = {selectedTheme}>
@@ -66,7 +142,7 @@ const NewPost = ({navigation}) => {
 			</ProfileContainer>
 			<TagContainer>
 				<Text6 theme = {selectedTheme}>Tags:</Text6>
-				<TagBtn theme = {selectedTheme}>
+				<TagBtn theme = {selectedTheme} onPress = {()=>setShowTags(true)}>
 					<Text7>Select tags</Text7>
 					<MaterialIcons name="arrow-drop-down" size={24} color={COLORS.gray1} />
 				</TagBtn>
@@ -74,6 +150,7 @@ const NewPost = ({navigation}) => {
 			<TagInfo>
 				<Text8 theme = {selectedTheme}>You can select maximum 5 tags</Text8>
 			</TagInfo>
+			<Tag_show_container text_list = {selectedTags} />
 			<Desc>
 				<Text9 theme = {selectedTheme}>Description</Text9>
 				<DescContainer>
@@ -111,6 +188,17 @@ const NewPost = ({navigation}) => {
 					</AttachContainer2>
 				</AttachContainer1>
 			</AttachContainer>
+			{showTags ?
+				(<TagContainer1>
+					<Tag_option_container text_list={tags} />
+					<TagDoneContainer>
+						<TagDoneBtn theme = {selectedTheme} onPress = {() => setShowTags(false)}>
+							<TagDoneText theme = {selectedTheme}>Done</TagDoneText>
+						</TagDoneBtn>
+					</TagDoneContainer>
+				</TagContainer1>) :
+				(null)
+			}
 		</Container>
 	);
 };
@@ -301,6 +389,106 @@ const Text8 = styled.Text`
 	margin-left: -45px;
 `;
 
+const TagContainer1 = styled.View`
+	flexDirection: column;
+	align-items: center;
+	justify-content: space-around;
+	padding: 20px;
+	margin-left: -1px;
+	background-color:${COLORS.darkPurple};
+	zIndex: 1;
+	width: ${SIZES.width + 2}px;
+	position: absolute;
+	borderTopWidth: 1px;
+	borderRightWidth: 1px;
+	borderLeftWidth: 1px;
+	borderTopColor: ${COLORS.white1};
+	borderRightColor: ${COLORS.white1};
+	borderLeftColor: ${COLORS.white1};
+	borderTopLeftRadius: 30px;
+	borderTopRightRadius: 30px;
+	bottom: 0px;
+`;
+
+const TagOptionContainer1 = styled.View`
+	flexDirection: row;
+	align-items: center;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	align-content: center;
+`;
+
+const TagOptionBtn1 = styled.TouchableOpacity`
+	background-color: ${(props) => props.theme.name == 'light'? COLORS.white1 : COLORS.pink};
+	padding-horizontal: 10px;
+	padding-vertical: 10px;
+	border-radius: 30px;
+	margin: 5px; 
+	border: 3px ${(props) => props.theme.name == 'light'? COLORS.white1 : COLORS.pink};
+`;
+
+const TagOptionBtn2 = styled(TagOptionBtn1)`
+	border: 3px ${(props) => props.theme.name == 'light'? COLORS.blue1 : COLORS.pink1};
+`;
+
+const TagOptionText = styled.Text`
+	color: ${(props) => props.theme.name == 'light'? COLORS.black : COLORS.white1};
+	font-size: 14px;
+`;
+
+const TagDoneContainer = styled.View`
+	align-items: center;
+	justify-content: center;
+	margin-top: 30px;
+`;
+
+const TagDoneBtn = styled.TouchableOpacity`
+	background-color: ${(props) => props.theme.name == 'light'? COLORS.white1 : COLORS.pink};
+	padding-horizontal: 100px;
+	padding-vertical: 10px;
+	border-radius: 30px;
+`;
+
+const TagDoneText = styled.Text`
+	color: ${(props) => props.theme.name == 'light'? COLORS.black : COLORS.white1};
+	font-size: 16px;
+	font-weight: bold;
+`;
+
+const TagShowContainer = styled.View`
+	flexDirection: row;
+	align-items: center;
+	align-content: center;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	margin-top: 5px;
+	margin-left: 25px;
+`;
+
+const TagShowCell = styled.View`
+	flexDirection: row;
+	align-items: center;
+	justify-content: space-between;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	padding-left: 10px;
+	background-color: ${(props) => props.theme.name == 'light'? COLORS.darkPurple : COLORS.white1};
+	border-radius: 10px;
+`;
+
+const TagShowText = styled.Text`
+	align-items: center;
+	justify-content: center;
+	color: ${(props) => props.theme.name == 'light'? COLORS.white1 : COLORS.black};
+	margin-right: 10px;
+	font-size: 12px;
+`;
+
+const TagShowBtn = styled.TouchableOpacity`
+	align-items: center;
+	justify-content: center;
+`;
+
 const Desc = styled.View`
 	flexDirection: column;
 	align-items: flex-start;
@@ -330,12 +518,6 @@ const TextInput1 = styled.TextInput`
 	height: 100%;
 	width: 100%;
 	textAlignVertical: top;
-`;
-
-const Scrollbar = styled.ScrollView`
-	position: absolute;
-	zIndex: 1
-	left: 30px;
 `;
 
 const AttachContainer = styled.View`

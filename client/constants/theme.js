@@ -16,6 +16,7 @@ export const COLORS = {
 	gray50: '#737373',
 	deepBlue: '#233B7A',
 	blue: '#2683F9',
+	blue1: '#2683F9',
 
 	gray20: '#F8F8F8',
 
@@ -28,6 +29,7 @@ export const COLORS = {
 	black1: '#000',
 
 	pink: '#B438BD',
+	pink1: '#F675FF',
 
 	transparent: 'transparent',
 	transparentWhite1: 'rgba(255, 255, 255, 0.1)',
