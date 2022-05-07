@@ -7,7 +7,7 @@ passport.use(
 		{
 			clientID: process.env.GOOGLE_CLIENT_ID,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-			callbackURL: `https://8ead-61-1-107-231.ngrok.io/auth/google/callback`,
+			callbackURL: `https://myiitj-api.vercel.app/auth/google/callback`,
 		},
 		function (accessToken, refreshToken, profile, done) {
 			done(null, profile);
