@@ -44,6 +44,8 @@ router.get('/', async (req, res) => {
 		let { limit = 10, page = 1 } = req.query;
 		page--;
 
+		console.log(req.user);
+
 		const last3days = subDays(new Date(), 3);
 
 		const posts = await Post.find({
