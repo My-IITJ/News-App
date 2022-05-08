@@ -11,7 +11,7 @@ npm-debug.*
 web-build/
 
 test.txt
-
+credentials.json
 # macOS
 .DS_Store
 

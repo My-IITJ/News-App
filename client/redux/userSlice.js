@@ -35,13 +35,16 @@ const userSlice = createSlice({
 			state.isLoading = false;
 		},
 		logout: (state) => {
-			state = initialState;
+			state.data = null;
 		},
 		apiStart: (state) => {
 			state.isLoading = true;
 		},
 		toggleTheme: (state, action) => {
 			state.theme = action.payload.type === 'dark' ? darkTheme : lightTheme;
+		},
+		authUser: (state, action) => {
+			state.data = action.payload;
 		},
 	},
 });
@@ -53,5 +56,6 @@ export const {
 	logout,
 	apiStart,
 	toggleTheme,
+	authUser,
 } = userSlice.actions;
 export default userSlice.reducer;

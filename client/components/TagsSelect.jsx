@@ -1,8 +1,6 @@
-import styled, { useTheme } from 'styled-components/native';
-import { AntDesign } from '@expo/vector-icons';
-import { Modal, TouchableOpacity } from 'react-native';
+import styled from 'styled-components/native';
+import { Modal } from 'react-native';
 import { COLORS, isSmall, SIZES } from '../constants';
-import { useCallback, useState } from 'react';
 
 const tags = [
 	{
@@ -21,38 +19,19 @@ const tags = [
 		id: 4,
 		name: 'Medical',
 	},
+	{
+		id: 5,
+		name: 'Hostel',
+	},
+	{
+		id: 6,
+		name: 'Dining',
+	},
 ];
 
-const TagsFilter = ({ setSelectedTags, selectedTags, filterPosts }) => {
-	const theme = useTheme();
-	const [open, setOpen] = useState(false);
-
-	const toggleModal = useCallback(() => {
-		setOpen((p) => !p);
-	}, []);
-
-	const toggleSelection = useCallback(
-		(name) => {
-			const idx = selectedTags.indexOf(name);
-			if (idx !== -1) {
-				let arr = selectedTags.filter((i) => i !== name);
-				setSelectedTags(arr);
-				return;
-			}
-			setSelectedTags((p) => [...p, name]);
-		},
-		[selectedTags, setSelectedTags]
-	);
-
+const TagsFilter = ({ selectedTags, open, toggleModal, toggleSelection }) => {
 	return (
 		<Container>
-			<TouchableOpacity onPress={toggleModal}>
-				<AntDesign
-					name="filter"
-					size={24}
-					color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
-				/>
-			</TouchableOpacity>
 			<Modal
 				animationType="slide"
 				transparent={true}
@@ -76,11 +55,10 @@ const TagsFilter = ({ setSelectedTags, selectedTags, filterPosts }) => {
 					</Tags>
 					<Button
 						onPress={() => {
-							filterPosts();
 							toggleModal();
 						}}
 					>
-						<Label size={isSmall ? 16 : 20}>Apply</Label>
+						<Label size={isSmall ? 16 : 20}>Done</Label>
 					</Button>
 				</FilterModal>
 			</Modal>

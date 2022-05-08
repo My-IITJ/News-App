@@ -7,7 +7,7 @@ const addComment = (body) => {
 	return axios.post(`${appUrl}/comments/new`, body);
 };
 
-export const useAddComment = () => {
+export const useAddComment = (setIsAddingComment) => {
 	const queryClient = useQueryClient();
 	return useMutation(addComment, {
 		onSuccess: ({ data }) => {
@@ -18,6 +18,11 @@ export const useAddComment = () => {
 				]);
 				queryClient.invalidateQueries('get-latest-posts');
 			}
+		},
+		onSettled: () => {
+			setTimeout(() => {
+				setIsAddingComment(false);
+			}, 1000);
 		},
 	});
 };

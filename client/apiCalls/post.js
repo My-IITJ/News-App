@@ -54,13 +54,22 @@ const vote = ({ postId, userId }) => {
 	return axios.put(`${appUrl}/posts/votes/${postId}`, { userId });
 };
 
-export const useUpvotePost = () => {
+export const useUpvotePost = (setIsVoting) => {
 	const queryClient = useQueryClient();
 	return useMutation(vote, {
 		onSuccess: (_, { postId }) => {
 			queryClient.invalidateQueries('get-latest-posts');
 			queryClient.invalidateQueries('search-posts');
 			queryClient.invalidateQueries(['post-comments', postId]);
+			queryClient.invalidateQueries(['related-posts']);
+			queryClient.invalidateQueries(['filter-posts-by-tag']);
+			queryClient.invalidateQueries(['get-user-posts']);
+			queryClient.invalidateQueries(['get-user-saved-posts']);
+		},
+		onSettled: () => {
+			setTimeout(() => {
+				setIsVoting(false);
+			}, 1000);
 		},
 	});
 };

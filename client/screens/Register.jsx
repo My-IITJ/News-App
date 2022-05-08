@@ -1,12 +1,32 @@
-import { COLORS, SIZES } from '../constants';
-import React, { useState } from 'react';
+import { COLORS, isSmall, SIZES } from '../constants';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/native';
 import Constants from 'expo-constants';
+import auth from '@react-native-firebase/auth';
 
 const Register = ({ navigation }) => {
 	const [email, setEmail] = useState('');
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+
+	const handleRegistration = useCallback(() => {
+		auth()
+			.createUserWithEmailAndPassword('jane.doe@example.com', 'neil1234')
+			.then(() => {
+				console.log('User account created & signed in!');
+			})
+			.catch((error) => {
+				if (error.code === 'auth/email-already-in-use') {
+					console.log('That email address is already in use!');
+				}
+
+				if (error.code === 'auth/invalid-email') {
+					console.log('That email address is invalid!');
+				}
+
+				console.error(error);
+			});
+	}, []);
 
 	return (
 		<Container>
@@ -33,7 +53,7 @@ const Register = ({ navigation }) => {
 				</Box>
 			</Fields>
 
-			<ButtonContainer onPress={() => navigation.navigate('Landing')}>
+			<ButtonContainer onPress={handleRegistration}>
 				<Label1>Register</Label1>
 			</ButtonContainer>
 		</Container>
@@ -54,7 +74,7 @@ const Container = styled.View`
 
 const WelcomeText = styled.Text`
 	font-family: Poppins_400Regular;
-	font-size: 48px;
+	font-size: ${isSmall ? 44 : 48}px;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.purple2 : COLORS.deepBlue};
 	width: 80%;
@@ -67,7 +87,7 @@ const Fields = styled.View`
 
 const Box = styled.View`
 	justify-content: center;
-	margin: 20px 0px;
+	margin: ${isSmall ? 10 : 20}px 0px;
 `;
 
 const Label = styled.Text`
@@ -86,7 +106,7 @@ const Input = styled.TextInput`
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.white1 : COLORS.deepBlue};
 	border-radius: ${SIZES.font}px;
-	font-size: 18px;
+	font-size: ${isSmall ? 16 : 18}px;
 	shadow-color: #233b7a;
 	shadow-opacity: 1.5;
 	shadow-radius: 20px;
@@ -98,13 +118,13 @@ const ButtonContainer = styled.TouchableOpacity`
 		p.theme.name === 'dark' ? COLORS.purple2 : COLORS.deepBlue};
 	align-items: center;
 	border-radius: 30px;
-	margin: 60px;
+	margin: ${isSmall ? '30px 60px' : '60px'};
 	padding: 10px;
 `;
 
 const Label1 = styled.Text`
 	color: ${(p) => COLORS.white1};
 	font-family: Poppins_400Regular;
-	font-size: 22px;
+	font-size: ${isSmall ? 20 : 22}px;
 	text-align: center;
 `;

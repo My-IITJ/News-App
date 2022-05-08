@@ -1,116 +1,222 @@
-import { useState} from 'react';
-import {StatusBar, Text, TextInput, ScrollView} from 'react-native';
-import styled from 'styled-components/native';
+import { useCallback, useState } from 'react';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
+import styled, { useTheme } from 'styled-components/native';
 import Constants from 'expo-constants';
-import { COLORS, SIZES, selectedTheme, darkTheme, lightTheme, icons} from '../constants';
-import { MaterialIcons } from '@expo/vector-icons';
-import InputScrollView from 'react-native-input-scroll-view';
+import { COLORS, icons, isSmall, SIZES } from '../constants';
+import { AntDesign, Entypo, Feather, MaterialIcons } from '@expo/vector-icons';
+import Icon from '../components/Icon';
+import TagsSelect from '../components/TagsSelect';
 
-const NewPost = ({navigation}) => {
+const profile_image = require('../assets/images/me.png');
+
+const vis = ['Public', 'Private'];
+
+const NewPost = ({ navigation }) => {
+	const theme = useTheme();
 	const [showMenu, setShowMenu] = useState(false);
-	const profile_image = require('../assets/images/me.png');
-	const Img_box_light = require('../assets/icons/Img_box_light.png');
-	const Video_file_light = require('../assets/icons/Video_file_light.png');
-	const Link_light = require('../assets/icons/Link_light.png');
-	const Chart_light = require('../assets/icons/Chart_light.png');
-	const Img_box_dark = require('../assets/icons/Img_box_dark.png');
-	const Video_file_dark = require('../assets/icons/Video_file_dark.png');
-	const Link_dark = require('../assets/icons/Link_dark.png');
-	const Chart_dark = require('../assets/icons/Chart_dark.png');
-	const theme = selectedTheme.name;
-	const vis = ["Public", "Private"];
+	const [open, setOpen] = useState(false);
 	const [visibility, setVisibility] = useState(vis[0]);
-	const [text, onChangeText] = useState('');
+	const [selectedTags, setSelectedTags] = useState([]);
+	const [desc, setDesc] = useState('');
+	const [attachments, setAttachments] = useState({
+		image: null,
+		video: null,
+		links: [],
+	});
+
+	const toggleModal = useCallback(() => {
+		setOpen((p) => !p);
+	}, []);
+
+	const toggleSelection = useCallback(
+		(name) => {
+			const idx = selectedTags.indexOf(name);
+			if (idx !== -1) {
+				let arr = selectedTags.filter((i) => i !== name);
+				setSelectedTags(arr);
+				return;
+			}
+
+			if (selectedTags.length === 5) {
+				return;
+			}
+
+			setSelectedTags((p) => [...p, name]);
+		},
+		[selectedTags, setSelectedTags]
+	);
 
 	return (
-		<Container theme = {selectedTheme}>
-			<StatusBar barStyle = {theme == "light"? "dark-content": "light-content"} hidden = {false} translucent = {true}/>
+		<Container>
 			<Header>
 				<CancelBtn onPress={() => navigation.goBack()}>
-					<MaterialIcons name="cancel" size={24} color={selectedTheme.name=='light' ? COLORS.black : COLORS.white1}/>
+					<Entypo
+						name="cross"
+						size={15}
+						color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
+					/>
 				</CancelBtn>
-				<StyledText theme = {selectedTheme}>
-					Create Post
-				</StyledText>
-				<PostBtn theme = {selectedTheme}>
-					<Text1>
-						Post 
-					</Text1>
-				</PostBtn>
+				<Title>Create Post</Title>
+				<Post>
+					<Text>Post</Text>
+				</Post>
 			</Header>
-			<Line theme = {selectedTheme}/>
-			<ProfileContainer>
-				<Circle width = {50} height = {50} theme = {selectedTheme}>
-					<Avatar source={profile_image} />
-				</Circle>
-				<DetailsContainer>
-					<Text2 theme = {selectedTheme}>Name</Text2>
-					<Text3 theme = {selectedTheme}>Role</Text3>
-				</DetailsContainer>
-				<VisContainer>
-					<VisibileBtn theme = {selectedTheme} onPress = {()=>setShowMenu(!showMenu)}>
-						<Text4>{visibility}</Text4>
-						<MaterialIcons name="arrow-drop-down" size={24} color="white" />
-					</VisibileBtn>
-					{showMenu ?
-					(<VisMenu>
-						<VisOption1 theme = {selectedTheme} onPress = {()=>{setShowMenu(!showMenu); setVisibility(vis[0])}}>
-							<Text5>Public</Text5>
-						</VisOption1>
-						<VisOption2 theme = {selectedTheme} onPress = {()=>{setShowMenu(!showMenu); setVisibility(vis[1])}}>
-							<Text5>Private</Text5>
-						</VisOption2>
-					</VisMenu>) :
-					(null)}
-				</VisContainer>
-			</ProfileContainer>
-			<TagContainer>
-				<Text6 theme = {selectedTheme}>Tags:</Text6>
-				<TagBtn theme = {selectedTheme}>
-					<Text7>Select tags</Text7>
-					<MaterialIcons name="arrow-drop-down" size={24} color={COLORS.gray1} />
-				</TagBtn>
-			</TagContainer>
-			<TagInfo>
-				<Text8 theme = {selectedTheme}>You can select maximum 5 tags</Text8>
-			</TagInfo>
-			<Desc>
-				<Text9 theme = {selectedTheme}>Description</Text9>
-				<DescContainer>
-					<InputScrollView>
-						<TextInput1 onChangeText={(x) => onChangeText(x)} multiline defaultValue = {text}/>
-					</InputScrollView>
-				</DescContainer>
-			</Desc>
-			<AttachContainer>
-				<Text10 theme = {selectedTheme}>Attachments</Text10>
-				<AttachContainer1>
-					<AttachContainer2>
-						<AttachBtn>
-							<AttachImage source = {theme == 'light' ? Img_box_dark : Img_box_light}/>
-						</AttachBtn>
-						<Text11 theme = {selectedTheme}>Image</Text11>
-					</AttachContainer2>
-					<AttachContainer2>
-						<AttachBtn>
-							<AttachImage source = {theme == 'light' ? Video_file_dark : Video_file_light}/>
-						</AttachBtn>
-						<Text11 theme = {selectedTheme}>Video</Text11>
-					</AttachContainer2>
-					<AttachContainer2>
-						<AttachBtn>
-							<AttachImage source = {theme == 'light' ? Link_dark : Link_light}/>
-						</AttachBtn>
-						<Text11 theme = {selectedTheme}>Link</Text11>
-					</AttachContainer2>
-					<AttachContainer2>
-						<AttachBtn>
-							<AttachImage source = {theme == 'light' ? Chart_dark : Chart_light}/>
-						</AttachBtn>
-						<Text11 theme = {selectedTheme}>Poll</Text11>
-					</AttachContainer2>
-				</AttachContainer1>
-			</AttachContainer>
+
+			<Line />
+
+			<ScrollView
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={{
+					paddingBottom: 15,
+				}}
+			>
+				<ProfileContainer>
+					<Icon
+						containerStyle={{ marginRight: 10 }}
+						src={profile_image}
+						radius={50}
+					/>
+
+					<Details>
+						<Name>{'Neil Alvares'}</Name>
+						<Position>{'Student Dept. of EE'}</Position>
+					</Details>
+
+					<VisibilityOptions>
+						<VisibilityBtn onPress={() => setShowMenu(!showMenu)}>
+							<Text>{visibility}</Text>
+							<MaterialIcons
+								name="arrow-drop-down"
+								size={22}
+								color={COLORS.white1}
+							/>
+						</VisibilityBtn>
+
+						{showMenu && (
+							<VisibilityMenu>
+								<VisibilityOption
+									top
+									onPress={() => {
+										setShowMenu(!showMenu);
+										setVisibility(vis[0]);
+									}}
+								>
+									<Text size={14}>Public</Text>
+								</VisibilityOption>
+								<VisibilityOption
+									onPress={() => {
+										setShowMenu(!showMenu);
+										setVisibility(vis[1]);
+									}}
+								>
+									<Text size={14}>Private</Text>
+								</VisibilityOption>
+							</VisibilityMenu>
+						)}
+					</VisibilityOptions>
+				</ProfileContainer>
+
+				<Tags>
+					<Text color={COLORS.black}>Tags:</Text>
+					<Group>
+						<SelectTags onPress={toggleModal}>
+							<Text color={COLORS.gray10}>Choose tags</Text>
+							<AntDesign name="down" size={14} color={COLORS.gray10} />
+						</SelectTags>
+						<InfoLabel>You can select maximum 5 tags</InfoLabel>
+					</Group>
+				</Tags>
+
+				<SelectedTags>
+					{selectedTags?.map((tag) => {
+						return (
+							<Tag key={tag}>
+								<Text size={12}>{tag.toUpperCase()}</Text>
+								<TouchableOpacity onPress={() => toggleSelection(tag)}>
+									<Feather
+										name="x"
+										size={14}
+										color={COLORS.white1}
+										style={{ marginLeft: 8 }}
+									/>
+								</TouchableOpacity>
+							</Tag>
+						);
+					})}
+				</SelectedTags>
+
+				<Desc>
+					<Text color={COLORS.black}>Description</Text>
+					{/* <View style={{ height: '60%', backgroundColor: 'green' }}> */}
+					{/* <InputScrollView style={{ backgroundColor: 'red', height: '100%' }}> */}
+					<TextInput
+						onChangeText={(text) => setDesc(text)}
+						multiline
+						value={desc}
+						maxLength={2200}
+						textAlignVertical="top"
+					/>
+					{/* </InputScrollView> */}
+					{/* </View> */}
+				</Desc>
+
+				<AttachmentContainer>
+					<Text color={COLORS.black}>Attachments</Text>
+					<AttachmentOptions>
+						<Attachment>
+							<Icon
+								width={40}
+								height={40}
+								src={
+									theme.name === 'dark'
+										? icons.img_box_light
+										: icons.img_box_dark
+								}
+							/>
+							<Text color={COLORS.black} size={14}>
+								Image
+							</Text>
+						</Attachment>
+						<Attachment>
+							<Icon
+								width={40}
+								height={40}
+								src={
+									theme.name === 'dark'
+										? icons.video_file_light
+										: icons.video_file_dark
+								}
+							/>
+							<Text color={COLORS.black} size={14}>
+								Video
+							</Text>
+						</Attachment>
+						<Attachment>
+							<Icon
+								width={40}
+								height={40}
+								src={theme.name === 'dark' ? icons.link_light : icons.link_dark}
+							/>
+							<Text color={COLORS.black} size={14}>
+								Link
+							</Text>
+						</Attachment>
+						{/* <Attachment>
+						<Icon src={theme.name === 'dark' ? Img_box_light : Img_box_dark} />
+						<Text color={COLORS.black} size={14}>
+							Poll
+						</Text>
+					</Attachment> */}
+					</AttachmentOptions>
+				</AttachmentContainer>
+			</ScrollView>
+
+			<TagsSelect
+				selectedTags={selectedTags}
+				open={open}
+				toggleModal={toggleModal}
+				toggleSelection={toggleSelection}
+			/>
 		</Container>
 	);
 };
@@ -120,264 +226,223 @@ export default NewPost;
 //styles
 const Container = styled.View`
 	flex: 1;
-	padding: 15px;
-	padding-top: ${Constants.statusBarHeight + 10}px;
-	background-color: ${(props) => props.theme.name == 'light'? lightTheme.backgroundColor1 : darkTheme.backgroundColor1};
+	padding: 20px;
+	padding-top: ${Constants.statusBarHeight + 15}px;
+	background-color: ${(p) =>
+		p.theme.name === 'dark' ? COLORS.darkPurple : COLORS.white1};
 `;
 
 const Header = styled.View`
-	flexDirection: row;
+	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
+	padding: 8px;
 `;
 
 const CancelBtn = styled.TouchableOpacity`
-    background-color: transparent;
-    justify-content: center;
-    align-items: center;
+	background-color: transparent;
+	justify-content: center;
+	align-items: center;
+	border: 0.5px solid
+		${(p) => (p.theme.name === 'dark' ? COLORS.white1 : COLORS.black)};
+	border-radius: 50px;
+	padding: 4px;
 `;
 
-const StyledText = styled.Text`
-	color: ${(props) => props.theme.name == 'light'? COLORS.black : COLORS.white1};
-	justify-content: center;
-	font-size: 16px;
+const Title = styled.Text`
+	color: ${(p) => (p.theme.name === 'dark' ? COLORS.white1 : COLORS.black)};
+	font-size: 18px;
 	font-weight: bold;
-	align-items: center;
-	width : 220px;
+	font-family: Poppins_400Regular;
+	flex: 1;
+	margin-left: 15px;
 `;
 
-const PostBtn = styled.TouchableOpacity`
+const Post = styled.TouchableOpacity`
 	align-items: center;
 	justify-content: center;
-	padding: 3px 15px;
-	border-radius: 15px;
-	background-color: ${(props) => props.theme.name == 'light'? COLORS.darkPurple : COLORS.pink};
+	padding: 6px 18px;
+	border-radius: ${SIZES.padding}px;
+	background-color: ${(p) =>
+		p.theme.name === 'dark' ? COLORS.darkPurple : COLORS.deepBlue};
 `;
 
-const Text1 = styled.Text`
-	color: ${COLORS.white1};
+const Text = styled.Text`
+	color: ${(p) => p.color || COLORS.white1};
+	font-family: Poppins_400Regular;
+	font-weight: bold;
+	font-size: ${(p) => p.size || 16}px;
+	letter-spacing: 1px;
 `;
 
 const Line = styled.View`
-	background-color: ${(props) => props.theme.name == 'light'? COLORS.darkPurple : COLORS.pink};
-	height: 1px;
+	background-color: ${(p) =>
+		p.theme.name === 'dark' ? COLORS.darkPurple : COLORS.gray10};
+	height: 0.5px;
 	width: 100%;
-	margin-vertical: 10px;
+	margin: 10px 0;
 `;
 
 const ProfileContainer = styled.View`
-	flexDirection: row;
+	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
 	margin-top: 10px;
+	padding: 8px 0;
 `;
 
-const Circle = styled.View`
-	align-items: center;
-	justify-content: center;
-	width: ${(props) => props.width}px;
-	height: ${(props) => props.height}px;
-	border-radius: 25px;
-	background-color: ${(props) => props.theme.name == 'light'? COLORS.darkPurple : COLORS.pink};
-`;
-
-const Avatar = styled.Image`
-	width: 50px;
-	height: 50px;
-	border-radius: 25px;
-`;
-
-const DetailsContainer = styled.View`
+const Details = styled.View`
 	flex: 1;
-	flexDirection: column;
-	align-items: flex-start;
+	flex-direction: column;
 	justify-content: space-between;
-	padding-left: 20px;
 `;
 
-const Text2 = styled.Text`
-	font-size: 14px;
-	font-weight: bold;
-	justify-content: center;
-	align-items: center;
-	color: ${(props) => props.theme.name == 'light'? COLORS.black : COLORS.white1};
+const Name = styled.Text`
+	font-family: Poppins_400Regular;
+	font-size: ${18}px;
+	font-weight: 700;
+	color: ${({ theme }) =>
+		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
 `;
 
-const Text3 = styled.Text`
+const Position = styled.Text`
+	font-family: Poppins_400Regular;
 	font-size: ${12}px;
-	justify-content: center;
-	align-items: center;
-	color: ${(props) => props.theme.name == 'light'? COLORS.black : COLORS.white1};
+	color: ${({ theme }) =>
+		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
 `;
 
-const VisContainer = styled.View`
-	flexDirection: column;
+const VisibilityOptions = styled.View`
 	align-items: center;
 	justify-content: center;
-`; 
+`;
 
-const VisibileBtn = styled.TouchableOpacity`
-	flexDirection: row;
+const VisibilityBtn = styled.TouchableOpacity`
+	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	background-color: ${(props) => props.theme.name == 'light'? COLORS.darkPurple : COLORS.pink};
-	border-radius: 18px;
-	padding-horizontal: 10px;
-	padding-vertical: 5px;
+	background-color: ${(p) =>
+		p.theme.name === 'dark' ? COLORS.darkPurple : COLORS.deepBlue};
+	border-radius: 12px;
+	padding: 6px 14px;
 `;
 
-const Text4 = styled.Text`
-	color: ${COLORS.white1};
-	padding-left: 10px;
-`;
-
-const VisMenu = styled.View`
-	flexDirection: column;
+const VisibilityMenu = styled.View`
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	position: absolute;
-	top: 32px;
-	left: -20px;
-	zIndex: 1;
-	border-radius: 10px;
+	top: 30px;
+	left: -15px;
+	z-index: 1;
+	border-radius: ${SIZES.base}px;
+	background-color: ${(p) =>
+		p.theme.name === 'dark' ? COLORS.darkPurple : COLORS.deepBlue};
 `;
 
-const VisOption1 = styled.TouchableOpacity`
+const VisibilityOption = styled.TouchableOpacity`
 	justify-content: center;
 	align-items: center;
-	background-color: ${(props) => props.theme.name == 'light'? COLORS.darkPurple : COLORS.pink};
-	padding-vertical: 5px;
+	padding: 6px 0;
 	width: 100px;
-	borderTopLeftRadius: 10px;
-	border:  0.5px solid ${COLORS.gray10};
+	border: 0.5px solid ${COLORS.gray10};
+	border-top-width: ${(p) => (p.top ? 0 : 0.5)}px;
+	border-right-width: 0;
+	border-bottom-width: 0;
+	border-left-width: 0;
 `;
 
-const VisOption2 = styled(VisOption1)`
-	borderTopLeftRadius: 0px;
-	borderBottomLeftRadius: 10px;
-	borderBottomRightRadius: 10px;
-`;
-
-const Text5 = styled.Text`
-	color: ${COLORS.white1};
-`;
-
-const TagContainer = styled.View`
-	flexDirection: row;
+const Tags = styled.View`
+	flex-direction: row;
 	align-items: center;
-	justify-content: flex-start;
-	margin-top: 10px;
-	padding-left: 20px;
-`;
-
-const Text6 = styled(Text2)`
-	margin-right: 20px;
-`;
-
-const TagBtn = styled.TouchableOpacity`
-	flex: 1;
-	flexDirection: row;
 	justify-content: space-between;
+	margin-top: 10px;
+`;
+
+const Group = styled.View`
+	flex: 1;
+	margin-left: 15px;
+`;
+
+const SelectTags = styled.TouchableOpacity`
+	background-color: ${(p) =>
+		p.theme.name === 'dark' ? COLORS.darkPurple : '#f5f6fa'};
+	border-radius: 10px;
+	padding: 10px 15px;
+	flex-direction: row;
 	align-items: center;
-	background-color: ${(props) => props.theme.name == 'light'? COLORS.white3 : COLORS.white1};
-	margin-right: 5px;
-	border-radius: 15px;
-	padding-left: 20px; 
+	justify-content: space-between;
 `;
 
-const Text7 = styled.Text`
-	color: ${COLORS.gray1};
-	font-size: 14px;
-`;
-
-const TagInfo = styled.View`
-	justify-content: center;
+const SelectedTags = styled.View`
+	flex-direction: row;
 	align-items: center;
+	flex-wrap: wrap;
+	padding: 8px 10px;
 `;
 
-const Text8 = styled.Text`
-	color: ${(props) => props.theme.name == 'light'? COLORS.gray1 : COLORS.white1};
+const InfoLabel = styled.Text`
+	color: ${(p) => (p.theme.name === 'dark' ? COLORS.gray1 : COLORS.gray10)};
 	font-size: 10px;
-	margin-left: -45px;
+	font-weight: bold;
+	margin-left: 4px;
+`;
+
+const Tag = styled.View`
+	background-color: ${(p) =>
+		p.theme.name === 'dark' ? COLORS.darkPurple : COLORS.deepBlue};
+	padding: 6px 10px;
+	margin: 8px 8px 0 0;
+	flex-direction: row;
+	align-items: center;
+	border-radius: ${SIZES.padding}px;
 `;
 
 const Desc = styled.View`
-	flexDirection: column;
+	flex-direction: column;
 	align-items: flex-start;
 	justify-content: flex-start;
 	margin-top: 15px;
 `;
 
-const Text9 = styled.Text`
-	color: ${(props) => props.theme.name == 'light'? COLORS.black : COLORS.white1};
-	font-size: 14px;
-	font-weight: bold;
-	margin-left: 10px;
+// const DescContainer = styled.View`
+// 	align-items: flex-start;
+// 	justify-content: flex-start;
+// 	margin-top: 10px;
+// 	height: 350px;
+// 	width: 100%;
+// 	background-color: ${(p) =>
+// 		p.theme.name == 'light' ? COLORS.white3 : COLORS.white1};
+// 	border-radius: 15px;
+// `;
+
+const TextInput = styled.TextInput`
+	padding: 12px;
+	width: ${SIZES.width - 40}px;
+	height: 250px;
+	border-radius: 10px;
+	margin-top: 15px;
+	background-color: ${(p) => COLORS.white2};
+	font-size: 16px;
 `;
 
-const DescContainer = styled.View`
-	align-items: flex-start;
-	justify-content: flex-start;
-	margin-top: 10px;
-	height: 350px;
-	width: 100%;
-	background-color: ${(props) => props.theme.name == 'light'? COLORS.white3 : COLORS.white1};
-	border-radius: 15px;
-`;
-
-const TextInput1 = styled.TextInput`
-	padding: 10px;
-	height: 100%;
-	width: 100%;
-	textAlignVertical: top;
-`;
-
-const Scrollbar = styled.ScrollView`
-	position: absolute;
-	zIndex: 1
-	left: 30px;
-`;
-
-const AttachContainer = styled.View`
-	flexDirection: column;
+const AttachmentContainer = styled.View`
+	flex-direction: column;
 	align-items: flex-start;
 	justify-content: flex-start;
 	margin-top: 15px;
 `;
 
-const Text10 = styled(Text9)`
-`;
-
-const AttachContainer1 = styled.View`
-	flexDirection: row;
+const AttachmentOptions = styled.View`
+	flex-direction: row;
 	align-items: center;
 	width: 100%;
 	justify-content: space-around;
 	margin-top: 10px;
 `;
 
-const AttachContainer2 = styled.View`
-	flexDirection: column;
+const Attachment = styled.TouchableOpacity`
+	width: 50px;
+	height: 50px;
 	align-items: center;
-	justify-content: space-between;
 `;
-
-const AttachBtn = styled.TouchableOpacity`
-	width: 50px;
-	height: 50px;
-`;
-
-const AttachImage = styled.Image`
-	width: 50px;
-	height: 50px;
-`;
-
-const Text11 = styled.Text`
-	color: ${(props) => props.theme.name == 'light'? COLORS.black : COLORS.white1};
-	font-size: 12px;
-	font-weight: bold;
-`;
-
-
-
-

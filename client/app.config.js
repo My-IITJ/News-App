@@ -18,6 +18,7 @@ const config = () => ({
 	version: '1.0.0',
 	orientation: 'portrait',
 	icon: './assets/icons/icon.png',
+	scheme: 'myiitj',
 	splash: {
 		image: './assets/icons/splash.png',
 		resizeMode: 'contain',
@@ -37,10 +38,15 @@ const config = () => ({
 			backgroundColor: '#FFFFFF',
 		},
 		package: getPackageName(),
+		googleServicesFile: './google-services.json',
 	},
 	web: {
 		favicon: './assets/icons/favicon.png',
 	},
+	plugins: [
+		'@react-native-firebase/app',
+		'@react-native-google-signin/google-signin',
+	],
 });
 
 export default config;

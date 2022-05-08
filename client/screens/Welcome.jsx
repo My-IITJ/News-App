@@ -1,18 +1,63 @@
 import styled, { useTheme } from 'styled-components/native';
 import { AntDesign } from '@expo/vector-icons';
-import { COLORS, icons, SIZES } from '../constants';
+import { COLORS, icons, isSmall, SIZES } from '../constants';
 import Constants from 'expo-constants';
+import { useDispatch } from 'react-redux';
+import { updateData } from '../redux/userSlice';
+
+//auth related imports
+import * as Linking from 'expo-linking';
+import * as WebBrowser from 'expo-web-browser';
+import { useEffect } from 'react';
+import { onGoogleButtonPress } from '../firebase';
+
+WebBrowser.maybeCompleteAuthSession();
 
 const Welcome = ({ navigation }) => {
 	const theme = useTheme();
+	const dispatch = useDispatch();
+
+	const handleRedirect = async (e) => {
+		let {
+			queryParams: { data },
+		} = Linking.parse(e.url);
+		data = JSON.parse(data);
+		console.log(data);
+		dispatch(updateData({ data }));
+	};
+
+	const addLinkingListener = () => {
+		Linking.addEventListener('url', handleRedirect);
+	};
+	const removeLinkingListener = () => {
+		Linking.removeEventListener('url', handleRedirect);
+	};
+
+	const handleLogin = async () => {
+		let authUrl = `https://myiitj-api.vercel.app/auth/google`;
+		try {
+			addLinkingListener();
+			await WebBrowser.openAuthSessionAsync(authUrl);
+		} catch (err) {
+			console.log(err);
+		}
+		removeLinkingListener();
+	};
+
+	useEffect(() => {
+		WebBrowser.warmUpAsync();
+		return () => {
+			WebBrowser.coolDownAsync();
+		};
+	}, []);
 
 	return (
 		<Container>
 			<OuterBox>
-				<Circle>
+				<Circle width={isSmall && 180} height={isSmall && 180}>
 					<Circle
-						width={140}
-						height={140}
+						width={isSmall ? 120 : 140}
+						height={isSmall ? 120 : 140}
 						color={COLORS.purple2}
 						style={{ opacity: 0.5 }}
 					>
@@ -41,7 +86,7 @@ const Welcome = ({ navigation }) => {
 
 				<Line />
 
-				<Google onPress={() => navigation.navigate('SignIn')}>
+				<Google onPress={onGoogleButtonPress}>
 					<Circle
 						width={60}
 						height={60}
@@ -101,25 +146,25 @@ const Circle = styled.View`
 `;
 
 const Avatar = styled.Image`
-	width: 100px;
-	height: 100px;
+	width: ${isSmall ? 80 : 100}px;
+	height: ${isSmall ? 80 : 100}px;
 `;
 
 const WelcomeText = styled.Text`
 	font-family: Poppins_400Regular;
-	font-size: 50px;
+	font-size: ${isSmall ? 40 : 50}px;
 	text-align: center;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.purple2 : COLORS.deepBlue};
-	margin-top: 32px;
+	margin-top: ${isSmall ? 22 : 32}px;
 	margin-bottom: 8px;
 `;
 
 const WelcomeText2 = styled.Text`
 	font-family: Poppins_400Regular;
-	font-size: 16px;
+	font-size: ${isSmall ? 14 : 16}px;
 	text-align: center;
-	margin: 20px;
+	margin: ${isSmall ? 10 : 20}px;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.white1 : COLORS.deepBlue};
 `;
@@ -132,7 +177,7 @@ const Box = styled.View`
 const ButtonContainer = styled.TouchableOpacity`
 	background-color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.purple2 : COLORS.deepBlue};
-	width: 45%;
+	width: ${isSmall ? 38 : 45}%;
 	border-radius: ${SIZES.padding}px;
 	margin: 10px;
 `;
@@ -142,7 +187,7 @@ const Label1 = styled.Text`
 	padding: 10px;
 	font-family: Poppins_400Regular;
 	font-weight: 600;
-	font-size: 20px;
+	font-size: ${isSmall ? 16 : 20}px;
 	letter-spacing: 1.25px;
 	text-align: center;
 `;
@@ -153,11 +198,11 @@ const Line = styled.View`
 	height: 1px;
 	border-radius: 5px;
 	width: 88%;
-	margin: 32px 0;
+	margin: ${isSmall ? 18 : 32}px 0;
 `;
 
 const Google = styled.TouchableOpacity`
-	margin: 15px 0;
+	margin: ${isSmall ? 8 : 15}px 0;
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-around;
@@ -168,7 +213,7 @@ const Google = styled.TouchableOpacity`
 const Label2 = styled.Text`
 	color: ${(p) => (p.theme.name === 'dark' ? COLORS.white1 : COLORS.deepBlue)};
 	font-family: Poppins_400Regular;
-	font-size: 24px;
+	font-size: ${isSmall ? 18 : 24}px;
 	text-align: center;
 	margin-left: 15px;
 `;

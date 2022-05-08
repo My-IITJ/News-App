@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "379614937476",
+    "project_id": "myiitj",
+    "storage_bucket": "myiitj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:379614937476:android:7814001b4353f3d4475dd1",
+        "android_client_info": {
+          "package_name": "com.neil_140301.myiitj.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "379614937476-2hi023pghjbji45rttnf537cig5k6s3g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.neil_140301.myiitj.dev",
+            "certificate_hash": "47a907b8043f873b96763ac868081ea336500649"
+          }
+        },
+        {
+          "client_id": "379614937476-jfj9k358d442h1hbab1mmdnupgf3t0et.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.neil_140301.myiitj.dev",
+            "certificate_hash": "58a82db9fdc2f33dd9ea35cdc441a20c3b814c57"
+          }
+        },
+        {
+          "client_id": "379614937476-jm1v4q5ah5aii1ji69v65b3gr7jovlkc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.neil_140301.myiitj.dev",
+            "certificate_hash": "11a49531d524ea34f3b57e202f94af821a8d29da"
+          }
+        },
+        {
+          "client_id": "379614937476-76bdg50kjohnd7qni3o7odrpf46si1td.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqlr-NHqssw71HrxrH72BXFiKomjpDsa8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "379614937476-76bdg50kjohnd7qni3o7odrpf46si1td.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -15,12 +15,12 @@ import Activity from '../screens/Activity';
 import { ThemeProvider } from 'styled-components'; // allows us to pass the current theme to all components
 import { useSelector } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
-import { COLORS } from '../constants';
+import { COLORS, isSmall } from '../constants';
 import BackBtn from '../components/BackBtn';
 import Icon from '../components/Icon';
-import { Animated } from 'react-native';
+import { Animated, TouchableOpacity } from 'react-native';
 
-const screens = (theme) => {
+const AuthScreens = (theme) => {
 	return [
 		{
 			name: 'Welcome',
@@ -34,6 +34,11 @@ const screens = (theme) => {
 			name: 'SignIn',
 			Component: SignIn,
 		},
+	];
+};
+
+const screens = (theme) => {
+	return [
 		{
 			name: 'Landing',
 			Component: Tabs,
@@ -58,12 +63,14 @@ const screens = (theme) => {
 				},
 				headerRight: () => {
 					return (
-						<Icon
-							containerStyle={{ marginRight: 20 }}
-							width={40}
-							height={40}
-							src={require('../assets/images/icon.png')}
-						/>
+						<TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+							<Icon
+								containerStyle={{ marginRight: 20 }}
+								width={40}
+								height={40}
+								src={require('../assets/images/icon.png')}
+							/>
+						</TouchableOpacity>
 					);
 				},
 				headerStyle: {
@@ -104,7 +111,7 @@ const screens = (theme) => {
 				},
 				headerTitleStyle: {
 					color: theme.name === 'dark' ? COLORS.white1 : COLORS.black,
-					fontSize: 28,
+					fontSize: isSmall ? 22 : 28,
 					fontFamily: 'Poppins_400Regular',
 					fontWeight: 'bold',
 				},
@@ -154,7 +161,7 @@ const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
 };
 
 const AppStack = () => {
-	const currentTheme = useSelector((s) => s.user.theme);
+	const { theme: currentTheme, data } = useSelector((s) => s.user);
 
 	return (
 		<ThemeProvider theme={currentTheme}>
@@ -176,11 +183,19 @@ const AppStack = () => {
 					detachPreviousScreen: false,
 				}}
 			>
-				{screens(currentTheme).map(({ name, Component, options, props }) => (
-					<Stack.Screen key={name} name={name} options={options}>
-						{(p) => <Component {...p} {...props} />}
-					</Stack.Screen>
-				))}
+				{!data
+					? AuthScreens(currentTheme).map(
+							({ name, Component, options, props }) => (
+								<Stack.Screen key={name} name={name} options={options}>
+									{(p) => <Component {...p} {...props} />}
+								</Stack.Screen>
+							)
+					  )
+					: screens(currentTheme).map(({ name, Component, options, props }) => (
+							<Stack.Screen key={name} name={name} options={options}>
+								{(p) => <Component {...p} {...props} />}
+							</Stack.Screen>
+					  ))}
 			</Stack.Navigator>
 		</ThemeProvider>
 	);

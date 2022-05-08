@@ -1,11 +1,36 @@
 import { COLORS, SIZES } from '../constants';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components/native';
 import Constants from 'expo-constants';
+import auth from '@react-native-firebase/auth';
 
 const SignIn = ({ navigation }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+
+	const handleSignIn = useCallback(() => {
+		auth()
+			.signInWithEmailAndPassword('jane.doe@example.com', 'neil1234')
+			.then(() => {
+				console.log('User account created & signed in!');
+			})
+			.catch((error) => {
+				if (error.code === 'auth/invalid-email') {
+					console.log('The email address is not valid!');
+				}
+				if (error.code === 'auth/user-disabled') {
+					console.log('user is disabled!');
+				}
+				if (error.code === 'auth/user-not-found') {
+					console.log('no user for this email found!');
+				}
+				if (error.code === 'auth/wrong-password') {
+					console.log('Invalid password!');
+				}
+
+				console.error(error);
+			});
+	}, []);
 
 	return (
 		<Container>
@@ -27,7 +52,7 @@ const SignIn = ({ navigation }) => {
 				</Box>
 			</Fields>
 
-			<ButtonContainer onPress={() => navigation.navigate('NewPost')}>
+			<ButtonContainer onPress={handleSignIn}>
 				<Label1>Sign In</Label1>
 			</ButtonContainer>
 		</Container>

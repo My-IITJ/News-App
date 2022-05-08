@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { FlatList, Text } from 'react-native';
 import styled from 'styled-components/native';
 import Icon from '../components/Icon';
-import { COLORS, SIZES } from '../constants';
+import { COLORS, isSmall, SIZES } from '../constants';
 import PostsList from '../components/PostsList';
 import Loading from '../components/Loading';
 import {
@@ -142,7 +142,7 @@ const Activity = ({ route }) => {
 			<Header>
 				<Icon src={require('../assets/images/icon.png')} />
 				<Details>
-					<Name>{'Neil'}</Name>
+					<Name size={isSmall && 20}>{'Neil'}</Name>
 					<Position>{'Prof. at CSE dept'}</Position>
 				</Details>
 			</Header>
@@ -204,7 +204,7 @@ const Name = styled.Text`
 
 const Position = styled.Text`
 	font-family: Poppins_400Regular;
-	font-size: 16px;
+	font-size: ${isSmall ? 14 : 16}px;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
 `;
@@ -238,7 +238,7 @@ const Tab = styled.TouchableOpacity`
 
 const Label = styled.Text`
 	font-family: Poppins_400Regular;
-	font-size: 20px;
+	font-size: ${isSmall ? 16 : 20}px;
 	letter-spacing: 1.5px;
 	color: ${(p) =>
 		p.selected || p.theme.name === 'dark' ? COLORS.white1 : COLORS.black};

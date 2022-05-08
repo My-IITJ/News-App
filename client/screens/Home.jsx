@@ -3,7 +3,6 @@ import { COLORS } from '../constants';
 import Navbar from '../components/Navbar';
 import Constants from 'expo-constants';
 import PostsList from '../components/PostsList';
-import ThemeBtn from '../components/ThemeBtn';
 import { useGetPosts } from '../apiCalls/post';
 import { Text } from 'react-native';
 import Loading from '../components/Loading';
@@ -28,7 +27,6 @@ const Home = () => {
 	return (
 		<Container>
 			<Navbar />
-			<ThemeBtn />
 			{isLoading ? (
 				<Loading />
 			) : (

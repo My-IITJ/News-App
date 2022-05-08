@@ -16,6 +16,11 @@ const UserSchema = new mongoose.Schema(
 		title: {
 			type: String,
 		},
+		email: {
+			type: String,
+			required: true,
+		},
+		profile: String,
 		subscribedTags: [
 			{
 				type: mongoose.Schema.Types.ObjectId,

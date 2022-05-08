@@ -1,17 +1,20 @@
 import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
-import { COLORS, SIZES } from '../constants';
+import { COLORS, isSmall, SIZES } from '../constants';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import Icon from './Icon';
 import { useTheme } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import { useUpvotePost } from '../apiCalls/post';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import Spinner from './Spinner';
 
 const SinglePost = ({ post, all, setIsUpvote }) => {
 	const theme = useTheme();
 	const navigation = useNavigation();
+	const [isVoting, setIsVoting] = useState(false);
+
 	const {
 		author,
 		content,
@@ -22,7 +25,7 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 		upvotes,
 	} = post;
 
-	const { mutate } = useUpvotePost();
+	const { mutate } = useUpvotePost(setIsVoting);
 
 	const toggleVote = useCallback(() => {
 		const body = {
@@ -31,6 +34,7 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 		};
 
 		mutate(body);
+		setIsVoting(true);
 
 		if (setIsUpvote) {
 			setIsUpvote(true);
@@ -40,7 +44,10 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 	return (
 		<Container all={all} height={thumbnail}>
 			<Header>
-				<Icon src={require('../assets/images/icon.png')} />
+				<Icon
+					containerStyle={{ marginRight: 10 }}
+					src={require('../assets/images/icon.png')}
+				/>
 				<Details>
 					<TouchableOpacity>
 						<Name>{author?.username}</Name>
@@ -101,10 +108,22 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 			)}
 
 			<Action bottom={thumbnail}>
-				<ActionBtn onPress={toggleVote}>
-					<AntDesign name="arrowup" size={25} color={COLORS.white1} />
-					<ActionLabel>{upvotes?.length || 0}</ActionLabel>
-				</ActionBtn>
+				{isVoting ? (
+					<Spinner
+						containerStyle={{
+							width: 50,
+							marginHorizontal: 10,
+							backgroundColor:
+								theme.name === 'dark' ? COLORS.purple : COLORS.deepBlue1,
+							height: 16,
+						}}
+					/>
+				) : (
+					<ActionBtn onPress={toggleVote}>
+						<AntDesign name="arrowup" size={25} color={COLORS.white1} />
+						<ActionLabel>{upvotes?.length || 0}</ActionLabel>
+					</ActionBtn>
+				)}
 
 				<ActionBtn
 					onPress={() =>
@@ -121,17 +140,16 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 
 export default SinglePost;
 
-const getHeight = (height, all) => {
-	if (all) {
-		return height ? 'auto' : '300px';
-	}
+// const getHeight = (height, all) => {
+// 	if (all) {
+// 		return height ? 'auto' : '300px';
+// 	}
 
-	return `${height ? 400 : 240}px`;
-};
+// 	return `${height ? 400 : 240}px`;
+// };
 
 //styles
 const Container = styled.View`
-	/* height: ${(p) => getHeight(p.height, p.all)}; */
 	height: auto;
 	align-items: center;
 	background-color: ${({ theme }) =>
@@ -156,7 +174,7 @@ const Details = styled.View`
 
 const Name = styled.Text`
 	font-family: Poppins_400Regular;
-	font-size: 18px;
+	font-size: ${isSmall ? 16 : 18}px;
 	font-weight: 700;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
@@ -164,14 +182,14 @@ const Name = styled.Text`
 
 const Position = styled.Text`
 	font-family: Poppins_400Regular;
-	font-size: 12px;
+	font-size: ${isSmall ? 10 : 12}px;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
 `;
 
 const Time = styled.Text`
 	font-family: Poppins_400Regular;
-	font-size: 12px;
+	font-size: ${isSmall ? 10 : 12}px;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
 `;
@@ -180,7 +198,7 @@ const Content = styled.Text`
 	margin: 10px 0px;
 	font-family: Poppins_400Regular;
 	text-align: justify;
-	font-size: 14px;
+	font-size: ${isSmall ? 12 : 14}px;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
 `;
