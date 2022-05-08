@@ -3,7 +3,7 @@ import auth from '@react-native-firebase/auth';
 
 GoogleSignin.configure({
 	webClientId:
-		'379614937476-jfj9k358d442h1hbab1mmdnupgf3t0et.apps.googleusercontent.com',
+		'379614937476-76bdg50kjohnd7qni3o7odrpf46si1td.apps.googleusercontent.com',
 	scopes: ['profile', 'email'],
 });
 
