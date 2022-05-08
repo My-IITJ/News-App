@@ -9,14 +9,16 @@ import Loading from '../components/Loading';
 import { useAddComment } from '../apiCalls/comment';
 import { useCallback, useState, useRef } from 'react';
 import Spinner from '../components/Spinner';
+import { useSelector } from 'react-redux';
 
 const PostComments = ({ route }) => {
 	const theme = useTheme();
 	const { postId } = route.params;
 	const scrollViewRef = useRef();
+	const user = useSelector((s) => s.user.data);
 	const [newComment, setNewComment] = useState({
 		parent: { id: postId, type: 'post' },
-		userId: '62013735b5a9036d44510f68',
+		userId: user?._id,
 		content: null,
 	});
 	const [isAddingComment, setIsAddingComment] = useState(false);

@@ -61,18 +61,18 @@ const screens = (theme) => {
 				headerLeft: (p) => {
 					return <BackBtn {...p} navigation={navigation} />;
 				},
-				headerRight: () => {
-					return (
-						<TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-							<Icon
-								containerStyle={{ marginRight: 20 }}
-								width={40}
-								height={40}
-								src={require('../assets/images/icon.png')}
-							/>
-						</TouchableOpacity>
-					);
-				},
+				// headerRight: () => {
+				// 	return (
+				// 		<TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+				// 			<Icon
+				// 				containerStyle={{ marginRight: 20 }}
+				// 				width={40}
+				// 				height={40}
+				// 				src={}
+				// 			/>
+				// 		</TouchableOpacity>
+				// 	);
+				// },
 				headerStyle: {
 					backgroundColor:
 						theme.name === 'dark' ? COLORS.darkPurple : COLORS.white1,

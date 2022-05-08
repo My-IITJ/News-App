@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
 			isDeleted: false,
 		})
 			.populate('tags', ['_id', 'name'])
-			.populate('author', ['_id', 'username', 'title'])
+			.populate('author', ['_id', 'username', 'title', 'profileImg'])
 			.sort({ createdAt: -1 })
 			.skip(parseInt(limit) * parseInt(page))
 			.limit(parseInt(limit));
@@ -88,7 +88,7 @@ router.get('/search', async (req, res) => {
 			isDeleted: false,
 		})
 			.populate('tags', ['_id', 'name'])
-			.populate('author', ['_id', 'username', 'title'])
+			.populate('author', ['_id', 'username', 'title', 'profileImg'])
 			.sort({ createdAt: -1 });
 
 		const filteredPosts = posts.filter((p) => {
@@ -132,13 +132,14 @@ router.get('/:id', async (req, res) => {
 	try {
 		const post = await Post.findById(id)
 			.populate('tags', ['_id', 'name'])
-			.populate('author', ['_id', 'username', 'title'])
+			.populate('author', ['_id', 'username', 'title', 'profileImg'])
 			.populate('comments');
 
 		post.comments = await Promise.all(
 			post.comments.map(async (c, idx) => {
 				const comment = await Comment.findById(c._id).populate('author', [
 					'_id',
+					'profileImg',
 				]);
 				return comment;
 			})

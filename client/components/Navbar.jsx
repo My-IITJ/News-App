@@ -9,7 +9,8 @@ import { useSelector } from 'react-redux';
 const NavBar = ({ profile }) => {
 	const theme = useTheme();
 	const navigation = useNavigation();
-	const _id = useSelector((s) => s.user.data);
+	const data = useSelector((s) => s.user.data);
+
 	return (
 		<Container>
 			<Icon src={icons.logo_home} width={48} height={48} />
@@ -22,12 +23,15 @@ const NavBar = ({ profile }) => {
 				/>
 			</AddBtn>
 			<TouchableOpacity
-				onPress={() => !profile && navigation.navigate('Profile', { _id })}
+				onPress={() =>
+					!profile && navigation.navigate('Profile', { _id: data?._id })
+				}
 			>
 				<Icon
-					src={require('../assets/images/icon.png')}
+					src={{ uri: data?.profileImg }}
 					width={45}
 					height={45}
+					radius={10}
 				/>
 			</TouchableOpacity>
 		</Container>

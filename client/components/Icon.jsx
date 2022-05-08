@@ -3,13 +3,20 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { SIZES } from '../constants';
 
-const Icon = ({ src, containerStyle, width = 50, height = 50, radius = 0 }) => {
+const Icon = ({
+	src,
+	containerStyle,
+	width = 50,
+	height = 50,
+	radius = 0,
+	resizeMode,
+}) => {
 	return (
 		<Container style={containerStyle}>
 			<Image
 				source={src}
 				style={{ width, height, borderRadius: radius }}
-				resizeMode="contain"
+				resizeMode={resizeMode || 'contain'}
 			/>
 		</Container>
 	);

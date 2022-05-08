@@ -138,10 +138,11 @@ const Profile = ({
 					<Icon
 						src={
 							(data?.data.profileImg && { uri: data?.data.profileImg }) ||
-							icons.me
+							require('../assets/images/icon.png')
 						}
 						width={120}
 						height={120}
+						radius={10}
 					/>
 					<Box style={{ marginTop: 8, alignItems: 'flex-start' }}>
 						<Box col style={{ marginRight: 10 }}>

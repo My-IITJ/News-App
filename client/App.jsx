@@ -21,6 +21,7 @@ import auth from '@react-native-firebase/auth';
 import { useDispatch } from 'react-redux';
 import { authUser, updateData } from './redux/userSlice';
 import { fetchUserToken } from './apiCalls/auth';
+import { defaultImgUrl } from './apiCalls/client';
 
 LogBox.ignoreLogs(['Setting a timer']);
 const queryClient = new QueryClient();
@@ -38,16 +39,17 @@ export default function App() {
 
 	const onAuthStateChanged = useCallback(
 		async (user) => {
-			console.log(user);
+			// console.log(user);
 			let data = user;
 			if (user) {
-				const { _id } = await fetchUserToken({
+				const { _id, profileImg } = await fetchUserToken({
 					email: user.email,
 					displayName: user.displayName,
-					photoUrl: user.photoUrl,
+					photoUrl: user.photoURL || defaultImgUrl,
 					uid: user.uid,
 				});
-				data = _id;
+
+				data = { _id, profileImg };
 			}
 
 			dispatch(authUser(data));

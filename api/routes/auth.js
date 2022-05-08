@@ -33,7 +33,9 @@ router.post('/user-details', async (req, res) => {
 		const user = await User.findOne({ email });
 
 		if (user) {
-			return res.status(200).json({ _id: user._id });
+			return res
+				.status(200)
+				.json({ _id: user._id, profileImg: user.profileImg });
 		} else {
 			const newUser = new User({
 				userId: uid,

@@ -26,7 +26,9 @@ const Comment = ({ item, postId }) => {
 				containerStyle={{ marginRight: 10 }}
 				width={40}
 				height={40}
-				src={require('../assets/images/icon.png')}
+				src={{ uri: item?.author?.profileImg }}
+				radius={10}
+				resizeMode="cover"
 			/>
 			<Wrapper>
 				<Box>
@@ -43,15 +45,15 @@ const Comment = ({ item, postId }) => {
 						/>
 						<ActionLabel>{item?.upvotes?.length || 0}</ActionLabel>
 					</ActionBtn>
-					<ActionLabel style={{ fontSize: 25 }}>|</ActionLabel>
-					<ActionBtn>
+					{/* <ActionLabel style={{ fontSize: 25 }}>|</ActionLabel> */}
+					{/* <ActionBtn>
 						<MaterialCommunityIcons
 							name="reply-outline"
 							size={18}
 							color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
 						/>
 						<ActionLabel>{item?.replies?.length || '2'}</ActionLabel>
-					</ActionBtn>
+					</ActionBtn> */}
 				</Action>
 			</Wrapper>
 		</Container>

@@ -9,11 +9,13 @@ import moment from 'moment';
 import { useUpvotePost } from '../apiCalls/post';
 import { useCallback, useState } from 'react';
 import Spinner from './Spinner';
+import { useSelector } from 'react-redux';
 
 const SinglePost = ({ post, all, setIsUpvote }) => {
 	const theme = useTheme();
 	const navigation = useNavigation();
 	const [isVoting, setIsVoting] = useState(false);
+	const data = useSelector((s) => s.user.data);
 
 	const {
 		author,
@@ -30,7 +32,7 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 	const toggleVote = useCallback(() => {
 		const body = {
 			postId: post._id,
-			userId: '62013735b5a9036d44510f68',
+			userId: data?._id,
 		};
 
 		mutate(body);
@@ -39,14 +41,16 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 		if (setIsUpvote) {
 			setIsUpvote(true);
 		}
-	}, [mutate, post, setIsUpvote]);
+	}, [mutate, post, setIsUpvote, data]);
 
 	return (
 		<Container all={all} height={thumbnail}>
 			<Header>
 				<Icon
 					containerStyle={{ marginRight: 10 }}
-					src={require('../assets/images/icon.png')}
+					src={{ uri: author?.profileImg }}
+					radius={10}
+					resizeMode="cover"
 				/>
 				<Details>
 					<TouchableOpacity>
