@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Post = require('../db/models/Post');
 const Comment = require('../db/models/Comment');
+const Tag = require('../db/models/Tag');
 const User = require('../db/models/User');
 const { isValidObjectId } = require('mongoose');
 const upload = require('../middlewares/multer');
@@ -16,7 +17,16 @@ router.post(
 	validate,
 	async (req, res) => {
 		try {
-			const { author, content, tags, visibility } = req.body;
+			let { author, content, tags, visibility } = req.body;
+
+			const allTags = await Tag.find();
+
+			tags = tags.map((i) => {
+				return allTags.find(
+					(item) => item.name.toLowerCase() === i.toLowerCase()
+				)._id;
+			});
+
 			const post = { author, content, tags, visibility };
 
 			if (req.file) {

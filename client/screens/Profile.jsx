@@ -20,6 +20,7 @@ import {
 } from '../apiCalls/user';
 import Loading from '../components/Loading';
 import BlurModal from '../components/BlurModal';
+import { useSelector } from 'react-redux';
 
 const Profile = ({
 	navigation,
@@ -28,22 +29,29 @@ const Profile = ({
 	},
 }) => {
 	const theme = useTheme();
+	const user = useSelector((s) => s.user.data);
+
 	const [editHeader, setEditHeader] = useState(false);
-	const [editAbout, setEditAbout] = useState(false);
+	const [editAbout, setEditAbout] = useState(true);
 	const [editContact, setEditContact] = useState(false);
 
-	const [header, setHeader] = useState({
-		username: '',
-		title: '',
-		img: '',
-	});
 	const [about, setAbout] = useState('');
 	const [contact, setContact] = useState({
 		mail: '',
 		link: '',
 	});
 
-	const { isLoading, isError, error, data } = useGetProfileDetails(_id);
+	const { isLoading, isError, error, data } = useGetProfileDetails(
+		_id,
+		'profile'
+	);
+
+	const [header, setHeader] = useState({
+		username: data?.data?.username,
+		title: data?.data?.title,
+		img: '',
+	});
+
 	const { mutate } = useEditProfile();
 
 	const {
@@ -142,20 +150,22 @@ const Profile = ({
 						}
 						width={120}
 						height={120}
-						radius={10}
+						radius={15}
 					/>
 					<Box style={{ marginTop: 8, alignItems: 'flex-start' }}>
 						<Box col style={{ marginRight: 10 }}>
 							<Name>{data?.data?.username}</Name>
 							<Title>{data?.data?.title || 'Add Title'}</Title>
 						</Box>
-						<TouchableOpacity onPress={() => setEditHeader((p) => !p)}>
-							<MaterialIcons
-								name="edit"
-								size={22}
-								color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
-							/>
-						</TouchableOpacity>
+						{user?._id === _id && (
+							<TouchableOpacity onPress={() => setEditHeader((p) => !p)}>
+								<MaterialIcons
+									name="edit"
+									size={22}
+									color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
+								/>
+							</TouchableOpacity>
+						)}
 					</Box>
 				</Header>
 
@@ -164,13 +174,19 @@ const Profile = ({
 						<Name bold sz={22}>
 							About
 						</Name>
-						<TouchableOpacity>
-							<MaterialIcons
-								name="edit"
-								size={22}
-								color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
-							/>
-						</TouchableOpacity>
+						{user?._id === _id && (
+							<TouchableOpacity
+								onPress={() => {
+									setEditAbout((p) => !p);
+								}}
+							>
+								<MaterialIcons
+									name="edit"
+									size={22}
+									color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
+								/>
+							</TouchableOpacity>
+						)}
 					</Box>
 					<Name
 						color={!data?.data?.bio && COLORS.gray50}
@@ -186,13 +202,15 @@ const Profile = ({
 						<Name bold sz={22}>
 							Contact
 						</Name>
-						<TouchableOpacity>
-							<MaterialIcons
-								name="edit"
-								size={22}
-								color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
-							/>
-						</TouchableOpacity>
+						{user?._id === _id && (
+							<TouchableOpacity>
+								<MaterialIcons
+									name="edit"
+									size={22}
+									color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
+								/>
+							</TouchableOpacity>
+						)}
 					</Box>
 					<Box style={{ justifyContent: 'flex-start', marginVertical: 8 }}>
 						<Ionicons
@@ -221,7 +239,16 @@ const Profile = ({
 					</Box>
 				</Contact>
 
-				<Activity onPress={() => navigation.navigate('Activity')}>
+				<Activity
+					onPress={() =>
+						navigation.navigate('Activity', {
+							userId: _id,
+							username: data?.data?.username,
+							title: data?.data?.title,
+							img: data?.data?.profileImg,
+						})
+					}
+				>
 					<Box style={{ justifyContent: 'space-between' }}>
 						<Name bold>Activity</Name>
 						<AntDesign
@@ -268,6 +295,7 @@ const Profile = ({
 				</Actions>
 			</Body>
 			{renderEditHeaderModal()}
+			{/* {renderEditAboutModal()} */}
 		</Container>
 	);
 };
