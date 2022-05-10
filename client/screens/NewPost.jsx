@@ -1,11 +1,15 @@
-import { useCallback, useState } from 'react';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import Constants from 'expo-constants';
 import { COLORS, icons, isSmall, SIZES } from '../constants';
 import { AntDesign, Entypo, Feather, MaterialIcons } from '@expo/vector-icons';
 import Icon from '../components/Icon';
 import TagsSelect from '../components/TagsSelect';
+import { useSelector } from 'react-redux';
+import { useGetProfileDetails } from '../apiCalls/user';
+import Loading from '../components/Loading';
+import { useNewPost } from '../apiCalls/post';
 
 const profile_image = require('../assets/images/me.png');
 
@@ -23,6 +27,15 @@ const NewPost = ({ navigation }) => {
 		video: null,
 		links: [],
 	});
+
+	const user = useSelector((s) => s.user.data);
+
+	const { isLoading, isError, error, data } = useGetProfileDetails(
+		user._id,
+		'new-post'
+	);
+
+	const { mutate } = useNewPost();
 
 	const toggleModal = useCallback(() => {
 		setOpen((p) => !p);
@@ -46,6 +59,14 @@ const NewPost = ({ navigation }) => {
 		[selectedTags, setSelectedTags]
 	);
 
+	if (isLoading) {
+		return <Loading />;
+	}
+
+	if (isError) {
+		return <Text>{error?.message}</Text>;
+	}
+
 	return (
 		<Container>
 			<Header>
@@ -57,7 +78,24 @@ const NewPost = ({ navigation }) => {
 					/>
 				</CancelBtn>
 				<Title>Create Post</Title>
-				<Post>
+				<Post
+					onPress={() => {
+						if (selectedTags.length === 0 || desc.length === 0) {
+							console.log('error: invalid fields');
+							return;
+						}
+						mutate({
+							data: {
+								author: user?._id,
+								content: desc,
+								tags: selectedTags,
+								visibility,
+							},
+						});
+
+						navigation.goBack();
+					}}
+				>
 					<Text>Post</Text>
 				</Post>
 			</Header>
@@ -73,13 +111,13 @@ const NewPost = ({ navigation }) => {
 				<ProfileContainer>
 					<Icon
 						containerStyle={{ marginRight: 10 }}
-						src={profile_image}
+						src={{ uri: data?.data?.profileImg }}
 						radius={50}
 					/>
 
 					<Details>
-						<Name>{'Neil Alvares'}</Name>
-						<Position>{'Student Dept. of EE'}</Position>
+						<Name>{data?.data?.username}</Name>
+						<Position>{data?.data?.title}</Position>
 					</Details>
 
 					<VisibilityOptions>

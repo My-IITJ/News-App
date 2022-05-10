@@ -120,7 +120,7 @@ router.get('/posts/:id', async (req, res) => {
 			isDeleted: false,
 		})
 			.populate('tags', ['_id', 'name'])
-			.populate('author', ['_id', 'username', 'title'])
+			.populate('author', ['_id', 'username', 'title', 'profileImg'])
 			.sort({ createdAt: -1 })
 			.skip(parseInt(limit) * parseInt(page))
 			.limit(parseInt(limit));
@@ -159,7 +159,7 @@ router.get('/saved-posts/:id', async (req, res) => {
 			isDeleted: false,
 		})
 			.populate('tags', ['_id', 'name'])
-			.populate('author', ['_id', 'username', 'title'])
+			.populate('author', ['_id', 'username', 'title', 'profileImg'])
 			.sort({ createdAt: -1 })
 			.skip(parseInt(limit) * parseInt(page))
 			.limit(parseInt(limit));

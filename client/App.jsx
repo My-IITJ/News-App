@@ -19,7 +19,7 @@ import { useAppState, useOnlineManager } from './apiCalls/hooks';
 import { useCallback, useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 import { useDispatch } from 'react-redux';
-import { authUser, updateData } from './redux/userSlice';
+import { authUser } from './redux/userSlice';
 import { fetchUserToken } from './apiCalls/auth';
 import { defaultImgUrl } from './apiCalls/client';
 

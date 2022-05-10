@@ -73,3 +73,22 @@ export const useUpvotePost = (setIsVoting) => {
 		},
 	});
 };
+
+// add post
+const newPost = ({ data }) => {
+	return axios.post(`${appUrl}/posts/new`, data);
+};
+
+export const useNewPost = () => {
+	const queryClient = useQueryClient();
+	return useMutation(newPost, {
+		onSuccess: () => {
+			queryClient.invalidateQueries('get-latest-posts');
+			queryClient.invalidateQueries('search-posts');
+			queryClient.invalidateQueries(['related-posts']);
+			queryClient.invalidateQueries(['filter-posts-by-tag']);
+			queryClient.invalidateQueries(['get-user-posts']);
+			queryClient.invalidateQueries(['get-user-saved-posts']);
+		},
+	});
+};

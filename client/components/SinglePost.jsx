@@ -53,7 +53,9 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 					resizeMode="cover"
 				/>
 				<Details>
-					<TouchableOpacity>
+					<TouchableOpacity
+						onPress={() => navigation.navigate('Profile', { _id: author?._id })}
+					>
 						<Name>{author?.username}</Name>
 						<Position>{author?.title}</Position>
 						<Time>{moment(createdAt).fromNow()}</Time>

@@ -71,8 +71,10 @@ const fetchProfile = (userId) => {
 	return axios.get(`${appUrl}/users/${userId}`);
 };
 
-export const useGetProfileDetails = (userId) => {
-	return useQuery(['get-user-profile', userId], () => fetchProfile(userId));
+export const useGetProfileDetails = (userId, page) => {
+	return useQuery(['get-user-profile', userId, page], () =>
+		fetchProfile(userId)
+	);
 };
 
 // edit profile details

@@ -11,7 +11,6 @@ const BlurModal = ({ visible, children, toggleModal }) => {
 			transparent={true}
 			visible={visible}
 			onRequestClose={() => {
-				console.log('Hi');
 				toggleModal();
 			}}
 		>

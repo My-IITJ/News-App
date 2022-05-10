@@ -50,3 +50,12 @@ export const useFilterByTag = (page, limit, tags) => {
 		{ keepPreviousData: false, enabled: tags.length > 0 }
 	);
 };
+
+// get all tags
+const allTags = () => {
+	return axios.get(`${appUrl}/tags`);
+};
+
+export const useGetTags = () => {
+	return useQuery(['get-all-tags'], allTags);
+};

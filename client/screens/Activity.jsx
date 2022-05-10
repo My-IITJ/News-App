@@ -17,8 +17,8 @@ const limit = 3;
 
 const Activity = ({ route }) => {
 	const [selectedTab, setSelectedTab] = useState(tabs[0]);
-	// const { userId } = route?.params;
-	const userId = '62013735b5a9036d44510f68';
+	const { userId, username, title, img } = route?.params;
+	// const userId = '62013735b5a9036d44510f68';
 
 	const {
 		isLoading,
@@ -140,10 +140,16 @@ const Activity = ({ route }) => {
 	return (
 		<Container>
 			<Header>
-				<Icon src={require('../assets/images/icon.png')} />
+				<Icon
+					src={{ uri: img }}
+					radius={20}
+					containerStyle={{
+						marginRight: 10,
+					}}
+				/>
 				<Details>
-					<Name size={isSmall && 20}>{'Neil'}</Name>
-					<Position>{'Prof. at CSE dept'}</Position>
+					<Name size={isSmall && 20}>{username}</Name>
+					<Position>{title}</Position>
 				</Details>
 			</Header>
 

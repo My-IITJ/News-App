@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
-import { Modal } from 'react-native';
+import { Modal, Text } from 'react-native';
 import { COLORS, isSmall, SIZES } from '../constants';
+import { useGetTags } from '../apiCalls/tag';
+import Loading from './Loading';
 
 const tags = [
 	{
@@ -30,6 +32,16 @@ const tags = [
 ];
 
 const TagsFilter = ({ selectedTags, open, toggleModal, toggleSelection }) => {
+	const { isLoading, isError, error, data } = useGetTags();
+
+	if (isLoading) {
+		return <Loading />;
+	}
+
+	if (isError) {
+		return <Text>{error?.message}</Text>;
+	}
+
 	return (
 		<Container>
 			<Modal
@@ -40,15 +52,22 @@ const TagsFilter = ({ selectedTags, open, toggleModal, toggleSelection }) => {
 			>
 				<FilterModal>
 					<Title>Tags</Title>
-					<Tags>
-						{tags.map((tag) => {
+					<Tags
+						style={{
+							justifyContent:
+								data?.data?.tags.length > 3 ? 'space-between' : 'flex-start',
+						}}
+					>
+						{data?.data?.tags.map((tag) => {
 							return (
 								<Tag
-									key={tag.id}
+									key={tag._id}
 									onPress={() => toggleSelection(tag.name)}
 									selected={selectedTags.includes(tag.name)}
 								>
-									<Label size={isSmall && 12}>{tag.name}</Label>
+									<Label size={isSmall && 12}>
+										{tag.name.charAt(0).toUpperCase() + tag.name.slice(1)}
+									</Label>
 								</Tag>
 							);
 						})}
@@ -105,7 +124,7 @@ const Tags = styled.View`
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-items: center;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 	margin: ${isSmall ? 10 : 20}px 0;
 `;
 
