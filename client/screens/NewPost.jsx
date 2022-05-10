@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { useCallback, useEffect, useState } from 'react';
-import { ScrollView, TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableOpacity, Image } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import Constants from 'expo-constants';
 import { COLORS, icons, isSmall, SIZES } from '../constants';
@@ -10,6 +11,9 @@ import { useSelector } from 'react-redux';
 import { useGetProfileDetails } from '../apiCalls/user';
 import Loading from '../components/Loading';
 import { useNewPost } from '../apiCalls/post';
+
+// Camera
+import * as ImagePicker from 'expo-image-picker';
 
 const profile_image = require('../assets/images/me.png');
 
@@ -34,6 +38,24 @@ const NewPost = ({ navigation }) => {
 		user._id,
 		'new-post'
 	);
+
+	const pickImage = async () => {
+		// No permissions request is necessary for launching the image library
+		let result = await ImagePicker.launchImageLibraryAsync({
+		mediaTypes: ImagePicker.MediaTypeOptions.All,
+		allowsEditing: true,
+		// aspect: [4, 3],
+		quality: 1,
+		});
+
+		console.log(result);
+
+		if (!result.cancelled) {
+			attachments.image = result.uri;
+			setAttachments({ ...attachments });
+		}
+	};
+
 
 	const { mutate } = useNewPost();
 
@@ -201,7 +223,11 @@ const NewPost = ({ navigation }) => {
 				<AttachmentContainer>
 					<Text color={COLORS.black}>Attachments</Text>
 					<AttachmentOptions>
-						<Attachment>
+						<Attachment 
+							onPress={() => {
+								pickImage();
+							}}
+						>
 							<Icon
 								width={40}
 								height={40}
@@ -247,6 +273,7 @@ const NewPost = ({ navigation }) => {
 					</Attachment> */}
 					</AttachmentOptions>
 				</AttachmentContainer>
+				{attachments.image && <Image source={{ uri: attachments.image }} style={{ width: "100%", height: 200, marginTop: 20 }} />}
 			</ScrollView>
 
 			<TagsSelect
