@@ -8,6 +8,8 @@ import theme, {
 } from './theme';
 import icons from './icons';
 
+const isSmall = SIZES.height < 720;
+
 export {
 	theme,
 	COLORS,
@@ -17,4 +19,5 @@ export {
 	lightTheme,
 	selectedTheme,
 	icons,
+	isSmall,
 };

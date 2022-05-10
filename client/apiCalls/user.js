@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { appUrl } from './client';
-import { useInfiniteQuery, useQuery } from 'react-query';
+import {
+	useInfiniteQuery,
+	useMutation,
+	useQuery,
+	useQueryClient,
+} from 'react-query';
 
 // fetching posts of a given user
 const fetchPosts = ({ pageParam = 1 }, limit, userId) => {
@@ -59,4 +64,27 @@ export const useGetSubscribedTags = (userId) => {
 	return useQuery(['get-user-subscribed-tags', userId], () =>
 		fetchSubscribedTags(userId)
 	);
+};
+
+// get profile details
+const fetchProfile = (userId) => {
+	return axios.get(`${appUrl}/users/${userId}`);
+};
+
+export const useGetProfileDetails = (userId) => {
+	return useQuery(['get-user-profile', userId], () => fetchProfile(userId));
+};
+
+// edit profile details
+const editProfile = ({ userId, data }) => {
+	return axios.put(`${appUrl}/users/edit/${userId}`, data);
+};
+
+export const useEditProfile = () => {
+	const queryClient = useQueryClient();
+	return useMutation(editProfile, {
+		onSuccess: (_, { userId }) => {
+			queryClient.invalidateQueries(['get-user-profile', userId]);
+		},
+	});
 };

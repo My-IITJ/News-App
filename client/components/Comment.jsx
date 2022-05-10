@@ -1,7 +1,7 @@
 import styled, { useTheme } from 'styled-components/native';
 import React, { useCallback } from 'react';
 import Icon from './Icon';
-import { COLORS, SIZES } from '../constants';
+import { COLORS, isSmall, SIZES } from '../constants';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useUpvoteComment } from '../apiCalls/comment';
 
@@ -22,7 +22,14 @@ const Comment = ({ item, postId }) => {
 
 	return (
 		<Container>
-			<Icon width={40} height={40} src={require('../assets/images/icon.png')} />
+			<Icon
+				containerStyle={{ marginRight: 10 }}
+				width={40}
+				height={40}
+				src={{ uri: item?.author?.profileImg }}
+				radius={10}
+				resizeMode="cover"
+			/>
 			<Wrapper>
 				<Box>
 					<CommentText>
@@ -38,15 +45,15 @@ const Comment = ({ item, postId }) => {
 						/>
 						<ActionLabel>{item?.upvotes?.length || 0}</ActionLabel>
 					</ActionBtn>
-					<ActionLabel style={{ fontSize: 25 }}>|</ActionLabel>
-					<ActionBtn>
+					{/* <ActionLabel style={{ fontSize: 25 }}>|</ActionLabel> */}
+					{/* <ActionBtn>
 						<MaterialCommunityIcons
 							name="reply-outline"
 							size={18}
 							color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
 						/>
 						<ActionLabel>{item?.replies?.length || '2'}</ActionLabel>
-					</ActionBtn>
+					</ActionBtn> */}
 				</Action>
 			</Wrapper>
 		</Container>
@@ -78,7 +85,7 @@ const Box = styled.View`
 
 const CommentText = styled.Text`
 	font-family: Poppins_400Regular;
-	font-size: 14px;
+	font-size: ${isSmall ? 12 : 14}px;
 	font-weight: 600;
 	color: ${(p) => (p.theme.name === 'dark' ? COLORS.white1 : COLORS.black)};
 `;

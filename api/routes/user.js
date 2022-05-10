@@ -32,7 +32,15 @@ router.post('/new', upload.single('profile-pic'), async (req, res) => {
 // fetch a single user : Sakshi
 router.get('/:id', async (req, res) => {
 	try {
-		const user = await User.findById(req.params.id);
+		const { id } = req.params;
+
+		if (!isValidObjectId(id))
+			return res.status(401).json({ error: 'Invalid request!' });
+
+		const user = await User.findById(id);
+
+		if (!user) return res.status(404).json({ error: 'User not found!' });
+
 		res.status(200).json(user);
 	} catch (err) {
 		res.status(500).json(err);
@@ -85,7 +93,8 @@ router.put('/edit/:id', editUserValidator, validate, async (req, res) => {
 			},
 			{ new: true }
 		);
-		editUserValidator, validate, res.status(200).json({ user: updatedUser });
+
+		res.status(200).json(updatedUser);
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ error: err?.message });
