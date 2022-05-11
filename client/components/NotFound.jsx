@@ -6,7 +6,7 @@ import { COLORS } from '../constants';
 const NotFound = () => {
 	return (
 		<Container>
-			<Text>Sorry No Posts</Text>
+			{/* <Text>Sorry No Posts</Text> */}
 			<Image source={require('../assets/images/void.png')} />
 		</Container>
 	);

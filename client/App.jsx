@@ -21,7 +21,7 @@ import auth from '@react-native-firebase/auth';
 import { useDispatch } from 'react-redux';
 import { authUser } from './redux/userSlice';
 import { fetchUserToken } from './apiCalls/auth';
-import { defaultImgUrl } from './apiCalls/client';
+import { defaultImgUrl, getUserRole } from './apiCalls/client';
 
 LogBox.ignoreLogs(['Setting a timer']);
 const queryClient = new QueryClient();
@@ -49,7 +49,12 @@ export default function App() {
 					uid: user.uid,
 				});
 
-				data = { _id, profileImg };
+				data = {
+					_id,
+					profileImg,
+					role: getUserRole(user.email),
+					email: user.email,
+				};
 			}
 
 			dispatch(authUser(data));

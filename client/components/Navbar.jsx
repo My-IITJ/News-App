@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { ROLES } from '../apiCalls/client';
 
 const NavBar = ({ profile }) => {
 	const theme = useTheme();
@@ -15,13 +16,15 @@ const NavBar = ({ profile }) => {
 		<Container>
 			<Icon src={icons.logo_home} width={48} height={48} />
 			<Title>My IITJ</Title>
-			<AddBtn onPress={() => navigation.navigate('NewPost')}>
-				<Ionicons
-					name="add"
-					size={26}
-					color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
-				/>
-			</AddBtn>
+			{data?.role !== ROLES.GUEST && (
+				<AddBtn onPress={() => navigation.navigate('NewPost')}>
+					<Ionicons
+						name="add"
+						size={26}
+						color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
+					/>
+				</AddBtn>
+			)}
 			<TouchableOpacity
 				onPress={() =>
 					!profile && navigation.navigate('Profile', { _id: data?._id })

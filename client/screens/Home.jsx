@@ -7,7 +7,7 @@ import { useGetPosts } from '../apiCalls/post';
 import { Text } from 'react-native';
 import Loading from '../components/Loading';
 
-const limit = 3;
+const limit = 5;
 
 const Home = () => {
 	const {

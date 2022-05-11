@@ -45,7 +45,9 @@ router.post('/user-details', async (req, res) => {
 			});
 
 			await newUser.save();
-			return res.status(200).json({ _id: newUser._id });
+			return res
+				.status(200)
+				.json({ _id: newUser._id, profileImg: user.profileImg });
 		}
 	} catch (error) {
 		res.status(500).json(error);
