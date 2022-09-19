@@ -5,6 +5,8 @@ import styled from 'styled-components/native';
 import ReachedEnd from './ReachedEnd';
 import NotFound from './NotFound';
 import Spinner from './Spinner';
+import { useSelector } from 'react-redux';
+import { ROLES } from '../apiCalls/client';
 
 // const ITEM_SIZE = 525;
 
@@ -19,6 +21,8 @@ const PostsList = ({
 	data,
 	setIsUpvote,
 }) => {
+	const user = useSelector((s) => s.user.data);
+
 	const allPosts = useCallback(() => {
 		if (data) {
 			let p = [];
@@ -30,10 +34,19 @@ const PostsList = ({
 		return posts;
 	}, [data, posts]);
 
+	//temporary fix
+	const filterPosts = (posts) => {
+		if (user.role === ROLES.GUEST) {
+			posts = posts.filter((i) => i.visibility !== 'Private');
+		}
+
+		return posts;
+	};
+
 	return (
 		<Container>
 			<FlatList
-				data={allPosts()}
+				data={filterPosts(allPosts())}
 				style={{ flex: 1 }}
 				keyExtractor={(_, idx) => `post-${page}-${idx}`}
 				renderItem={({ item }) => {

@@ -1,10 +1,11 @@
 import styled, { useTheme } from 'styled-components/native';
 import { COLORS, icons, SIZES } from '../constants';
 import Icon from './Icon';
-import { Ionicons } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { ROLES } from '../apiCalls/client';
 
 const NavBar = ({ profile }) => {
 	const theme = useTheme();
@@ -15,13 +16,17 @@ const NavBar = ({ profile }) => {
 		<Container>
 			<Icon src={icons.logo_home} width={48} height={48} />
 			<Title>My IITJ</Title>
-			<AddBtn onPress={() => navigation.navigate('NewPost')}>
-				<Ionicons
-					name="add"
-					size={26}
-					color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
-				/>
-			</AddBtn>
+
+			{data?.role !== ROLES.GUEST && (
+				<AddBtn onPress={() => navigation.navigate('NewPost')}>
+					<Ionicons
+						name="add"
+						size={26}
+						color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
+					/>
+				</AddBtn>
+			)}
+
 			<TouchableOpacity
 				onPress={() =>
 					!profile && navigation.navigate('Profile', { _id: data?._id })
@@ -32,6 +37,7 @@ const NavBar = ({ profile }) => {
 					width={45}
 					height={45}
 					radius={10}
+					resizeMode="cover"
 				/>
 			</TouchableOpacity>
 		</Container>

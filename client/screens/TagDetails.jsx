@@ -7,7 +7,7 @@ import { useGetTagDetails, useRelatedPosts } from '../apiCalls/tag';
 import Loading from '../components/Loading';
 import { Text } from 'react-native';
 
-const limit = 3;
+const limit = 5;
 
 const TagDetails = ({ route }) => {
 	const theme = useTheme();

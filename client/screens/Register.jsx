@@ -10,8 +10,13 @@ const Register = ({ navigation }) => {
 	const [password, setPassword] = useState('');
 
 	const handleRegistration = useCallback(() => {
+		if (email.length === 0 || password.length === 0) {
+			console.log('invalid');
+			return;
+		}
+
 		auth()
-			.createUserWithEmailAndPassword('jane.doe@example.com', 'neil1234')
+			.createUserWithEmailAndPassword(email, password)
 			.then(() => {
 				console.log('User account created & signed in!');
 			})
@@ -26,17 +31,17 @@ const Register = ({ navigation }) => {
 
 				console.error(error);
 			});
-	}, []);
+	}, [email, password]);
 
 	return (
 		<Container>
 			<WelcomeText>Create Account</WelcomeText>
 
 			<Fields>
-				<Box>
+				{/* <Box>
 					<Label>Username</Label>
 					<Input value={username} onChangeText={(text) => setUsername(text)} />
-				</Box>
+				</Box> */}
 
 				<Box>
 					<Label>Email ID</Label>

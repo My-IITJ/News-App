@@ -1,5 +1,7 @@
 import NetInfo from '@react-native-community/netinfo';
-import { focusManager, onlineManager } from 'react-query';
+// import { focusManager, onlineManager } from 'react-query';
+import { focusManager, onlineManager } from '@tanstack/react-query';
+
 import { AppState, Platform } from 'react-native';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';

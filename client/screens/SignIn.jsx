@@ -4,13 +4,20 @@ import styled from 'styled-components/native';
 import Constants from 'expo-constants';
 import auth from '@react-native-firebase/auth';
 
+//'jane.doe@example.com', 'neil1234'
+
 const SignIn = ({ navigation }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
 	const handleSignIn = useCallback(() => {
+		if (email.length === 0 || password.length === 0) {
+			console.log('invalid');
+			return;
+		}
+
 		auth()
-			.signInWithEmailAndPassword('jane.doe@example.com', 'neil1234')
+			.signInWithEmailAndPassword(email, password)
 			.then(() => {
 				console.log('User account created & signed in!');
 			})
@@ -30,7 +37,7 @@ const SignIn = ({ navigation }) => {
 
 				console.error(error);
 			});
-	}, []);
+	}, [email, password]);
 
 	return (
 		<Container>

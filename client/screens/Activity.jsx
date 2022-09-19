@@ -13,7 +13,7 @@ import {
 import NotFound from '../components/NotFound';
 
 const tabs = ['posts', 'saved', 'subscribed tags'];
-const limit = 3;
+const limit = 5;
 
 const Activity = ({ route }) => {
 	const [selectedTab, setSelectedTab] = useState(tabs[0]);

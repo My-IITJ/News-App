@@ -4,7 +4,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { lightTheme, darkTheme } from '../constants';
 
-const initialState = {
+export type UserData = {
+	_id: string;
+	email: string;
+	profileImg?: string;
+	role: string;
+};
+
+export type UserState = {
+	token?: string;
+	data?: UserData;
+	theme: any;
+	error?: string;
+	isLoading: boolean;
+};
+
+const initialState: UserState = {
 	token: null, //jwt token for api calls
 	data: null, // store the user settings and other data
 	theme: lightTheme,

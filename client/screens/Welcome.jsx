@@ -71,8 +71,7 @@ const Welcome = ({ navigation }) => {
 
 				<WelcomeText>Welcome to My IITJ</WelcomeText>
 				<WelcomeText2>
-					lorem ipsum dolor sit aminlorem ipsum dolor sit aminlorem ipsum dolor
-					sit aminlorem ipsum dolor sit
+					A social interaction app for the IIT Jodhpur community
 				</WelcomeText2>
 
 				<Box>

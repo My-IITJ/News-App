@@ -16,8 +16,9 @@ router.post(
 	newPostValidator,
 	validate,
 	async (req, res) => {
+		console.log('first');
 		try {
-			let { author, content, tags, visibility } = req.body;
+			let { author, content, tags, visibility, image } = req.body;
 
 			const allTags = await Tag.find();
 
@@ -27,7 +28,7 @@ router.post(
 				)._id;
 			});
 
-			const post = { author, content, tags, visibility };
+			const post = { author, content, tags, visibility, thumbnail: image };
 
 			if (req.file) {
 				const { secure_url, public_id, width, height } =
@@ -54,12 +55,10 @@ router.get('/', async (req, res) => {
 		let { limit = 10, page = 1 } = req.query;
 		page--;
 
-		console.log(req.user);
-
 		const last3days = subDays(new Date(), 3);
 
 		const posts = await Post.find({
-			// createdAt: { $gte: last3days },
+			createdAt: { $gte: last3days },
 			isDeleted: false,
 		})
 			.populate('tags', ['_id', 'name'])
@@ -69,7 +68,7 @@ router.get('/', async (req, res) => {
 			.limit(parseInt(limit));
 
 		const count = await Post.countDocuments({
-			// createdAt: { $gte: last3days },
+			createdAt: { $gte: last3days },
 			isDeleted: false,
 		});
 
@@ -198,13 +197,21 @@ router.put('/:id', async (req, res) => {
 
 	if (!post) return res.status(404).json({ error: 'Post not found!' });
 
+	let { author, content, tags, visibility, image } = req.body;
+	const allTags = await Tag.find();
+
+	tags = tags.map((i) => {
+		return allTags.find((item) => item.name.toLowerCase() === i.toLowerCase())
+			._id;
+	});
+
 	try {
 		const post = await Post.findById(req.params.id);
 		if (post.author.equals(req.body.userId)) {
 			const updatedPost = await Post.findByIdAndUpdate(
 				req.params.id,
 				{
-					$set: req.body,
+					$set: { author, content, tags, visibility, thumbnail: image },
 					updated: { at: Date.now(), by: userId },
 				},
 				{ new: true }

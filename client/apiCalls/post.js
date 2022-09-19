@@ -74,6 +74,24 @@ export const useUpvotePost = (setIsVoting) => {
 	});
 };
 
+const createFormData = (photo, body = {}) => {
+	const data = new FormData();
+
+	if (photo) {
+		data.append('thumbnail', {
+			name: `my-iitj-${body?.author}` + photo?.fileName,
+			type: photo?.type,
+			uri: photo.uri,
+		});
+	}
+
+	Object.keys(body).forEach((key) => {
+		data.append(key, body[key]);
+	});
+
+	return data;
+};
+
 // add post
 const newPost = ({ data }) => {
 	return axios.post(`${appUrl}/posts/new`, data);
@@ -86,6 +104,26 @@ export const useNewPost = () => {
 			queryClient.invalidateQueries('get-latest-posts');
 			queryClient.invalidateQueries('search-posts');
 			queryClient.invalidateQueries(['related-posts']);
+			queryClient.invalidateQueries(['filter-posts-by-tag']);
+			queryClient.invalidateQueries(['get-user-posts']);
+			queryClient.invalidateQueries(['get-user-saved-posts']);
+		},
+	});
+};
+
+// edit post
+const editPost = ({ data, postId }) => {
+	return axios.put(`${appUrl}/posts/${postId}`, data);
+};
+
+export const useEditPost = () => {
+	const queryClient = useQueryClient();
+	return useMutation(editPost, {
+		onSuccess: ({ postId }) => {
+			queryClient.invalidateQueries('get-latest-posts');
+			queryClient.invalidateQueries('search-posts');
+			queryClient.invalidateQueries(['related-posts']);
+			queryClient.invalidateQueries(['post-comments', postId]);
 			queryClient.invalidateQueries(['filter-posts-by-tag']);
 			queryClient.invalidateQueries(['get-user-posts']);
 			queryClient.invalidateQueries(['get-user-saved-posts']);

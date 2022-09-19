@@ -1,7 +1,7 @@
 import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS, isSmall, SIZES } from '../constants';
-import { Ionicons, AntDesign } from '@expo/vector-icons';
+import { Ionicons, AntDesign, SimpleLineIcons } from '@expo/vector-icons';
 import Icon from './Icon';
 import { useTheme } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
@@ -69,6 +69,20 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 						color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
 					/>
 				</TouchableOpacity>
+
+				{data?._id === author?._id && (
+					<TouchableOpacity
+						onPress={() =>
+							navigation.navigate('NewPost', { edit: true, post: post })
+						}
+					>
+						<SimpleLineIcons
+							name="options-vertical"
+							size={24}
+							color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
+						/>
+					</TouchableOpacity>
+				)}
 			</Header>
 
 			<TouchableOpacity
@@ -76,7 +90,7 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 					!all && navigation.navigate('PostComments', { postId: post._id })
 				}
 			>
-				<Content numberOfLines={all ? 20 : !thumbnail ? 4 : 3}>
+				<Content numberOfLines={all ? 30 : !thumbnail ? 4 : 3}>
 					{content ||
 						`lorem ipsum dolor sit amet, consectetur adipis lorem ipsum dolor sit
 					amet, consectetur adipis lorem ipsum dolor sit amet, consectetur
@@ -203,7 +217,7 @@ const Time = styled.Text`
 const Content = styled.Text`
 	margin: 10px 0px;
 	font-family: Poppins_400Regular;
-	text-align: justify;
+	/* text-align: justify; */
 	font-size: ${isSmall ? 12 : 14}px;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
@@ -237,6 +251,7 @@ const Thumbnail = styled.Image`
 	/* width: undefined;
 	height: undefined; */
 	margin: 15px 0px;
+	margin-bottom: 24px;
 	/* background-color: red; */
 `;
 

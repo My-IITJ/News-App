@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { useCallback, useEffect, useState } from 'react';
-import { ScrollView, TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableOpacity, Image } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import Constants from 'expo-constants';
 import { COLORS, icons, isSmall, SIZES } from '../constants';
@@ -9,19 +10,24 @@ import TagsSelect from '../components/TagsSelect';
 import { useSelector } from 'react-redux';
 import { useGetProfileDetails } from '../apiCalls/user';
 import Loading from '../components/Loading';
-import { useNewPost } from '../apiCalls/post';
+import { useEditPost, useNewPost } from '../apiCalls/post';
 
-const profile_image = require('../assets/images/me.png');
+// Camera
+import * as ImagePicker from 'expo-image-picker';
 
+// upload to cloudinary
+const cloudinary_url = `https://api.cloudinary.com/v1_1/myiitj/upload`;
 const vis = ['Public', 'Private'];
 
-const NewPost = ({ navigation }) => {
+const NewPost = ({ navigation, route: { params } }) => {
 	const theme = useTheme();
 	const [showMenu, setShowMenu] = useState(false);
 	const [open, setOpen] = useState(false);
-	const [visibility, setVisibility] = useState(vis[0]);
+	const [visibility, setVisibility] = useState(
+		params?.edit ? params?.post?.visibility : vis[0]
+	);
 	const [selectedTags, setSelectedTags] = useState([]);
-	const [desc, setDesc] = useState('');
+	const [desc, setDesc] = useState(params?.edit ? params?.post?.content : '');
 	const [attachments, setAttachments] = useState({
 		image: null,
 		video: null,
@@ -35,7 +41,53 @@ const NewPost = ({ navigation }) => {
 		'new-post'
 	);
 
+	const pickImage = async () => {
+		// No permissions request is necessary for launching the image library
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			allowsEditing: true,
+			// aspect: [4, 3],
+			quality: 1,
+			base64: true,
+		});
+
+		// console.log(result);
+
+		if (!result.cancelled) {
+			attachments.image = { ...result };
+			setAttachments({ ...attachments });
+
+			let base64Img = `data:image/jpg;base64,${result.base64}`;
+			let body = {
+				file: base64Img,
+				upload_preset: 'vkcvvggf',
+			};
+
+			const { secure_url, public_id, width, height } = await fetch(
+				cloudinary_url,
+				{
+					body: JSON.stringify(body),
+					headers: {
+						'content-type': 'application/json',
+					},
+					method: 'POST',
+				}
+			).then((r) => r.json());
+			console.log('done uploading');
+			attachments.image = {
+				...result,
+				url: secure_url,
+				public_id,
+				width,
+				height,
+			};
+			setAttachments({ ...attachments });
+		}
+	};
+
 	const { mutate } = useNewPost();
+
+	const { mutate: editMutate } = useEditPost();
 
 	const toggleModal = useCallback(() => {
 		setOpen((p) => !p);
@@ -77,21 +129,46 @@ const NewPost = ({ navigation }) => {
 						color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
 					/>
 				</CancelBtn>
-				<Title>Create Post</Title>
+				<Title>{params?.edit ? 'Edit Post' : 'Create Post'}</Title>
 				<Post
 					onPress={() => {
 						if (selectedTags.length === 0 || desc.length === 0) {
 							console.log('error: invalid fields');
 							return;
 						}
-						mutate({
-							data: {
-								author: user?._id,
-								content: desc,
-								tags: selectedTags,
-								visibility,
-							},
-						});
+
+						if (params?.edit) {
+							editMutate({
+								data: {
+									userId: user?._id,
+									content: desc,
+									tags: [...selectedTags, visibility],
+									visibility,
+									image: {
+										url: attachments.image?.url,
+										public_id: attachments?.image?.public_id,
+										width: attachments.image?.width,
+										height: attachments.image?.height,
+									},
+								},
+								postId: params?.post?._id,
+							});
+						} else {
+							mutate({
+								data: {
+									author: user?._id,
+									content: desc,
+									tags: [...selectedTags, visibility],
+									visibility,
+									image: {
+										url: attachments.image?.url,
+										public_id: attachments?.image?.public_id,
+										width: attachments.image?.width,
+										height: attachments.image?.height,
+									},
+								},
+							});
+						}
 
 						navigation.goBack();
 					}}
@@ -201,7 +278,11 @@ const NewPost = ({ navigation }) => {
 				<AttachmentContainer>
 					<Text color={COLORS.black}>Attachments</Text>
 					<AttachmentOptions>
-						<Attachment>
+						<Attachment
+							onPress={() => {
+								pickImage();
+							}}
+						>
 							<Icon
 								width={40}
 								height={40}
@@ -247,6 +328,17 @@ const NewPost = ({ navigation }) => {
 					</Attachment> */}
 					</AttachmentOptions>
 				</AttachmentContainer>
+				{attachments.image && (
+					<Image
+						source={{ uri: attachments.image?.uri }}
+						style={{
+							width: '100%',
+							height: 200,
+							marginTop: 20,
+							borderRadius: 20,
+						}}
+					/>
+				)}
 			</ScrollView>
 
 			<TagsSelect

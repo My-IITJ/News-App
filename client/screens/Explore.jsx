@@ -12,7 +12,7 @@ import Loading from '../components/Loading';
 import TagsFilter from '../components/TagsFilter';
 import { useFilterByTag } from '../apiCalls/tag';
 
-const limit = 3;
+const limit = 5;
 
 const Explore = () => {
 	const [searchPhrase, setSearchPhrase] = useState('');

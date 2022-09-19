@@ -6,8 +6,8 @@ import { COLORS } from '../constants';
 const NotFound = () => {
 	return (
 		<Container>
-			<Text>Sorry No Posts</Text>
 			<Image source={require('../assets/images/void.png')} />
+			<Text>Sorry No Posts</Text>
 		</Container>
 	);
 };
@@ -25,7 +25,7 @@ const Container = styled.View`
 const Text = styled.Text`
 	font-size: 20px;
 	color: ${(p) => (p.theme.name === 'dark' ? COLORS.gray50 : COLORS.gray10)};
-	margin-bottom: 15px;
+	margin: 8px 15px;
 `;
 
 const Image = styled.Image`
