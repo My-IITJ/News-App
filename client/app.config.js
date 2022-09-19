@@ -11,6 +11,17 @@ const getPackageName = () => {
 	}
 };
 
+const getGoogleServicesFile = () => {
+	switch (APP_TYPE) {
+		case 'dev':
+			return './google-services.json';
+		case 'preview':
+			return './google-services-preview.json';
+		default:
+			return './google-services.json';
+	}
+};
+
 const config = () => ({
 	name: 'MyIITJ',
 	slug: 'my-iitj-v1',
@@ -38,7 +49,7 @@ const config = () => ({
 			backgroundColor: '#FFFFFF',
 		},
 		package: getPackageName(),
-		googleServicesFile: './google-services.json',
+		googleServicesFile: getGoogleServicesFile(),
 	},
 	web: {
 		favicon: './assets/icons/favicon.png',

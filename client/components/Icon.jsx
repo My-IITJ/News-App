@@ -5,7 +5,7 @@ import { SIZES } from '../constants';
 
 const Icon = ({
 	src,
-	containerStyle,
+	containerStyle = {},
 	width = 50,
 	height = 50,
 	radius = 0,

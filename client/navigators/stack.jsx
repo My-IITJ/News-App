@@ -17,10 +17,10 @@ import { useSelector } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import { COLORS, isSmall } from '../constants';
 import BackBtn from '../components/BackBtn';
-import Icon from '../components/Icon';
-import { Animated, TouchableOpacity } from 'react-native';
+import ReAnimated from 'react-native-reanimated';
+import { Animated, View } from 'react-native';
 
-const AuthScreens = (theme) => {
+const AuthScreens = (_theme) => {
 	return [
 		{
 			name: 'Welcome',
@@ -160,7 +160,7 @@ const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
 	};
 };
 
-const AppStack = () => {
+export const AppStack = ({ drawerAnimatedStyle }) => {
 	const { theme: currentTheme, data } = useSelector((s) => s.user);
 
 	return (
@@ -172,33 +172,50 @@ const AppStack = () => {
 					style={currentTheme.name === 'dark' && 'light'}
 				/>
 			}
-			<Stack.Navigator
-				screenOptions={{
-					headerShown: false,
-					transitionSpec: {
-						open: TransitionSpecs.TransitionIOSSpec,
-						close: TransitionSpecs.TransitionIOSSpec,
+			<ReAnimated.View
+				style={[
+					{
+						flex: 1,
 					},
-					cardStyleInterpolator: forSlide,
-					detachPreviousScreen: false,
-				}}
+					drawerAnimatedStyle,
+				]}
 			>
-				{!data
-					? AuthScreens(currentTheme).map(
-							({ name, Component, options, props }) => (
-								<Stack.Screen key={name} name={name} options={options}>
-									{(p) => <Component {...p} {...props} />}
-								</Stack.Screen>
-							)
-					  )
-					: screens(currentTheme).map(({ name, Component, options, props }) => (
-							<Stack.Screen key={name} name={name} options={options}>
-								{(p) => <Component {...p} {...props} />}
-							</Stack.Screen>
-					  ))}
-			</Stack.Navigator>
+				<Stack.Navigator
+					screenOptions={{
+						headerShown: false,
+						transitionSpec: {
+							open: TransitionSpecs.TransitionIOSSpec,
+							close: TransitionSpecs.TransitionIOSSpec,
+						},
+						cardStyleInterpolator: forSlide,
+						detachPreviousScreen: false,
+					}}
+				>
+					{!data
+						? AuthScreens(currentTheme).map(
+								({ name, Component, options, props }) => (
+									<Stack.Screen key={name} name={name} options={options}>
+										{(p) => <Component {...p} {...props} />}
+									</Stack.Screen>
+								)
+						  )
+						: screens(currentTheme).map(
+								({ name, Component, options, props }) => (
+									<Stack.Screen key={name} name={name} options={options}>
+										{(p) => (
+											<Component
+												{...p}
+												{...props}
+												drawerAnimatedStyle={drawerAnimatedStyle}
+											/>
+										)}
+									</Stack.Screen>
+								)
+						  )}
+				</Stack.Navigator>
+			</ReAnimated.View>
 		</ThemeProvider>
 	);
 };
 
-export default AppStack;
+// export default AppStack;

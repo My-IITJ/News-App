@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "696540223154",
+    "project_id": "my-iitj-preview",
+    "storage_bucket": "my-iitj-preview.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:696540223154:android:f184b0531c1ad3e10a9bab",
+        "android_client_info": {
+          "package_name": "com.neil_140301.myiitj.preview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "696540223154-md2pnvl7eegrgb68qle3ea447noqu76d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU2oqrkgJYBzuBd7xn7oR1U2Z73k9D-OY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "696540223154-md2pnvl7eegrgb68qle3ea447noqu76d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

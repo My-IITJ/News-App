@@ -1,30 +1,38 @@
-import { LogBox } from 'react-native';
+import { LogBox, View } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 
 // font related imports
 import { useFonts, Poppins_400Regular } from '@expo-google-fonts/poppins';
-import AppLoading from 'expo-app-loading';
+import * as SplashScreen from 'expo-splash-screen';
 
 // navigation related imports
 import { NavigationContainer } from '@react-navigation/native';
-import AppStack from './navigators/stack';
+import MyDrawer from './navigators/drawer';
 
 //redux related imports
 import { persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import { useDispatch } from 'react-redux';
 
 // react query related imports
 import { QueryClient, QueryClientProvider } from 'react-query';
+// import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAppState, useOnlineManager } from './apiCalls/hooks';
+
+// auth related imports
 import { useCallback, useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
-import { useDispatch } from 'react-redux';
 import { authUser } from './redux/userSlice';
 import { fetchUserToken } from './apiCalls/auth';
 import { defaultImgUrl, getUserRole } from './apiCalls/client';
 
+
+import 'react-native-gesture-handler';
+
 LogBox.ignoreLogs(['Setting a timer']);
 const queryClient = new QueryClient();
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
 	useOnlineManager();
@@ -68,19 +76,38 @@ export default function App() {
 		return subscriber; // unsubscribe on unmount
 	}, [onAuthStateChanged]);
 
+	const onLayoutRootView = useCallback(async () => {
+		if (isLoaded && !initializing) {
+			await SplashScreen.hideAsync();
+			console.log('app loaded');
+		}
+	}, [initializing, isLoaded]);
+
 	if (!isLoaded || initializing) {
-		return <AppLoading />;
+		// return <AppLoading />;
+		console.log('app not loaded');
+		return;
 	}
 
 	return (
-		<PersistGate loading={null} persistor={persistor}>
-			<QueryClientProvider client={queryClient}>
-				<RootSiblingParent>
-					<NavigationContainer>
-						<AppStack />
-					</NavigationContainer>
-				</RootSiblingParent>
-			</QueryClientProvider>
-		</PersistGate>
+		<View
+			style={{
+				flex: 1,
+				backgroundColor: 'red',
+			}}
+			onLayout={onLayoutRootView}
+		>
+			<PersistGate loading={null} persistor={persistor}>
+				<QueryClientProvider client={queryClient}>
+					<RootSiblingParent>
+						<NavigationContainer>
+							{/* <AppStack /> */}
+							<MyDrawer />
+							{/* <Text>hello neil</Text> */}
+						</NavigationContainer>
+					</RootSiblingParent>
+				</QueryClientProvider>
+			</PersistGate>
+		</View>
 	);
 }

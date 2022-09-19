@@ -4,6 +4,7 @@
 	},
 	"build": {
 		"dev": {
+			"developmentClient": true,
 			"distribution": "internal",
 			"releaseChannel": "dev",
 			"android": {
@@ -17,7 +18,8 @@
 		"preview": {
 			"distribution": "internal",
 			"releaseChannel": "staging",
-			"env": { "APP_TYPE": "preview" }
+			"env": { "APP_TYPE": "preview" },
+			"developmentClient": true
 		},
 		"production": {}
 	},
