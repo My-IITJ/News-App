@@ -12,7 +12,7 @@ import MyDrawer from './navigators/drawer';
 //redux related imports
 import { persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 
 // react query related imports
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -25,6 +25,9 @@ import auth from '@react-native-firebase/auth';
 import { authUser } from './redux/userSlice';
 import { fetchUserToken } from './apiCalls/auth';
 import { defaultImgUrl, getUserRole } from './apiCalls/client';
+
+import { ThemeProvider } from 'styled-components'; // allows us to pass the current theme to all components
+
 
 
 import 'react-native-gesture-handler';
@@ -44,6 +47,8 @@ export default function App() {
 	const [isLoaded] = useFonts({
 		Poppins_400Regular,
 	});
+	const { theme: currentTheme } = useSelector((s:RootStateOrAny) => s.user);
+
 
 	const onAuthStateChanged = useCallback(
 		async (user) => {
@@ -100,11 +105,12 @@ export default function App() {
 			<PersistGate loading={null} persistor={persistor}>
 				<QueryClientProvider client={queryClient}>
 					<RootSiblingParent>
+						<ThemeProvider theme={currentTheme}>
 						<NavigationContainer>
-							{/* <AppStack /> */}
 							<MyDrawer />
-							{/* <Text>hello neil</Text> */}
 						</NavigationContainer>
+						</ThemeProvider>
+						
 					</RootSiblingParent>
 				</QueryClientProvider>
 			</PersistGate>

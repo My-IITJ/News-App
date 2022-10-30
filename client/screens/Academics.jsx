@@ -4,10 +4,12 @@ import styled from 'styled-components/native';
 import Constants from 'expo-constants';
 import { COLORS } from '../constants';
 import Animated from 'react-native-reanimated';
+import NavBar from '../components/Navbar';
 
 const Academics = ({ drawerAnimatedStyle }) => {
 	return (
 		<Container style={[drawerAnimatedStyle]}>
+			<NavBar/>
 			<Image
 				source={require('../assets/images/coming_soon.png')}
 				style={{ width: 250, height: 250, borderRadius: 10 }}

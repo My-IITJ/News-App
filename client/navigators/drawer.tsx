@@ -31,6 +31,8 @@ import { UserData } from '../redux/userSlice';
 
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
 import { useEffect, useState } from 'react';
+import Home from '../screens/Home';
+import { StackActions } from '@react-navigation/native';
 
 const drawerScreens: DrawerScreenConfig[] = [
 	{
@@ -212,6 +214,9 @@ const CustomDrawer = ({ props, userData, setProgress }: CustomDrawerProps) => {
 								<DrawerItem
 									key={name}
 									onPress={() => {
+										if(name === "Latest"){
+											props.navigation.dispatch(StackActions.popToTop());
+										}
 										props.navigation.navigate(name);
 										setActiveDrawer(name);
 									}}

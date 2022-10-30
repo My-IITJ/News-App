@@ -1,4 +1,5 @@
 import styled, { useTheme } from 'styled-components/native';
+import {Touchable, View} from 'react-native'
 import { COLORS, icons, SIZES } from '../constants';
 import Icon from './Icon';
 import { Feather, Ionicons } from '@expo/vector-icons';
@@ -6,6 +7,7 @@ import { TouchableOpacity } from 'react-native';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { ROLES } from '../apiCalls/client';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 const NavBar = ({ profile }) => {
 	const theme = useTheme();
@@ -14,8 +16,14 @@ const NavBar = ({ profile }) => {
 
 	return (
 		<Container>
+			<TouchableOpacity onPress={() => {navigation.toggleDrawer()}}>
+			<Icon src={theme.name === "dark" ? icons.menu_light : icons.menu_dark} width={48} height={48} />
+			</TouchableOpacity>
+			<View style={{display:"flex", flexDirection:"row", alignItems:'center'}}>
 			<Icon src={icons.logo_home} width={48} height={48} />
 			<Title>My IITJ</Title>
+			</View>
+			
 
 			{data?.role !== ROLES.GUEST && (
 				<AddBtn onPress={() => navigation.navigate('NewPost')}>
@@ -51,14 +59,13 @@ const Container = styled.View`
 	padding: 10px 20px;
 	flex-direction: row;
 	align-items: center;
+	justify-content: space-between;
 `;
 
 const Title = styled.Text`
-	font-size: 25px;
+	font-size: ${RFValue(20)}px;
 	margin-left: 10px;
-	margin-right: auto;
 	font-weight: bold;
-	letter-spacing: 1.2px;
 	font-family: Poppins_400Regular;
 	color: ${(p) => (p.theme.name === 'dark' ? COLORS.white1 : COLORS.black)};
 `;

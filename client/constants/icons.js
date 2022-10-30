@@ -11,6 +11,8 @@ const link_dark = require('../assets/icons/Link_dark.png');
 const chart_light = require('../assets/icons/Chart_light.png');
 const chart_dark = require('../assets/icons/Chart_dark.png');
 const me = require('../assets/images/me.png');
+const menu_dark = require('../assets/icons/menu_dark.png');
+const menu_light = require('../assets/icons/menu_light.png');
 
 const icons = {
 	logo_bg_dark,
@@ -25,6 +27,8 @@ const icons = {
 	chart_dark,
 	chart_light,
 	me,
+	menu_dark,
+	menu_light,
 };
 
 export default icons;
