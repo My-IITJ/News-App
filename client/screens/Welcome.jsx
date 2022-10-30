@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import styled, { useTheme } from 'styled-components/native';
-import { AntDesign } from '@expo/vector-icons';
 import { COLORS, icons, isSmall, SIZES } from '../constants';
 import Constants from 'expo-constants';
 import { useDispatch } from 'react-redux';
 import { updateData } from '../redux/userSlice';
+import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 //auth related imports
 import * as Linking from 'expo-linking';
@@ -54,19 +56,12 @@ const Welcome = ({ navigation }) => {
 	return (
 		<Container>
 			<OuterBox>
-				<Circle width={isSmall && 180} height={isSmall && 180}>
-					<Circle
-						width={isSmall ? 120 : 140}
-						height={isSmall ? 120 : 140}
-						color={COLORS.purple2}
-						style={{ opacity: 0.5 }}
-					>
+				<Circle>
 						<Avatar
 							source={
 								theme.name === 'dark' ? icons.logo_bg_dark : icons.logo_bg_light
 							}
 						/>
-					</Circle>
 				</Circle>
 
 				<WelcomeText>Welcome to My IITJ</WelcomeText>
@@ -84,23 +79,13 @@ const Welcome = ({ navigation }) => {
 				</Box>
 
 				<Line />
-
-				<Google onPress={onGoogleButtonPress}>
-					<Circle
-						width={60}
-						height={60}
-						color={COLORS.purple2}
-						style={{ opacity: 0.5 }}
-					>
-						<AntDesign
-							name="google"
-							size={40}
-							color={theme.name === 'dark' ? COLORS.white1 : COLORS.deepBlue}
-							style={{ opacity: 0.7 }}
-						/>
-					</Circle>
-					<Label2>Continue with Google</Label2>
-				</Google>
+				<GoogleSigninButton
+				style={{ width: RFValue(200), height: RFValue(48) }}
+				size={GoogleSigninButton.Size.Wide}
+				color={GoogleSigninButton.Color.Dark}
+				onPress={onGoogleButtonPress}
+				/>
+				
 			</OuterBox>
 		</Container>
 	);
@@ -117,7 +102,7 @@ const Container = styled.View`
 `;
 
 const OuterBox = styled.View`
-	padding: 25px;
+	padding: 50px;
 	flex: 1;
 	align-items: center;
 	justify-content: center;
@@ -133,9 +118,9 @@ const OuterBox = styled.View`
 const Circle = styled.View`
 	align-items: center;
 	justify-content: center;
-	width: ${(p) => p.width || 200}px;
-	height: ${(p) => p.height || 200}px;
-	border-radius: 100px;
+	width: ${RFPercentage(30)}px;
+	height: ${RFPercentage(30)}px;
+	border-radius: ${RFPercentage(20)}px;
 	background-color: ${({ theme, color }) =>
 		theme.name === 'dark' ? color || COLORS.darkgrey : COLORS.white1};
 	shadow-color: ${(p) => COLORS.deepBlue};
@@ -145,25 +130,26 @@ const Circle = styled.View`
 `;
 
 const Avatar = styled.Image`
-	width: ${isSmall ? 80 : 100}px;
-	height: ${isSmall ? 80 : 100}px;
+	width: ${RFValue(130)}px;
+	height: ${RFValue(130)}px;
 `;
 
 const WelcomeText = styled.Text`
 	font-family: Poppins_400Regular;
-	font-size: ${isSmall ? 40 : 50}px;
+	font-weight: bold;
+	font-size: ${RFValue(25)}px;
 	text-align: center;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.purple2 : COLORS.deepBlue};
-	margin-top: ${isSmall ? 22 : 32}px;
+	margin-top: ${RFValue(30)}px;
 	margin-bottom: 8px;
 `;
 
 const WelcomeText2 = styled.Text`
 	font-family: Poppins_400Regular;
-	font-size: ${isSmall ? 14 : 16}px;
+	font-size: ${RFValue(14)}px;
 	text-align: center;
-	margin: ${isSmall ? 10 : 20}px;
+	margin: ${RFValue(10)}px;
 	color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.white1 : COLORS.deepBlue};
 `;
@@ -176,7 +162,7 @@ const Box = styled.View`
 const ButtonContainer = styled.TouchableOpacity`
 	background-color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.purple2 : COLORS.deepBlue};
-	width: ${isSmall ? 38 : 45}%;
+	width: ${RFValue(120)}}px;
 	border-radius: ${SIZES.padding}px;
 	margin: 10px;
 `;
@@ -186,7 +172,7 @@ const Label1 = styled.Text`
 	padding: 10px;
 	font-family: Poppins_400Regular;
 	font-weight: 600;
-	font-size: ${isSmall ? 16 : 20}px;
+	font-size: ${RFValue(15)}px;
 	letter-spacing: 1.25px;
 	text-align: center;
 `;
@@ -198,21 +184,4 @@ const Line = styled.View`
 	border-radius: 5px;
 	width: 88%;
 	margin: ${isSmall ? 18 : 32}px 0;
-`;
-
-const Google = styled.TouchableOpacity`
-	margin: ${isSmall ? 8 : 15}px 0;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-around;
-	width: 100%;
-	padding: 8px;
-`;
-
-const Label2 = styled.Text`
-	color: ${(p) => (p.theme.name === 'dark' ? COLORS.white1 : COLORS.deepBlue)};
-	font-family: Poppins_400Regular;
-	font-size: ${isSmall ? 18 : 24}px;
-	text-align: center;
-	margin-left: 15px;
 `;
