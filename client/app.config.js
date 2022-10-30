@@ -1,27 +1,3 @@
-const APP_TYPE = process.env.APP_TYPE;
-
-const getPackageName = () => {
-	switch (APP_TYPE) {
-		case 'dev':
-			return 'com.neil_140301.myiitj.dev';
-		case 'preview':
-			return 'com.neil_140301.myiitj.preview';
-		default:
-			return 'com.neil_140301.myiitj.dev';
-	}
-};
-
-const getGoogleServicesFile = () => {
-	switch (APP_TYPE) {
-		case 'dev':
-			return './google-services.json';
-		case 'preview':
-			return './google-services-preview.json';
-		default:
-			return './google-services.json';
-	}
-};
-
 const config = () => ({
 	name: 'MyIITJ',
 	slug: 'my-iitj-v1',
@@ -48,8 +24,8 @@ const config = () => ({
 			foregroundImage: './assets/icons/adaptive-icon.png',
 			backgroundColor: '#FFFFFF',
 		},
-		package: getPackageName(),
-		googleServicesFile: getGoogleServicesFile(),
+		package: 'com.iitj.myiitj',
+		googleServicesFile: "./google-services.json",
 	},
 	web: {
 		favicon: './assets/icons/favicon.png',
