@@ -1,12 +1,12 @@
-import styled from 'styled-components/native';
-import { COLORS } from '../constants';
+import styled from "styled-components/native";
+import { COLORS } from "../constants";
 
 //temporary to be changed later
 
 const NotFound = () => {
 	return (
 		<Container>
-			<Image source={require('../assets/images/void.png')} />
+			<Image source={require("../assets/images/void_nobg.png")} />
 			<Text>Sorry No Posts</Text>
 		</Container>
 	);
@@ -24,7 +24,7 @@ const Container = styled.View`
 
 const Text = styled.Text`
 	font-size: 20px;
-	color: ${(p) => (p.theme.name === 'dark' ? COLORS.gray50 : COLORS.gray10)};
+	color: ${(p) => (p.theme.name === "dark" ? COLORS.gray50 : COLORS.gray10)};
 	margin: 8px 15px;
 `;
 
