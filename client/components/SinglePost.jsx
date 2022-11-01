@@ -46,9 +46,9 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 	return (
 		<Container all={all} height={thumbnail}>
 			<Header>
-				<Pressable 
-					onPress={() => navigation.navigate('Profile', { _id: author?._id })}
-				>
+				<Pressable
+					onPressIn={() => navigation.navigate('Profile', { _id: author?._id })}
+					>
 					<Icon
 						containerStyle={{ marginRight: 10 }}
 						src={{ uri: author?.profileImg }}
