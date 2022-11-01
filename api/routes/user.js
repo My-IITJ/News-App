@@ -5,29 +5,7 @@ const Tag = require('../db/models/Tag');
 const upload = require('../middlewares/multer');
 const { isValidObjectId } = require('mongoose');
 const { editUserValidator, validate } = require('../middlewares/validators');
-
-// create a new user : Neil
-router.post('/new', upload.single('profile-pic'), async (req, res) => {
-	try {
-		const { userId, username } = req.body;
-
-		if (!userId) return res.status(404).json('User id is required');
-		if (!username) return res.status(404).json('Username is required');
-
-		const user = {
-			userId,
-			username,
-		};
-
-		const newUser = new User(user);
-
-		await newUser.save();
-
-		res.status(200).json({ user: newUser });
-	} catch (error) {
-		res.status(500).json(error);
-	}
-});
+const {checkIfAuthenticated} = require('../middlewares/authenticate');
 
 // fetch a single user : Sakshi
 router.get('/:id', async (req, res) => {
@@ -48,7 +26,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // fetch a list of users : Sakshi
-router.get('/', async (req, res) => {
+router.get('/', checkIfAuthenticated, async (req, res) => {
 	try {
 		let { limit = 10, search_q = '', page = 1, names = '' } = req.query;
 		page--;

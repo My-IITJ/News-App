@@ -8,6 +8,7 @@ const upload = require('../middlewares/multer');
 const subDays = require('date-fns/subDays');
 const cloudinary = require('../cloud');
 const { newPostValidator, validate } = require('../middlewares/validators');
+const { checkIfAuthenticated } = require('../middlewares/authenticate');
 
 //create a new Post : Sakshi
 router.post(
@@ -50,7 +51,7 @@ router.post(
 );
 
 // fetch a list of posts: shivam
-router.get('/', async (req, res) => {
+router.get('/', checkIfAuthenticated ,async (req, res) => {
 	try {
 		let { limit = 10, page = 1 } = req.query;
 		page--;

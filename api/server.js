@@ -11,7 +11,6 @@ const cookieSession = require('cookie-session');
 const dbConnect = require('./db/mongoConnect');
 const path = require('path');
 const upload = require('./middlewares/multer');
-const passport = require('passport');
 
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
@@ -44,8 +43,6 @@ app.use(
 		maxAge: 24 * 60 * 60 * 100,
 	})
 );
-app.use(passport.initialize());
-app.use(passport.session());
 app.use((err, req, res, next) => {
 	res.status(500).json(err.message);
 });
