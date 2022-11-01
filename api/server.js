@@ -1,5 +1,5 @@
 require('express-async-errors');
-require('./passport');
+// require('./passport');
 
 const dotenv = require('dotenv');
 const morgan = require('morgan');

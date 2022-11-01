@@ -33,6 +33,7 @@ import Animated, { interpolate, useAnimatedStyle, useSharedValue } from 'react-n
 import { useEffect, useState } from 'react';
 import Home from '../screens/Home';
 import { StackActions } from '@react-navigation/native';
+import Gallery from '../screens/Gallery';
 
 const drawerScreens: DrawerScreenConfig[] = [
 	{
@@ -49,6 +50,22 @@ const drawerScreens: DrawerScreenConfig[] = [
 				);
 			},
 		}
+	},
+	{
+		name: "Gallery",
+		Component: Gallery,
+		options: {
+			drawerIcon: ({ color, size }) => {
+				return (
+					<Entypo
+						name="image"
+						size={size}
+						color={color}
+					/>
+				);
+			}
+		}
+
 	},
 	{
 		name: "Interact",
