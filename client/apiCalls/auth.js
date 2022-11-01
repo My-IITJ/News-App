@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from './axios';
 import { authUrl } from './client';
 
 // get user details with jwt token

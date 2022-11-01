@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from './axios';
 import { appUrl } from './client';
 import {
 	useInfiniteQuery,
@@ -6,20 +6,6 @@ import {
 	useQuery,
 	useQueryClient,
 } from 'react-query';
-import auth from '@react-native-firebase/auth';
-
-axios.interceptors.request.use(
-	async (config) => {
-		const token = await auth().currentUser.getIdToken();
-		console.log(token);
-		if (token) {
-			config.headers.Authorization = `Bearer ${token}`;
-		}
-
-		return config;
-	},
-   (err) => Promise.reject(err)
-);
 
 // fetching posts for home page
 const fetchPosts = ({ pageParam = 1 }, limit) => {

@@ -53,7 +53,6 @@ export default function App() {
 	const onAuthStateChanged = useCallback(
 		async (user) => {
 			// console.log(user);
-			const idTokenResult = await auth().currentUser.getIdTokenResult();
 			let data = user;
 			if (user) {
 				const { _id, profileImg } = await updateUserData({
@@ -72,7 +71,6 @@ export default function App() {
 			}
 
 			dispatch(authUser(data));
-			dispatch(updateToken({ token: idTokenResult.token }));
 			if (initializing) setInitializing(false);
 		},
 		[initializing, dispatch]

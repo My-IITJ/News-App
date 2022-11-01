@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from './axios';
 import { appUrl } from './client';
 import { useMutation, useQueryClient } from 'react-query';
 

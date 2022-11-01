@@ -17,6 +17,7 @@ const userRouter = require('./routes/user');
 const commentRouter = require('./routes/comment');
 const tagRouter = require('./routes/tag');
 const authRouter = require('./routes/auth');
+const { checkIfAuthenticated } = require('./middlewares/authenticate');
 
 //dotenv
 dotenv.config();
@@ -35,6 +36,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
+app.use(checkIfAuthenticated);
 app.use(morgan('dev'));
 app.use(
 	cookieSession({
