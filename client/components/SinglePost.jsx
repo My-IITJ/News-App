@@ -1,4 +1,4 @@
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { Pressable, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS, isSmall, SIZES } from '../constants';
 import { Ionicons, AntDesign, SimpleLineIcons } from '@expo/vector-icons';
@@ -46,15 +46,16 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 	return (
 		<Container all={all} height={thumbnail}>
 			<Header>
-				<TouchableWithoutFeedback >
+				<Pressable
+					onPressIn={() => navigation.navigate('Profile', { _id: author?._id })}
+					>
 					<Icon
 						containerStyle={{ marginRight: 10 }}
 						src={{ uri: author?.profileImg }}
 						radius={10}
 						resizeMode="cover"
 					/>
-					onPress={() => navigation.navigate('Profile', { _id: author?._id })}
-				</TouchableWithoutFeedback>
+				</Pressable>
 				<Details>
 					<TouchableOpacity
 						onPress={() => navigation.navigate('Profile', { _id: author?._id })}

@@ -30,7 +30,7 @@ const Profile = ({
 }) => {
 	const theme = useTheme();
 	const user = useSelector((s) => s.user.data);
-
+	const id = _id || user?._id;
 	const [editHeader, setEditHeader] = useState(false);
 	const [editAbout, setEditAbout] = useState(true);
 	const [editContact, setEditContact] = useState(false);
@@ -42,7 +42,7 @@ const Profile = ({
 	});
 
 	const { isLoading, isError, error, data } = useGetProfileDetails(
-		_id,
+		id,
 		'profile'
 	);
 

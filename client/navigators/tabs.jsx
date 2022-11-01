@@ -8,9 +8,12 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 import { COLORS } from '../constants';
 import Animated from 'react-native-reanimated';
+import Profile from '../screens/Profile';
 
 // a list of all tabs. We may add more in future.
 //For the options object:  you can see a list of available options from the docs.
+
+
 const tabs = [
 	{
 		name: 'Home',
@@ -31,19 +34,13 @@ const tabs = [
 		},
 	},
 	{
-		name: 'Menu',
-		Component: Home,
+		name: 'Profile',
+		Component: Profile,
 		options: {
 			tabBarIcon: ({ color, size }) => (
 				<Feather name="menu" size={size} color={color} />
 			),
 		},
-		listeners: ({ navigation }) => ({
-			tabPress: (e) => {
-				e.preventDefault();
-				navigation.toggleDrawer();
-			},
-		}),
 	},
 ];
 

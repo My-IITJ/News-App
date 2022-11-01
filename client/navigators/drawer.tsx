@@ -232,7 +232,10 @@ const CustomDrawer = ({ props, userData, setProgress }: CustomDrawerProps) => {
 									key={name}
 									onPress={() => {
 										if(name === "Latest"){
-											props.navigation.dispatch(StackActions.popToTop());
+											// navigate to the first screen of the tab
+											props.navigation.navigate("Home", {
+												screen: "Latest"
+											})
 										}
 										props.navigation.navigate(name);
 										setActiveDrawer(name);
