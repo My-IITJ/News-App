@@ -22,8 +22,8 @@ import { useAppState, useOnlineManager } from './apiCalls/hooks';
 // auth related imports
 import { useCallback, useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
-import { authUser } from './redux/userSlice';
-import { fetchUserToken } from './apiCalls/auth';
+import { authUser, updateToken } from './redux/userSlice';
+import { updateUserData } from './apiCalls/auth';
 import { defaultImgUrl, getUserRole } from './apiCalls/client';
 
 import { ThemeProvider } from 'styled-components'; // allows us to pass the current theme to all components
@@ -47,7 +47,7 @@ export default function App() {
 	const [isLoaded] = useFonts({
 		Poppins_400Regular,
 	});
-	const { theme: currentTheme } = useSelector((s:RootStateOrAny) => s.user);
+	const rootState = useSelector((s:RootStateOrAny) => s.user);
 
 
 	const onAuthStateChanged = useCallback(
@@ -55,7 +55,7 @@ export default function App() {
 			// console.log(user);
 			let data = user;
 			if (user) {
-				const { _id, profileImg } = await fetchUserToken({
+				const { _id, profileImg } = await updateUserData({
 					email: user.email,
 					displayName: user.displayName,
 					photoUrl: user.photoURL || defaultImgUrl,
@@ -87,7 +87,6 @@ export default function App() {
 			console.log('app loaded');
 		}
 	}, [initializing, isLoaded]);
-
 	if (!isLoaded || initializing) {
 		// return <AppLoading />;
 		console.log('app not loaded');
@@ -105,7 +104,7 @@ export default function App() {
 			<PersistGate loading={null} persistor={persistor}>
 				<QueryClientProvider client={queryClient}>
 					<RootSiblingParent>
-						<ThemeProvider theme={currentTheme}>
+						<ThemeProvider theme={rootState.theme}>
 						<NavigationContainer>
 							<MyDrawer />
 						</NavigationContainer>
