@@ -11,6 +11,8 @@ import Event from '../screens/Event';
 import Interact from '../screens/Interact';
 import Academics from '../screens/Academics';
 import { AppStack } from './stack';
+import { useCallback } from 'react';
+import auth from '@react-native-firebase/auth';
 import {
 	View,
 	Text,
@@ -143,6 +145,13 @@ const CustomDrawer = ({ props, userData, setProgress }: CustomDrawerProps) => {
 		setProgress(currentProgress)
 	}, [currentProgress, setProgress])
 
+
+	const handleLogout = useCallback(() => {
+		// dispatch(logout());
+		auth()
+			.signOut()
+			.then(() => console.log('User signed out!'));
+	}, []);
 	return (
 		<DrawerContentScrollView
 			scrollEnabled={true}
@@ -260,7 +269,9 @@ const CustomDrawer = ({ props, userData, setProgress }: CustomDrawerProps) => {
 				}}>
 					<DrawerItem Icon={<AntDesign name="appstore-o" size={22} color={COLORS.white} />} label="Version 1.0" onPress={() => { }} />
 					<DrawerItem Icon={<Ionicons name="share-social-outline" size={22} color={COLORS.white} />} label="Share" onPress={() => { }} />
-					<DrawerItem Icon={<Ionicons name="exit-outline" size={22} color={COLORS.white} />} label="Logout" onPress={() => { }} />
+					<DrawerItem Icon={<Ionicons name="exit-outline" size={22} color={COLORS.white} />} label="Logout" onPress={() => { 
+                handleLogout()
+					}} />
 				</View>
 			</View>
 		</DrawerContentScrollView>
