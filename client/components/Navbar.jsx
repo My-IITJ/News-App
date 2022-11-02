@@ -1,13 +1,13 @@
-import styled, { useTheme } from 'styled-components/native';
-import {Touchable, View} from 'react-native'
-import { COLORS, icons, SIZES } from '../constants';
-import Icon from './Icon';
-import { Feather, Ionicons } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
-import { ROLES } from '../apiCalls/client';
-import { RFValue } from 'react-native-responsive-fontsize';
+import styled, { useTheme } from "styled-components/native";
+import { Touchable, View } from "react-native";
+import { COLORS, icons, SIZES } from "../constants";
+import Icon from "./Icon";
+import { Feather, Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import { ROLES } from "../apiCalls/client";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const NavBar = ({ profile }) => {
 	const theme = useTheme();
@@ -16,16 +16,25 @@ const NavBar = ({ profile }) => {
 
 	return (
 		<Container>
-			<TouchableOpacity onPress={() => {navigation.toggleDrawer()}}>
-			<Icon src={theme.name === "dark" ? icons.menu_light : icons.menu_dark} width={48} height={48} />
+			<TouchableOpacity
+				onPress={() => {
+					navigation.toggleDrawer();
+				}}
+			>
+				<Icon
+					src={theme.name === "dark" ? icons.menu_light : icons.menu_dark}
+					width={48}
+					height={48}
+				/>
 			</TouchableOpacity>
-			<View style={{display:"flex", flexDirection:"row", alignItems:'center'}}>
-			<Icon src={icons.logo_home} width={48} height={48} />
-			<Title>My IITJ</Title>
+			<View
+				style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+			>
+				<Icon src={icons.logo_home} width={48} height={48} />
+				<Title>My IITJ</Title>
 			</View>
-			
 
-			{data?.role !== ROLES.GUEST && (
+			{/* {data?.role !== ROLES.GUEST && (
 				<AddBtn onPress={() => navigation.navigate('NewPost')}>
 					<Ionicons
 						name="add"
@@ -33,11 +42,11 @@ const NavBar = ({ profile }) => {
 						color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
 					/>
 				</AddBtn>
-			)}
+			)} */}
 
 			<TouchableOpacity
 				onPress={() =>
-					!profile && navigation.navigate('Profile', { _id: data?._id })
+					!profile && navigation.navigate("Profile", { _id: data?._id })
 				}
 			>
 				<Icon
@@ -67,12 +76,12 @@ const Title = styled.Text`
 	margin-left: 10px;
 	font-weight: bold;
 	font-family: Poppins_400Regular;
-	color: ${(p) => (p.theme.name === 'dark' ? COLORS.white1 : COLORS.black)};
+	color: ${(p) => (p.theme.name === "dark" ? COLORS.white1 : COLORS.black)};
 `;
 
 const AddBtn = styled.TouchableOpacity`
 	border: ${(p) =>
-		`2px solid ${p.theme.name === 'dark' ? COLORS.white1 : COLORS.black}`};
+		`2px solid ${p.theme.name === "dark" ? COLORS.white1 : COLORS.black}`};
 	border-radius: ${SIZES.radius}px;
 	padding: 3px;
 	margin-right: 15px;

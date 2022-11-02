@@ -65,19 +65,18 @@ const Home = ({
 	return (
 		<Container>
 			<Navbar />
-			<ScrollView onScroll={onScroll}>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<PostsList
-						getMorePosts={fetchNextPage}
-						reachedEnd={!hasNextPage}
-						busy={isFetchingNextPage}
-						data={data}
-						page="Home"
-					/>
-				)}
-			</ScrollView>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<PostsList
+					onScroll={onScroll}
+					getMorePosts={fetchNextPage}
+					reachedEnd={!hasNextPage}
+					busy={isFetchingNextPage}
+					data={data}
+					page="Home"
+				/>
+			)}
 			{data2?.role !== ROLES.GUEST && (
 				<AnimatedFAB
 					icon={"plus"}
@@ -88,6 +87,7 @@ const Home = ({
 					animateFrom={"right"}
 					iconMode={"dynamic"}
 					style={[styles.fabStyle, style, fabStyle]}
+					fabStyle={{ backgroundColor: "white" }}
 				/>
 			)}
 		</Container>
