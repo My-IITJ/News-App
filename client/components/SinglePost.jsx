@@ -1,4 +1,4 @@
-import { Pressable, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { Pressable, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS, isSmall, SIZES } from '../constants';
 import { Ionicons, AntDesign, SimpleLineIcons } from '@expo/vector-icons';
@@ -10,11 +10,16 @@ import { useUpvotePost } from '../apiCalls/post';
 import { useCallback, useState } from 'react';
 import Spinner from './Spinner';
 import { useSelector } from 'react-redux';
+import ImageViewing from "react-native-image-viewing";
+import ImageHeader from '../screens/GalleryView/ImageHeader';
+import ImageFooter from '../screens/GalleryView/ImageFooter';
+import { RFValue } from 'react-native-responsive-fontsize';
 
-const SinglePost = ({ post, all, setIsUpvote }) => {
+const SinglePost = ({ post, all, setIsUpvote, isCommentsScreen }) => {
 	const theme = useTheme();
 	const navigation = useNavigation();
 	const [isVoting, setIsVoting] = useState(false);
+	const [isImageVisible, setIsImageVisible] = useState(false);
 	const data = useSelector((s) => s.user.data);
 
 	const {
@@ -42,7 +47,6 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 			setIsUpvote(true);
 		}
 	}, [mutate, post, setIsUpvote, data]);
-
 	return (
 		<Container all={all} height={thumbnail}>
 			<Header>
@@ -95,12 +99,7 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 				}
 			>
 				<Content numberOfLines={all ? 30 : !thumbnail ? 4 : 3}>
-					{content ||
-						`lorem ipsum dolor sit amet, consectetur adipis lorem ipsum dolor sit
-					amet, consectetur adipis lorem ipsum dolor sit amet, consectetur
-					adipis lorem ipsum dolor sit amet, consectetur adipis lorem ipsum
-					dolor sit amet, consectetur adipis lorem ipsum dolor sit amet,
-					consectetur adipis`}
+					{content}
 				</Content>
 			</TouchableOpacity>
 
@@ -119,9 +118,35 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 					);
 				})}
 			</Tags>
+			<ImageViewing
+				images={[{ uri: thumbnail?.url }]}
+				imageIndex={0}
+				presentationStyle="overFullScreen"
+				visible={isImageVisible}
+				onRequestClose={() => setIsImageVisible(false)}
+				HeaderComponent={ () => {
+						return (
+						<ImageHeader onRequestClose={()=>{setIsImageVisible(false)}} />
+						);
+					}
 
+				}
+				FooterComponent={({ imageIndex }) => (
+				<ImageFooter imageIndex={imageIndex} imagesCount={1}/>
+				)}
+			/>
 			{thumbnail && (
-				<Thumbnail
+				<Pressable
+				style={{width: '100%', height: RFValue(200)}}
+					onPress={() => {
+						if(isCommentsScreen){
+							setIsImageVisible(true);
+						}else{
+							navigation.navigate('PostComments', { postId: post._id })
+						}
+					}}>
+						<Thumbnail
+					onPress={()=>{setIsImageVisible(true)}}
 					source={
 						{
 							uri: thumbnail?.url,
@@ -129,6 +154,8 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 					}
 					resizeMode="contain"
 				/>
+				</Pressable>
+					
 			)}
 
 			<Action bottom={thumbnail}>

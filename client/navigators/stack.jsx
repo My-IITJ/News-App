@@ -18,7 +18,7 @@ import { StatusBar } from 'expo-status-bar';
 import { COLORS, isSmall } from '../constants';
 import BackBtn from '../components/BackBtn';
 import ReAnimated from 'react-native-reanimated';
-import { Animated, View } from 'react-native';
+import { Animated } from 'react-native';
 
 const AuthScreens = (_theme) => {
 	return [
@@ -217,5 +217,3 @@ export const AppStack = ({ drawerAnimatedStyle }) => {
 		</ThemeProvider>
 	);
 };
-
-// export default AppStack;
