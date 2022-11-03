@@ -111,6 +111,8 @@ const Input = styled.TextInput`
 	min-height: 50px;
 	border-radius: ${SIZES.radius}px;
 	padding: 8px 18px;
+	color: ${(p) =>
+		p.theme.name === 'light' ? COLORS.darkgrey : COLORS.white2};
 `;
 
 const Send = styled.TouchableOpacity``;
