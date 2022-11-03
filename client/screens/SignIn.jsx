@@ -78,7 +78,7 @@ export default SignIn;
 const Container = styled.View`
 	flex: 1;
 	padding: 30px;
-	padding-top: ${Constants.statusBarHeight + 20}px;
+	padding-top: 0px;
 	background-color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.darkgrey : COLORS.white2};
 	justify-content: center;
