@@ -3,6 +3,9 @@ import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/native';
 import Constants from 'expo-constants';
 import auth from '@react-native-firebase/auth';
+import { KeyboardAvoidingView, Platform } from 'react-native';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 const Register = ({ navigation }) => {
 	const [email, setEmail] = useState('');
@@ -35,6 +38,15 @@ const Register = ({ navigation }) => {
 
 	return (
 		<Container>
+			    {/* <KeyboardAvoidingView
+      			behavior={Platform.OS === "ios" ? "padding" : "height"}
+      			// style={styles.container}
+				style = {{flex: 1}}
+    			> */}
+			<KeyboardAvoidingScrollView stickyFooter={<ButtonContainer onPress={handleRegistration}>
+				<Label1>Register</Label1>
+			</ButtonContainer>}>
+    
 			<WelcomeText>Create Account</WelcomeText>
 
 			<Fields>
@@ -58,9 +70,11 @@ const Register = ({ navigation }) => {
 				</Box>
 			</Fields>
 
-			<ButtonContainer onPress={handleRegistration}>
+			{/* <ButtonContainer onPress={handleRegistration}>
 				<Label1>Register</Label1>
-			</ButtonContainer>
+			</ButtonContainer> */}
+			{/* </KeyboardAvoidingView> */}
+			</KeyboardAvoidingScrollView>
 		</Container>
 	);
 };
@@ -123,8 +137,9 @@ const ButtonContainer = styled.TouchableOpacity`
 		p.theme.name === 'dark' ? COLORS.purple2 : COLORS.deepBlue};
 	align-items: center;
 	border-radius: 30px;
-	margin: ${isSmall ? '30px 60px' : '60px'};
-	padding: 10px;
+	margin-bottom: ${RFValue(-10)}px;
+	margin-top: ${RFValue(20)}px;
+	padding: ${RFValue(5)}px;
 `;
 
 const Label1 = styled.Text`
