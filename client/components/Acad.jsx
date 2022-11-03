@@ -51,12 +51,6 @@ export default Acad;
 const Styles = StyleSheet.create({
 	container: {
 		alignContent: "center",
-<<<<<<< HEAD
 		margin: 37,
 	},
 });
-=======
-		margin: 37,
-	},
-});
->>>>>>> 8f84ea7cc6100367d2c566a180d697a989189e13
