@@ -1,10 +1,10 @@
 import React from "react";
-import { Text, View, StyleSheet, Linking } from "react-native";
+import { Text, ScrollView, StyleSheet, Linking } from "react-native";
 import { Card, Button, Title, Paragraph } from "react-native-paper";
 
 const Acad = () => {
 	return (
-		<View>
+		<ScrollView>
 			<Card style={Styles.container}>
 				<Card.Content>
 					<Title>ERP Portal</Title>
@@ -43,7 +43,7 @@ const Acad = () => {
 					</Button>
 				</Card.Actions>
 			</Card>
-		</View>
+		</ScrollView>
 	);
 };
 export default Acad;
