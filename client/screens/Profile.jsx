@@ -290,6 +290,7 @@ const Profile = ({
               username: data?.data?.username,
               title: data?.data?.title,
               img: data?.data?.profileImg,
+              isUser: user?._id === _id 
             })
           }
         >

@@ -17,7 +17,7 @@ const limit = 5;
 
 const Activity = ({ route }) => {
 	const [selectedTab, setSelectedTab] = useState(tabs[0]);
-	const { userId, username, title, img } = route?.params;
+	const { userId, username, title, img, isUser } = route?.params;
 	// const userId = '62013735b5a9036d44510f68';
 
 	const {
@@ -157,7 +157,7 @@ const Activity = ({ route }) => {
 				<FlatList
 					horizontal
 					showsHorizontalScrollIndicator={false}
-					data={tabs}
+					data={isUser ? tabs: [tabs[0]]}
 					keyExtractor={(i) => `activity-tab-${i}`}
 					renderItem={({ item }) => {
 						return (
