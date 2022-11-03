@@ -3,7 +3,7 @@ import auth from '@react-native-firebase/auth';
 
 axios.interceptors.request.use(
 	async (config) => {
-		const token = await auth().currentUser.getIdToken();
+		const token = await auth().currentUser.getIdToken(true);
 		if (token) {
 			config.headers.Authorization = `Bearer ${token}`;
 		}
