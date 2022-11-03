@@ -3,6 +3,8 @@ import { useCallback, useState } from 'react';
 import styled from 'styled-components/native';
 import Constants from 'expo-constants';
 import auth from '@react-native-firebase/auth';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 //'jane.doe@example.com', 'neil1234'
 
@@ -41,6 +43,9 @@ const SignIn = ({ navigation }) => {
 
 	return (
 		<Container>
+			<KeyboardAvoidingScrollView stickyFooter={<ButtonContainer onPress={handleSignIn}>
+				<Label1>Sign In</Label1>
+			</ButtonContainer>}>
 			<WelcomeText>Hello Again!</WelcomeText>
 
 			<Fields>
@@ -59,9 +64,10 @@ const SignIn = ({ navigation }) => {
 				</Box>
 			</Fields>
 
-			<ButtonContainer onPress={handleSignIn}>
+			{/* <ButtonContainer onPress={handleSignIn}>
 				<Label1>Sign In</Label1>
-			</ButtonContainer>
+			</ButtonContainer> */}
+			</KeyboardAvoidingScrollView>
 		</Container>
 	);
 };
@@ -72,7 +78,7 @@ export default SignIn;
 const Container = styled.View`
 	flex: 1;
 	padding: 30px;
-	padding-top: ${Constants.statusBarHeight + 20}px;
+	padding-top: 0px;
 	background-color: ${({ theme }) =>
 		theme.name === 'dark' ? COLORS.darkgrey : COLORS.white2};
 	justify-content: center;
@@ -124,8 +130,9 @@ const ButtonContainer = styled.TouchableOpacity`
 		p.theme.name === 'dark' ? COLORS.purple2 : COLORS.deepBlue};
 	align-items: center;
 	border-radius: 30px;
-	margin: 60px;
-	padding: 10px;
+	margin-bottom: ${RFValue(-10)}px;
+	margin-top: ${RFValue(20)}px;
+	padding: ${RFValue(5)}px;
 `;
 
 const Label1 = styled.Text`

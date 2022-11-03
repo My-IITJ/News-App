@@ -2,7 +2,6 @@ import styled, { useTheme } from "styled-components/native";
 import { Touchable, View } from "react-native";
 import { COLORS, icons, SIZES } from "../constants";
 import Icon from "./Icon";
-import { Feather, Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";

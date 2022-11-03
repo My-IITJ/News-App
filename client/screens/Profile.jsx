@@ -140,15 +140,15 @@ const Profile = ({
         </Box>
 
         <SaveBtn
-			onPress={() => {
-				mutate({
-					userId: _id,
-					data: {
-						bio:about
-					},
-				});
-				setEditAbout(false);
-			}}
+          onPress={() => {
+            mutate({
+              userId: _id,
+              data: {
+                bio: about,
+              },
+            });
+            setEditAbout(false);
+          }}
         >
           <Name sz={20} color={COLORS.white1}>
             Save
@@ -179,8 +179,8 @@ const Profile = ({
 
   return (
     <Container>
-      <Navbar profile />
-      <ThemeBtn />
+      {/* <Navbar profile /> */}
+      {/* <ThemeBtn /> */}
       <Body showsVerticalScrollIndicator={false}>
         <Header>
           <Icon
@@ -290,6 +290,7 @@ const Profile = ({
               username: data?.data?.username,
               title: data?.data?.title,
               img: data?.data?.profileImg,
+              isUser: user?._id === _id 
             })
           }
         >
@@ -320,23 +321,25 @@ const Profile = ({
           </Box>
         </SubscribedTags>
 
-        <Actions>
-          <Logout onPress={handleLogout}>
-            <AntDesign
-              name="logout"
-              size={22}
-              color={theme.name === "dark" ? COLORS.white1 : COLORS.gray50}
-              style={{ marginRight: 8 }}
-            />
-            <Name
-              bold
-              sz={22}
-              color={theme.name === "dark" ? COLORS.white1 : COLORS.gray50}
-            >
-              Logout
-            </Name>
-          </Logout>
-        </Actions>
+        {user?._id === _id && (
+          <Actions>
+            <Logout onPress={handleLogout}>
+              <AntDesign
+                name="logout"
+                size={22}
+                color={theme.name === "dark" ? COLORS.white1 : COLORS.gray50}
+                style={{ marginRight: 8 }}
+              />
+              <Name
+                bold
+                sz={22}
+                color={theme.name === "dark" ? COLORS.white1 : COLORS.gray50}
+              >
+                Logout
+              </Name>
+            </Logout>
+          </Actions>
+        )}
       </Body>
       {renderEditHeaderModal()}
       {renderEditAboutModal()}
@@ -352,7 +355,7 @@ const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) =>
     theme.name === "dark" ? COLORS.darkPurple : COLORS.white1};
-  padding-top: ${Constants.statusBarHeight}px;
+  ${'' /* padding-top: ${Constants.statusBarHeight}px; */}
 `;
 
 const Body = styled.ScrollView`

@@ -181,5 +181,5 @@ const Box = styled.View`
 
 const Text = styled.Text`
 	color: red;
-	font-size: 18px;
+	font-size: 18px;
 `;

@@ -151,7 +151,8 @@ const CustomDrawer = ({ props, userData, setProgress }: CustomDrawerProps) => {
 		auth()
 			.signOut()
 			.then(() => console.log('User signed out!'));
-	}, []);
+		props.navigation.closeDrawer();
+	}, [props]);
 	return (
 		<DrawerContentScrollView
 			scrollEnabled={true}

@@ -1,4 +1,4 @@
-import { Pressable, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { Pressable, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS, isSmall, SIZES } from '../constants';
 import { Ionicons, AntDesign, SimpleLineIcons } from '@expo/vector-icons';

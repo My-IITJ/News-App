@@ -2,9 +2,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home';
 import Explore from '../screens/Explore';
+import Gallery from '../screens/Gallery'
 
 // example icons from a package
 import { Feather, Ionicons } from '@expo/vector-icons';
+
 import { useTheme } from 'styled-components';
 import { COLORS } from '../constants';
 import Animated from 'react-native-reanimated';
@@ -34,13 +36,20 @@ const tabs = [
 		},
 	},
 	{
-		name: 'Profile',
-		Component: Profile,
+		name: 'GalleryTab',
+		Component: Home,
 		options: {
+			tabBarLabel: 'Gallery',
 			tabBarIcon: ({ color, size }) => (
-				<Feather name="menu" size={size} color={color} />
+				<Ionicons name="images-outline" size={size} color={color} />
 			),
 		},
+		listeners: ({ navigation }) => ({
+			tabPress: (e) => {
+				e.preventDefault();
+				navigation.navigate('Gallery');
+			},
+		}),
 	},
 ];
 

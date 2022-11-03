@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import Constants from 'expo-constants';
 import { COLORS } from '../constants';
 import Animated from 'react-native-reanimated';
 import ImageView from "react-native-image-viewing";
 import NavBar from '../components/Navbar';
+import {View, Text} from 'react-native';
 
-const Interact = ({ drawerAnimatedStyle }) => {
+const Interact = ({ navigation, drawerAnimatedStyle }) => {
 
-const [visible, setIsVisible] = useState(false);
+
+useEffect(({navigation}) => {
+  navigation.navigate('Tmp');
+})
     
     const images = [
         {
@@ -22,10 +26,16 @@ const [visible, setIsVisible] = useState(false);
         },
       ];
 
-
+      const [visible, setIsVisible] = useState(false);
 	return (
+    <>
 		<Container style={[drawerAnimatedStyle]}>
-			<NavBar/>
+			{/* <NavBar/> */}
+      {/* <View>
+        <Text>
+          Hey
+        </Text>
+      </View> */}
 			<ImageView
                 images={images}
                 imageIndex={0}
@@ -33,6 +43,7 @@ const [visible, setIsVisible] = useState(false);
                 onRequestClose={() => setIsVisible(false)}
             />
 		</Container>
+    </>
 	);
 };
 
