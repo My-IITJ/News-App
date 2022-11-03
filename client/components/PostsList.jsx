@@ -37,7 +37,7 @@ const PostsList = ({
 
 	//temporary fix
 	const filterPosts = (posts) => {
-		if (user.role === ROLES.GUEST) {
+		if (user?.role === ROLES.GUEST) {
 			posts = posts.filter((i) => i.visibility !== "Private");
 		}
 
