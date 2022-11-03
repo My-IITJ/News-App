@@ -259,5 +259,3 @@ export const AppStack = ({ drawerAnimatedStyle }) => {
     </ThemeProvider>
   );
 };
-
-// export default AppStack;

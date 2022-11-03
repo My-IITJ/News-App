@@ -1,21 +1,26 @@
-import { Pressable, TouchableOpacity } from "react-native";
-import styled from "styled-components/native";
-import { COLORS, isSmall, SIZES } from "../constants";
-import { Ionicons, AntDesign, SimpleLineIcons } from "@expo/vector-icons";
-import Icon from "./Icon";
-import { useTheme } from "styled-components";
-import { useNavigation } from "@react-navigation/native";
-import moment from "moment";
-import { useUpvotePost } from "../apiCalls/post";
-import { useCallback, useState } from "react";
-import Spinner from "./Spinner";
-import { useSelector } from "react-redux";
+import { Pressable, TouchableOpacity } from 'react-native';
+import styled from 'styled-components/native';
+import { COLORS, isSmall, SIZES } from '../constants';
+import { Ionicons, AntDesign, SimpleLineIcons } from '@expo/vector-icons';
+import Icon from './Icon';
+import { useTheme } from 'styled-components';
+import { useNavigation } from '@react-navigation/native';
+import moment from 'moment';
+import { useUpvotePost } from '../apiCalls/post';
+import { useCallback, useState } from 'react';
+import Spinner from './Spinner';
+import { useSelector } from 'react-redux';
+import ImageViewing from "react-native-image-viewing";
+import ImageHeader from '../screens/GalleryView/ImageHeader';
+import ImageFooter from '../screens/GalleryView/ImageFooter';
+import { RFValue } from 'react-native-responsive-fontsize';
 
-const SinglePost = ({ post, all, setIsUpvote }) => {
-  const theme = useTheme();
-  const navigation = useNavigation();
-  const [isVoting, setIsVoting] = useState(false);
-  const data = useSelector((s) => s.user.data);
+const SinglePost = ({ post, all, setIsUpvote, isCommentsScreen }) => {
+	const theme = useTheme();
+	const navigation = useNavigation();
+	const [isVoting, setIsVoting] = useState(false);
+	const [isImageVisible, setIsImageVisible] = useState(false);
+	const data = useSelector((s) => s.user.data);
 
   const {
     author,
@@ -38,33 +43,32 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
     mutate(body);
     setIsVoting(true);
 
-    if (setIsUpvote) {
-      setIsUpvote(true);
-    }
-  }, [mutate, post, setIsUpvote, data]);
-
-  return (
-    <Container all={all} height={thumbnail}>
-      <Header>
-        <Pressable
-          onPressIn={() => navigation.navigate("Profile", { _id: author?._id })}
-        >
-          <Icon
-            containerStyle={{ marginRight: 10 }}
-            src={{ uri: author?.profileImg }}
-            radius={10}
-            resizeMode="cover"
-          />
-        </Pressable>
-        <Details>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Profile", { _id: author?._id })}
-          >
-            <Name>{author?.username}</Name>
-            <Position>{author?.title}</Position>
-            <Time>{moment(createdAt).fromNow()}</Time>
-          </TouchableOpacity>
-        </Details>
+		if (setIsUpvote) {
+			setIsUpvote(true);
+		}
+	}, [mutate, post, setIsUpvote, data]);
+	return (
+		<Container all={all} height={thumbnail}>
+			<Header>
+				<Pressable
+					onPressIn={() => navigation.navigate('Profile', { _id: author?._id })}
+					>
+					<Icon
+						containerStyle={{ marginRight: 10 }}
+						src={{ uri: author?.profileImg }}
+						radius={10}
+						resizeMode="cover"
+					/>
+				</Pressable>
+				<Details>
+					<TouchableOpacity
+						onPress={() => navigation.navigate('Profile', { _id: author?._id })}
+					>
+						<Name>{author?.username}</Name>
+						<Position>{author?.title}</Position>
+						<Time>{moment(createdAt).fromNow()}</Time>
+					</TouchableOpacity>
+				</Details>
 
         <TouchableOpacity>
           <Ionicons
@@ -89,47 +93,70 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
         )}
       </Header>
 
-      <TouchableOpacity
-        onPress={() =>
-          !all && navigation.navigate("PostComments", { postId: post._id })
-        }
-      >
-        <Content numberOfLines={all ? 30 : !thumbnail ? 4 : 3}>
-          {content ||
-            `lorem ipsum dolor sit amet, consectetur adipis lorem ipsum dolor sit
-					amet, consectetur adipis lorem ipsum dolor sit amet, consectetur
-					adipis lorem ipsum dolor sit amet, consectetur adipis lorem ipsum
-					dolor sit amet, consectetur adipis lorem ipsum dolor sit amet,
-					consectetur adipis`}
-        </Content>
-      </TouchableOpacity>
+			<TouchableOpacity
+				onPress={() =>
+					!all && navigation.navigate('PostComments', { postId: post._id })
+				}
+			>
+				<Content numberOfLines={all ? 30 : !thumbnail ? 4 : 3}>
+					{content}
+				</Content>
+			</TouchableOpacity>
 
-      <Tags mb={thumbnail}>
-        {tags?.map((t, idx) => {
-          const label = t.name.charAt(0).toUpperCase() + t.name.slice(1);
-          return (
-            <Tag
-              onPress={() =>
-                navigation.navigate("TagDetails", { tagId: t._id })
-              }
-              key={idx}
-            >
-              <Label>{label}</Label>
-            </Tag>
-          );
-        })}
-      </Tags>
+			<Tags mb={thumbnail}>
+				{tags?.map((t, idx) => {
+					const label = t.name.charAt(0).toUpperCase() + t.name.slice(1);
+					return (
+						<Tag
+							onPress={() =>
+								navigation.navigate('TagDetails', { tagId: t._id })
+							}
+							key={idx}
+						>
+							<Label>{label}</Label>
+						</Tag>
+					);
+				})}
+			</Tags>
+			<ImageViewing
+				images={[{ uri: thumbnail?.url }]}
+				imageIndex={0}
+				presentationStyle="overFullScreen"
+				visible={isImageVisible}
+				onRequestClose={() => setIsImageVisible(false)}
+				HeaderComponent={ () => {
+						return (
+						<ImageHeader onRequestClose={()=>{setIsImageVisible(false)}} />
+						);
+					}
 
-      {thumbnail && (
-        <Thumbnail
-          source={
-            {
-              uri: thumbnail?.url,
-            } || require("../assets/images/post.png")
-          }
-          resizeMode="contain"
-        />
-      )}
+				}
+				FooterComponent={({ imageIndex }) => (
+				<ImageFooter imageIndex={imageIndex} imagesCount={1}/>
+				)}
+			/>
+			{thumbnail && (
+				<Pressable
+				style={{width: '100%', height: RFValue(200)}}
+					onPress={() => {
+						if(isCommentsScreen){
+							setIsImageVisible(true);
+						}else{
+							navigation.navigate('PostComments', { postId: post._id })
+						}
+					}}>
+						<Thumbnail
+					onPress={()=>{setIsImageVisible(true)}}
+					source={
+						{
+							uri: thumbnail?.url,
+						} || require('../assets/images/post.png')
+					}
+					resizeMode="contain"
+				/>
+				</Pressable>
+					
+			)}
 
       <Action bottom={thumbnail}>
         {isVoting ? (
