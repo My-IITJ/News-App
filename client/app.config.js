@@ -35,6 +35,7 @@ const config = () => ({
 		'@react-native-firebase/app',
 		'@react-native-google-signin/google-signin',
 	],
+	jsEngine: "hermes"
 });
 
 export default config;
