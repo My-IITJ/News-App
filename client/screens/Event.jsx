@@ -23,17 +23,7 @@ const Event = ({ drawerAnimatedStyle }) => {
 					date="26-27 November 22"
 					event="MAJOR TEST for M.Tech. executive "
 				/>
-				<Schedule
-					date="28 November 22"
-					event="M.Sc./M.Sc.-M.Tech./M.Tech. (Project Evaluation
-committee Form A21) 3rd Semester students reach to
-Office of Academics in hard copy "
-				/>
-				<Schedule
-					date="29 November 22"
-					event="M.Sc./M.Sc.-M.Tech./ M.Tech./M.Tech.-Ph.D. Project
-evaluations"
-				/>
+
 				<Schedule date="30 November 22" event="Online submission of grade" />
 
 				<Schedule
@@ -43,17 +33,6 @@ evaluations"
 
 				<Schedule date="1 December 22" event="Moderation Committee Meeting " />
 
-				<Schedule
-					date="2 December 22"
-					event="Last Date for display of Grades for Courses, Projects and
-Thesis "
-				/>
-
-				<Schedule
-					date="5 December 22"
-					event="Last date of submission of hard copies of grades, Vacation
-begins (UG 2nd year onwards)"
-				/>
 
 				<Schedule date="8-9 December 22" event="Verification of grades " />
 
@@ -65,20 +44,6 @@ begins (UG 2nd year onwards)"
 				/>
 
 				<Schedule
-					date="26 December 22"
-					event="M.Sc./M.Sc.-M.Tech./M.Tech. 1st Semester students
-supervisor(Form A20) reach to Office of Academics in
-hard copy"
-				/>
-
-				<Schedule
-					date="27 December 22"
-					event="M.Tech.-Ph.D./Ph.D./IDRP 1st Semester students
-supervisor (Form A-5) and SRC (A-1A form) reach to
-Office of Academics in hard copy"
-				/>
-
-				<Schedule
 					date="28 -31 December 22"
 					event="Registration of Old Students"
 				/>
@@ -86,13 +51,6 @@ Office of Academics in hard copy"
 				<Schedule
 					date="31 December 22"
 					event="Registration of New PG Students "
-				/>
-
-				<Schedule
-					date="30 December 22"
-					event="Report of M.Sc./M.Tech./M.Sc.-M.Tech./M.Tech.-Ph.D. 3rd
-Semester students Project Evaluation Form A-23/Form A24 along with project report reach to office of academics
-in signed hard copy"
 				/>
 
 				<Schedule
