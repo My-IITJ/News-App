@@ -13,9 +13,11 @@ import { city } from "../data/city";
 import { food } from "../data/food";
 import { Text } from "react-native-paper";
 import GalleryView from "./GalleryView";
+import { useSelector } from "react-redux";
 
  
  export default function Interact({drawerAnimatedStyle, navigation}) {
+  const {theme} = useSelector(s => s.user);
   const [isImageFolderOpen, setIsImageFolderOpen] = useState(false);
    const images = [
     {"id": 1, "title": "Architecture", "images": architecture},
@@ -30,7 +32,7 @@ import GalleryView from "./GalleryView";
    return (
      <Container style={[drawerAnimatedStyle]}>
       <NavBar/>
-      <GalleryView/>
+      <GalleryView theme={theme}/>
      </Container>
    );
  }

@@ -29,7 +29,7 @@
 import { COLORS } from "../../constants";
 
  
- export default function GalleryView() {
+ export default function GalleryView({theme}) {
    const [currentImageIndex, setImageIndex] = useState(0);
    const [images, setImages] = useState(architecture);
    const [isVisible, setIsVisible] = useState(false);
@@ -98,7 +98,8 @@ import { COLORS } from "../../constants";
  const styles = StyleSheet.create({
    root: {
      flex: 1,
-     backgroundColor: COLORS.darkPurple,
+     backgroundColor: (theme) =>
+     theme.name === 'dark' ? COLORS.darkPurple : COLORS.white1,
      ...Platform.select({
        android: { paddingTop: StatusBar.currentHeight },
        default: null,
