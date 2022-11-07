@@ -6,21 +6,28 @@ import auth from "@react-native-firebase/auth";
 import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { Snackbar } from "react-native-paper";
+import { Formik } from "formik";
+import * as yup from "yup";
+import { Text } from "react-native";
 
 //'jane.doe@example.com', 'neil1234'
 
 const SignIn = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState({ message: null });
   const onDismissSnackBar = () => setError(false);
 
-  const handleSignIn = useCallback(() => {
-    if (email.length === 0 || password.length === 0) {
-      console.log("invalid");
-      return;
-    }
+  const loginValidationSchema = yup.object().shape({
+    email: yup
+      .string()
+      .email("Please enter valid email")
+      .required("Email Address is Required"),
+    password: yup
+      .string()
+      .min(8, ({ min }) => `Password must be at least ${min} characters`)
+      .required("Password is required"),
+  });
 
+  const handleSignIn = useCallback(({ email, password }) => {
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
@@ -46,13 +53,29 @@ const SignIn = ({ navigation }) => {
 
         console.log(error);
       });
-  }, [email, password]);
+  }, );
 
   return (
     <Container>
+      <Formik
+        validationSchema={loginValidationSchema}
+        initialValues={{ email: "", password: "" }}
+        onSubmit={(values) => {
+          handleSignIn(values);
+        }}
+      >
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          isValid,
+        }) => (
+          <>
       <KeyboardAvoidingScrollView
         stickyFooter={
-          <ButtonContainer onPress={handleSignIn}>
+          <ButtonContainer style={{ backgroundColor: !isValid ? "grey" : COLORS.purple2 }} onPress={handleSubmit} disabled={!isValid}>
             <Label1>Sign In</Label1>
           </ButtonContainer>
         }
@@ -62,23 +85,45 @@ const SignIn = ({ navigation }) => {
         <Fields>
           <Box>
             <Label>Email ID</Label>
-            <Input value={email} onChangeText={(text) => setEmail(text)} />
+            <Input name="email"
+                    placeholder="Email Address"
+                    //   style={styles.textInput}
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                    keyboardType="email-address" />
           </Box>
-
+          {errors.email && (
+                  <Text style={{ fontSize: 10, color: "red" }}>
+                    {errors.email}
+                  </Text>
+                )}
           <Box>
             <Label>Password</Label>
             <Input
-              value={password}
+              name="password"
+              placeholder="Password"
+              // style={styles.textInput}
+              onChangeText={handleChange("password")}
+              onBlur={handleBlur("password")}
+              value={values.password}
               secureTextEntry
-              onChangeText={(text) => setPassword(text)}
             />
           </Box>
+          {errors.password && (
+                  <Text style={{ fontSize: 10, color: "red" }}>
+                    {errors.password}
+                  </Text>
+                )}
         </Fields>
 
         {/* <ButtonContainer onPress={handleSignIn}>
 				<Label1>Sign In</Label1>
 			</ButtonContainer> */}
       </KeyboardAvoidingScrollView>
+      </>
+        )}
+      </Formik>
       <Snackbar onDismiss={onDismissSnackBar} visible={error.message != null}>
         {error.message}
       </Snackbar>

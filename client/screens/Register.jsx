@@ -1,11 +1,10 @@
 import { COLORS, isSmall, SIZES } from "../constants";
-import React, { useCallback, useState } from "react";
+import React, {  } from "react";
 import styled from "styled-components/native";
 import Constants from "expo-constants";
 import auth from "@react-native-firebase/auth";
-import { KeyboardAvoidingView, Platform } from "react-native";
 import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
-import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Formik } from "formik";
 import { Text } from "react-native";
 import * as yup from "yup";
@@ -48,22 +47,6 @@ const Register = ({ navigation }) => {
 
   return (
     <Container>
-      {/* <KeyboardAvoidingView
-      			behavior={Platform.OS === "ios" ? "padding" : "height"}
-      			// style={styles.container}
-				style = {{flex: 1}}
-    			> */}
-      {/* <KeyboardAvoidingScrollView stickyFooter={<ButtonContainer onPress={handleRegistration}>
-				<Label1>Register</Label1>
-			</ButtonContainer>}>
-    
-			<WelcomeText>Create Account</WelcomeText>
-
-			<Fields> */}
-      {/* <Box>
-					<Label>Username</Label>
-					<Input value={username} onChangeText={(text) => setUsername(text)} />
-				</Box> */}
       <Formik
         validationSchema={loginValidationSchema}
         initialValues={{ email: "", password: "" }}
@@ -82,7 +65,7 @@ const Register = ({ navigation }) => {
           <>
             <KeyboardAvoidingScrollView
               stickyFooter={
-                <ButtonContainer onPress={handleSubmit} disabled={!isValid}>
+                <ButtonContainer style={{ backgroundColor: !isValid ? "grey" : COLORS.purple2 }} onPress={handleSubmit} disabled={!isValid}>
                   <Label1>Register</Label1>
                 </ButtonContainer>
               }
