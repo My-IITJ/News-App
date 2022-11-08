@@ -56,10 +56,10 @@ router.get('/', checkIfAuthenticated ,async (req, res) => {
 		let { limit = 10, page = 1 } = req.query;
 		page--;
 
-		const last3days = subDays(new Date(), 3);
+		// const last3days = subDays(new Date(), 3);
 
 		const posts = await Post.find({
-			createdAt: { $gte: last3days },
+			// createdAt: { $gte: last3days },
 			isDeleted: false,
 		})
 			.populate('tags', ['_id', 'name'])
@@ -69,7 +69,7 @@ router.get('/', checkIfAuthenticated ,async (req, res) => {
 			.limit(parseInt(limit));
 
 		const count = await Post.countDocuments({
-			createdAt: { $gte: last3days },
+			// createdAt: { $gte: last3days },
 			isDeleted: false,
 		});
 
