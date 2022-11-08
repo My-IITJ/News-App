@@ -232,7 +232,7 @@ const NewPost = ({ navigation, route: { params } }) => {
 				</ProfileContainer>
 
 				<Tags>
-					<Text color={COLORS.black}>Tags:</Text>
+					<Text color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}>Tags:</Text>
 					<Group>
 						<SelectTags onPress={toggleModal}>
 							<Text color={COLORS.gray10}>Choose tags</Text>
@@ -246,12 +246,12 @@ const NewPost = ({ navigation, route: { params } }) => {
 					{selectedTags?.map((tag) => {
 						return (
 							<Tag key={tag}>
-								<Text size={12}>{tag.toUpperCase()}</Text>
+								<Text color={theme.name === 'dark' ? COLORS.black : COLORS.white1} size={12}>{tag.toUpperCase()}</Text>
 								<TouchableOpacity onPress={() => toggleSelection(tag)}>
 									<Feather
 										name="x"
 										size={14}
-										color={COLORS.white1}
+										color={theme.name === 'dark' ? COLORS.black : COLORS.white1}
 										style={{ marginLeft: 8 }}
 									/>
 								</TouchableOpacity>
@@ -261,7 +261,7 @@ const NewPost = ({ navigation, route: { params } }) => {
 				</SelectedTags>
 
 				<Desc>
-					<Text color={COLORS.black}>Description</Text>
+					<Text color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}>Description</Text>
 					{/* <View style={{ height: '60%', backgroundColor: 'green' }}> */}
 					{/* <InputScrollView style={{ backgroundColor: 'red', height: '100%' }}> */}
 					<TextInput
@@ -276,7 +276,7 @@ const NewPost = ({ navigation, route: { params } }) => {
 				</Desc>
 
 				<AttachmentContainer>
-					<Text color={COLORS.black}>Attachments</Text>
+					<Text color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}>Attachments</Text>
 					<AttachmentOptions>
 						<Attachment
 							onPress={() => {
@@ -292,7 +292,7 @@ const NewPost = ({ navigation, route: { params } }) => {
 										: icons.img_box_dark
 								}
 							/>
-							<Text color={COLORS.black} size={14}>
+							<Text color={theme.name === 'dark' ? COLORS.white1 : COLORS.black} size={14}>
 								Image
 							</Text>
 						</Attachment>
@@ -306,7 +306,7 @@ const NewPost = ({ navigation, route: { params } }) => {
 										: icons.video_file_dark
 								}
 							/>
-							<Text color={COLORS.black} size={14}>
+							<Text color={theme.name === 'dark' ? COLORS.white1 : COLORS.black} size={14}>
 								Video
 							</Text>
 						</Attachment>
@@ -316,7 +316,7 @@ const NewPost = ({ navigation, route: { params } }) => {
 								height={40}
 								src={theme.name === 'dark' ? icons.link_light : icons.link_dark}
 							/>
-							<Text color={COLORS.black} size={14}>
+							<Text color={theme.name === 'dark' ? COLORS.white1 : COLORS.black} size={14}>
 								Link
 							</Text>
 						</Attachment>
@@ -394,7 +394,7 @@ const Post = styled.TouchableOpacity`
 	padding: 6px 18px;
 	border-radius: ${SIZES.padding}px;
 	background-color: ${(p) =>
-		p.theme.name === 'dark' ? COLORS.darkPurple : COLORS.deepBlue};
+		p.theme.name === 'dark' ? COLORS.purple : COLORS.deepBlue};
 `;
 
 const Text = styled.Text`
@@ -407,7 +407,7 @@ const Text = styled.Text`
 
 const Line = styled.View`
 	background-color: ${(p) =>
-		p.theme.name === 'dark' ? COLORS.darkPurple : COLORS.gray10};
+		p.theme.name === 'dark' ? COLORS.white1 : COLORS.gray10};
 	height: 0.5px;
 	width: 100%;
 	margin: 10px 0;
@@ -452,7 +452,7 @@ const VisibilityBtn = styled.TouchableOpacity`
 	justify-content: space-between;
 	align-items: center;
 	background-color: ${(p) =>
-		p.theme.name === 'dark' ? COLORS.darkPurple : COLORS.deepBlue};
+		p.theme.name === 'dark' ? COLORS.purple : COLORS.deepBlue};
 	border-radius: 12px;
 	padding: 6px 14px;
 `;
@@ -462,6 +462,7 @@ const VisibilityMenu = styled.View`
 	justify-content: center;
 	align-items: center;
 	position: absolute;
+	border: 0.5px solid ${COLORS.gray10};
 	top: 30px;
 	left: -15px;
 	z-index: 1;
@@ -496,7 +497,7 @@ const Group = styled.View`
 
 const SelectTags = styled.TouchableOpacity`
 	background-color: ${(p) =>
-		p.theme.name === 'dark' ? COLORS.darkPurple : '#f5f6fa'};
+		p.theme.name === 'dark' ? COLORS.white1 : '#f5f6fa'};
 	border-radius: 10px;
 	padding: 10px 15px;
 	flex-direction: row;
@@ -520,7 +521,7 @@ const InfoLabel = styled.Text`
 
 const Tag = styled.View`
 	background-color: ${(p) =>
-		p.theme.name === 'dark' ? COLORS.darkPurple : COLORS.deepBlue};
+		p.theme.name === 'dark' ? COLORS.white1 : COLORS.deepBlue};
 	padding: 6px 10px;
 	margin: 8px 8px 0 0;
 	flex-direction: row;
