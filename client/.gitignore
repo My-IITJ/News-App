@@ -77,3 +77,4 @@ dist/
 # @end expo-cli
 
 .env
+.DS_Store

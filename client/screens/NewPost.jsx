@@ -142,7 +142,7 @@ const NewPost = ({ navigation, route: { params } }) => {
 								data: {
 									userId: user?._id,
 									content: desc,
-									tags: [...selectedTags, visibility],
+									tags: [...selectedTags],
 									visibility,
 									image: {
 										url: attachments.image?.url,
@@ -158,7 +158,7 @@ const NewPost = ({ navigation, route: { params } }) => {
 								data: {
 									author: user?._id,
 									content: desc,
-									tags: [...selectedTags, visibility],
+									tags: [...selectedTags],
 									visibility,
 									image: {
 										url: attachments.image?.url,
