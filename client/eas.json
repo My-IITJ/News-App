@@ -16,10 +16,9 @@
 			}
 		},
 		"preview": {
-			"distribution": "internal",
-			"releaseChannel": "staging",
-			"env": { "APP_TYPE": "preview" },
-			"developmentClient": true
+			"android": {
+				"buildType": "apk"
+			  }
 		},
 		"production": {}
 	},

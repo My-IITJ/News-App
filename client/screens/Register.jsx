@@ -1,24 +1,31 @@
 import { COLORS, isSmall, SIZES } from "../constants";
-import BackBtn from "../components/BackBtn";
-import React, { useCallback, useState } from "react";
+import React, {  } from "react";
 import styled from "styled-components/native";
 import Constants from "expo-constants";
 import auth from "@react-native-firebase/auth";
-import { KeyboardAvoidingView, Platform } from "react-native";
 import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
-import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { RFValue } from "react-native-responsive-fontsize";
+import { Formik } from "formik";
+import { Text } from "react-native";
+import * as yup from "yup";
+import { Snackbar } from "react-native-paper";
 
 const Register = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [error, setError] = React.useState({ message: null });
+  const onDismissSnackBar = () => setError(false);
 
-  const handleRegistration = useCallback(() => {
-    if (email.length === 0 || password.length === 0) {
-      console.log("invalid");
-      return;
-    }
+  const loginValidationSchema = yup.object().shape({
+    email: yup
+      .string()
+      .email("Please enter valid email")
+      .required("Email Address is Required"),
+    password: yup
+      .string()
+      .min(8, ({ min }) => `Password must be at least ${min} characters`)
+      .required("Password is required"),
+  });
 
+  const handleRegistration = ({ email, password }) => {
     auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
@@ -27,59 +34,102 @@ const Register = ({ navigation }) => {
       .catch((error) => {
         if (error.code === "auth/email-already-in-use") {
           console.log("That email address is already in use!");
+          setError({ message: "That email address is already in use!" });
         }
 
         if (error.code === "auth/invalid-email") {
           console.log("That email address is invalid!");
+          setError({ message: "That email address is invalid!" });
         }
-
-        console.error(error);
+        // console.error(error);
       });
-  }, [email, password]);
+  };
 
   return (
     <Container>
-      {/* <KeyboardAvoidingView
-      			behavior={Platform.OS === "ios" ? "padding" : "height"}
-      			// style={styles.container}
-				style = {{flex: 1}}
-    			> */}
-
-      <KeyboardAvoidingScrollView
-        stickyFooter={
-          <ButtonContainer onPress={handleRegistration}>
-            <Label1>Register</Label1>
-          </ButtonContainer>
-        }
+      <Formik
+        validationSchema={loginValidationSchema}
+        initialValues={{ email: "", password: "" }}
+        onSubmit={(values) => {
+          handleRegistration(values);
+        }}
       >
-        <WelcomeText>Create Account</WelcomeText>
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          isValid,
+        }) => (
+          <>
+            <KeyboardAvoidingScrollView
+              stickyFooter={
+                <ButtonContainer style={{ backgroundColor: !isValid ? "grey" : COLORS.purple2 }} onPress={handleSubmit} disabled={!isValid}>
+                  <Label1>Register</Label1>
+                </ButtonContainer>
+              }
+            >
+              <WelcomeText>Create Account</WelcomeText>
 
-        <Fields>
-          {/* <Box>
-					<Label>Username</Label>
-					<Input value={username} onChangeText={(text) => setUsername(text)} />
+              <Fields>
+                <Box>
+                  <Label>Email ID</Label>
+                  <Input
+                    name="email"
+                    placeholder="Email Address"
+                    //   style={styles.textInput}
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                    keyboardType="email-address"
+                  />
+                </Box>
+                {errors.email && (
+                  <Text style={{ fontSize: 10, color: "red" }}>
+                    {errors.email}
+                  </Text>
+                )}
+                <Box>
+                  <Label>Password</Label>
+                  <Input
+                    name="password"
+                    placeholder="Password"
+                    // style={styles.textInput}
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
+                    secureTextEntry
+                  />
+                </Box>
+                {errors.password && (
+                  <Text style={{ fontSize: 10, color: "red" }}>
+                    {errors.password}
+                  </Text>
+                )}
+              </Fields>
+            </KeyboardAvoidingScrollView>
+          </>
+        )}
+      </Formik>
+      <Snackbar onDismiss={onDismissSnackBar} visible={error.message != null}>
+        {error.message} 
+      </Snackbar>
+      {/* <Box>
+					<Label>Email ID</Label>
+					<Input value={email} onChangeText={(text) => setEmail(text)} />
+				</Box>
+
+				<Box>
+					<Label>Password</Label>
+					<Input
+						value={password}
+						secureTextEntry
+						onChangeText={(text) => setPassword(text)}
+					/>
 				</Box> */}
-
-          <Box>
-            <Label>Email ID</Label>
-            <Input value={email} onChangeText={(text) => setEmail(text)} />
-          </Box>
-
-          <Box>
-            <Label>Password</Label>
-            <Input
-              value={password}
-              secureTextEntry
-              onChangeText={(text) => setPassword(text)}
-            />
-          </Box>
-        </Fields>
-
-        {/* <ButtonContainer onPress={handleRegistration}>
-				<Label1>Register</Label1>
-			</ButtonContainer> */}
-        {/* </KeyboardAvoidingView> */}
-      </KeyboardAvoidingScrollView>
+      {/* </Fields> */}
+      {/* </KeyboardAvoidingScrollView> */}
     </Container>
   );
 };
@@ -89,8 +139,8 @@ export default Register;
 //styles
 const Container = styled.View`
   flex: 1;
-  padding: 30px;
-  padding-top: 0px;
+  padding: 30px; 
+  padding-top: ${Constants.statusBarHeight + 20}px;
   background-color: ${({ theme }) =>
     theme.name === "dark" ? COLORS.darkgrey : COLORS.white2};
   justify-content: center;
