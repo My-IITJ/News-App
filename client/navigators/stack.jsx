@@ -21,7 +21,7 @@ import ReAnimated from "react-native-reanimated";
 import { Animated, View } from "react-native";
 import ThemeBtn from "../components/ThemeBtn";
 
-const AuthScreens = (_theme) => {
+const AuthScreens = (theme) => {
   return [
     {
       name: "Welcome",
@@ -30,10 +30,34 @@ const AuthScreens = (_theme) => {
     {
       name: "Register",
       Component: Register,
+      options: ({ navigation }) => ({
+        headerShown: true,
+        headerShadowVisible: false,
+        title: "",
+        headerLeft: (p) => {
+          return <BackBtn {...p} navigation={navigation} />;
+        },
+        headerStyle: {
+          backgroundColor:
+            theme.name === "dark" ? COLORS.darkgrey : COLORS.white2,
+        },
+      })
     },
     {
       name: "SignIn",
       Component: SignIn,
+      options: ({ navigation }) => ({
+        headerShown: true,
+        headerShadowVisible: false,
+        title: "",
+        headerLeft: (p) => {
+          return <BackBtn {...p} navigation={navigation} />;
+        },
+        headerStyle: {
+          backgroundColor:
+            theme.name === "dark" ? COLORS.darkgrey : COLORS.white2,
+        },
+      })
     },
   ];
 };
@@ -235,5 +259,3 @@ export const AppStack = ({ drawerAnimatedStyle }) => {
     </ThemeProvider>
   );
 };
-
-// export default AppStack;

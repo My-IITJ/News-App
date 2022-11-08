@@ -17,7 +17,8 @@ const config = () => ({
 	assetBundlePatterns: ['**/*'],
 	ios: {
 		supportsTablet: true,
-		bundleIdentifier: 'com.neil-140301.myiitj',
+		bundleIdentifier: 'com.iitj.myiitj',
+		googleServicesFile: "./GoogleService-Info.plist"
 	},
 	android: {
 		adaptiveIcon: {
@@ -34,6 +35,7 @@ const config = () => ({
 		'@react-native-firebase/app',
 		'@react-native-google-signin/google-signin',
 	],
+	jsEngine: "hermes"
 });
 
 export default config;

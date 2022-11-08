@@ -16,7 +16,6 @@ const getAuthToken = (req, res, next) => {
   } else {
     req.authToken = null;
   }
-  console.log(req.authToken);
   next();
 };
 

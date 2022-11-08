@@ -1,7 +1,9 @@
 // Firenase admin
 var admin = require("firebase-admin");
 
-var serviceAccount = require("./myiitj-firebase-adminsdk-wzehf-75b7416a30.json");
+var serviceAccount =JSON.parse(
+  process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string
+);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)

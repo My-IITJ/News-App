@@ -45,7 +45,7 @@ const PostComments = ({ route }) => {
 	return (
 		<Container>
 			<ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false}>
-				<SinglePost all post={data?.data?.post} />
+				<SinglePost all post={data?.data?.post} isCommentsScreen={true} />
 				{data?.data?.post.comments.map((i) => {
 					return <Comment key={i._id} item={i} postId={postId} />;
 				})}

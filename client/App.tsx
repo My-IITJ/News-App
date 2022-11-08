@@ -52,7 +52,6 @@ export default function App() {
 
 	const onAuthStateChanged = useCallback(
 		async (user) => {
-			console.log("hello user", user != undefined)
 			let data = user;
 			if (user) {
 				const { _id, profileImg } = await updateUserData({

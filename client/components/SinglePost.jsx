@@ -1,4 +1,4 @@
-import { Pressable, TouchableOpacity} from 'react-native';
+import { Pressable, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS, isSmall, SIZES } from '../constants';
 import { Ionicons, AntDesign, SimpleLineIcons } from '@expo/vector-icons';
@@ -10,39 +10,43 @@ import { useUpvotePost } from '../apiCalls/post';
 import { useCallback, useState } from 'react';
 import Spinner from './Spinner';
 import { useSelector } from 'react-redux';
+import ImageViewing from "react-native-image-viewing";
+import ImageHeader from '../screens/GalleryView/ImageHeader';
+import ImageFooter from '../screens/GalleryView/ImageFooter';
+import { RFValue } from 'react-native-responsive-fontsize';
 
-const SinglePost = ({ post, all, setIsUpvote }) => {
+const SinglePost = ({ post, all, setIsUpvote, isCommentsScreen }) => {
 	const theme = useTheme();
 	const navigation = useNavigation();
 	const [isVoting, setIsVoting] = useState(false);
+	const [isImageVisible, setIsImageVisible] = useState(false);
 	const data = useSelector((s) => s.user.data);
 
-	const {
-		author,
-		content,
-		createdAt,
-		tags = [],
-		comments,
-		thumbnail,
-		upvotes,
-	} = post;
+  const {
+    author,
+    content,
+    createdAt,
+    tags = [],
+    comments,
+    thumbnail,
+    upvotes,
+  } = post;
 
-	const { mutate } = useUpvotePost(setIsVoting);
+  const { mutate } = useUpvotePost(setIsVoting);
 
-	const toggleVote = useCallback(() => {
-		const body = {
-			postId: post._id,
-			userId: data?._id,
-		};
+  const toggleVote = useCallback(() => {
+    const body = {
+      postId: post._id,
+      userId: data?._id,
+    };
 
-		mutate(body);
-		setIsVoting(true);
+    mutate(body);
+    setIsVoting(true);
 
 		if (setIsUpvote) {
 			setIsUpvote(true);
 		}
 	}, [mutate, post, setIsUpvote, data]);
-
 	return (
 		<Container all={all} height={thumbnail}>
 			<Header>
@@ -66,28 +70,28 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 					</TouchableOpacity>
 				</Details>
 
-				<TouchableOpacity>
-					<Ionicons
-						name="ios-bookmark-outline"
-						size={25}
-						color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
-					/>
-				</TouchableOpacity>
+        <TouchableOpacity>
+          <Ionicons
+            name="ios-bookmark-outline"
+            size={25}
+            color={theme.name === "dark" ? COLORS.white1 : COLORS.black}
+          />
+        </TouchableOpacity>
 
-				{data?._id === author?._id && (
-					<TouchableOpacity
-						onPress={() =>
-							navigation.navigate('NewPost', { edit: true, post: post })
-						}
-					>
-						<SimpleLineIcons
-							name="options-vertical"
-							size={24}
-							color={theme.name === 'dark' ? COLORS.white1 : COLORS.black}
-						/>
-					</TouchableOpacity>
-				)}
-			</Header>
+        {data?._id === author?._id && (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("NewPost", { edit: true, post: post })
+            }
+          >
+            <SimpleLineIcons
+              name="options-vertical"
+              size={24}
+              color={theme.name === "dark" ? COLORS.white1 : COLORS.black}
+            />
+          </TouchableOpacity>
+        )}
+      </Header>
 
 			<TouchableOpacity
 				onPress={() =>
@@ -95,12 +99,7 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 				}
 			>
 				<Content numberOfLines={all ? 30 : !thumbnail ? 4 : 3}>
-					{content ||
-						`lorem ipsum dolor sit amet, consectetur adipis lorem ipsum dolor sit
-					amet, consectetur adipis lorem ipsum dolor sit amet, consectetur
-					adipis lorem ipsum dolor sit amet, consectetur adipis lorem ipsum
-					dolor sit amet, consectetur adipis lorem ipsum dolor sit amet,
-					consectetur adipis`}
+					{content}
 				</Content>
 			</TouchableOpacity>
 
@@ -119,9 +118,35 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 					);
 				})}
 			</Tags>
+			<ImageViewing
+				images={[{ uri: thumbnail?.url }]}
+				imageIndex={0}
+				presentationStyle="overFullScreen"
+				visible={isImageVisible}
+				onRequestClose={() => setIsImageVisible(false)}
+				HeaderComponent={ () => {
+						return (
+						<ImageHeader onRequestClose={()=>{setIsImageVisible(false)}} />
+						);
+					}
 
+				}
+				FooterComponent={({ imageIndex }) => (
+				<ImageFooter imageIndex={imageIndex} imagesCount={1}/>
+				)}
+			/>
 			{thumbnail && (
-				<Thumbnail
+				<Pressable
+				style={{width: '100%', height: RFValue(200)}}
+					onPress={() => {
+						if(isCommentsScreen){
+							setIsImageVisible(true);
+						}else{
+							navigation.navigate('PostComments', { postId: post._id })
+						}
+					}}>
+						<Thumbnail
+					onPress={()=>{setIsImageVisible(true)}}
 					source={
 						{
 							uri: thumbnail?.url,
@@ -129,37 +154,61 @@ const SinglePost = ({ post, all, setIsUpvote }) => {
 					}
 					resizeMode="contain"
 				/>
+				</Pressable>
+					
 			)}
 
-			<Action bottom={thumbnail}>
-				{isVoting ? (
-					<Spinner
-						containerStyle={{
-							width: 50,
-							marginHorizontal: 10,
-							backgroundColor:
-								theme.name === 'dark' ? COLORS.purple : COLORS.deepBlue1,
-							height: 16,
-						}}
-					/>
-				) : (
-					<ActionBtn onPress={toggleVote}>
-						<AntDesign name="arrowup" size={25} color={COLORS.white1} />
-						<ActionLabel>{upvotes?.length || 0}</ActionLabel>
-					</ActionBtn>
-				)}
+      <Action bottom={thumbnail}>
+        {isVoting ? (
+          <Spinner
+            containerStyle={{
+              width: 50,
+              marginHorizontal: 10,
+              backgroundColor:
+                theme.name === "dark" ? COLORS.purple : COLORS.deepBlue1,
+              height: 16,
+            }}
+          />
+        ) : (
+          <ActionBtn onPress={toggleVote}>
+            {/* <AntDesign
+              name="arrowup"
+              size={25}
+              color={
+                upvotes.find((i) => i === data?._id)
+                  ? COLORS.grey10
+                  : COLORS.white1
+              }
+            /> */}
+			{
+				upvotes.find((i) => i === data?._id) ?
+				<Ionicons name="ios-arrow-up-circle-sharp" size={24} color={COLORS.white1} />:
+				<Ionicons name="ios-arrow-up-circle-outline" size={24} color={COLORS.white1} />
+			}
+			
+            <ActionLabel
+              color={
+                upvotes.find((i) => i === data?._id)
+                  ? COLORS.grey10
+                  : COLORS.white1
+              }
+            >
+              {upvotes?.length || 0}
+            </ActionLabel>
+          </ActionBtn>
+        )}
 
-				<ActionBtn
-					onPress={() =>
-						!all && navigation.navigate('PostComments', { postId: post._id })
-					}
-				>
-					<Ionicons name="chatbubble-outline" size={25} color={COLORS.white1} />
-					<ActionLabel>{comments?.length || 0}</ActionLabel>
-				</ActionBtn>
-			</Action>
-		</Container>
-	);
+        <ActionBtn
+          onPress={() =>
+            !all && navigation.navigate("PostComments", { postId: post._id })
+          }
+        >
+          <Ionicons name="chatbubble-outline" size={25} color={COLORS.white1} />
+          <ActionLabel>{comments?.length || 0}</ActionLabel>
+        </ActionBtn>
+      </Action>
+    </Container>
+  );
 };
 
 export default SinglePost;
@@ -174,113 +223,113 @@ export default SinglePost;
 
 //styles
 const Container = styled.View`
-	height: auto;
-	align-items: center;
-	background-color: ${({ theme }) =>
-		theme.name === 'dark' ? COLORS.darkgrey : COLORS.white2};
-	padding: 20px;
-	padding-bottom: 0px;
-	border-radius: ${SIZES.radius}px;
-	margin: 10px 0px;
+  height: auto;
+  align-items: center;
+  background-color: ${({ theme }) =>
+    theme.name === "dark" ? COLORS.darkgrey : COLORS.white2};
+  padding: 20px;
+  padding-bottom: 0px;
+  border-radius: ${SIZES.radius}px;
+  margin: 10px 0px;
 `;
 
 const Header = styled.View`
-	flex-direction: row;
-	align-items: center;
-	width: 100%;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
 `;
 
 const Details = styled.View`
-	flex: 1;
-	flex-direction: column;
-	justify-content: space-between;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const Name = styled.Text`
-	font-family: Poppins_400Regular;
-	font-size: ${isSmall ? 16 : 18}px;
-	font-weight: 700;
-	color: ${({ theme }) =>
-		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
+  font-family: Poppins_400Regular;
+  font-size: ${isSmall ? 16 : 18}px;
+  font-weight: 700;
+  color: ${({ theme }) =>
+    theme.name === "dark" ? COLORS.white1 : COLORS.black};
 `;
 
 const Position = styled.Text`
-	font-family: Poppins_400Regular;
-	font-size: ${isSmall ? 10 : 12}px;
-	color: ${({ theme }) =>
-		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
+  font-family: Poppins_400Regular;
+  font-size: ${isSmall ? 10 : 12}px;
+  color: ${({ theme }) =>
+    theme.name === "dark" ? COLORS.white1 : COLORS.black};
 `;
 
 const Time = styled.Text`
-	font-family: Poppins_400Regular;
-	font-size: ${isSmall ? 10 : 12}px;
-	color: ${({ theme }) =>
-		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
+  font-family: Poppins_400Regular;
+  font-size: ${isSmall ? 10 : 12}px;
+  color: ${({ theme }) =>
+    theme.name === "dark" ? COLORS.white1 : COLORS.black};
 `;
 
 const Content = styled.Text`
-	margin: 10px 0px;
-	font-family: Poppins_400Regular;
-	/* text-align: justify; */
-	font-size: ${isSmall ? 12 : 14}px;
-	color: ${({ theme }) =>
-		theme.name === 'dark' ? COLORS.white1 : COLORS.black};
+  margin: 10px 0px;
+  font-family: Poppins_400Regular;
+  /* text-align: justify; */
+  font-size: ${isSmall ? 12 : 14}px;
+  color: ${({ theme }) =>
+    theme.name === "dark" ? COLORS.white1 : COLORS.black};
 `;
 
 const Tags = styled.View`
-	flex-direction: row;
-	align-items: center;
-	width: 100%;
-	/* background-color: red; */
-	margin-bottom: ${(p) => (p.mb ? 6 : 12)}px;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  /* background-color: red; */
+  margin-bottom: ${(p) => (p.mb ? 6 : 12)}px;
 `;
 
 const Tag = styled.TouchableOpacity`
-	background-color: ${({ theme }) =>
-		theme.name === 'dark' ? COLORS.purple : COLORS.deepBlue};
-	padding: 6px;
-	margin-right: 15px;
-	border-radius: ${SIZES.padding}px;
+  background-color: ${({ theme }) =>
+    theme.name === "dark" ? COLORS.purple : COLORS.deepBlue};
+  padding: 6px;
+  margin-right: 15px;
+  border-radius: ${SIZES.padding}px;
 `;
 
 const Label = styled.Text`
-	color: ${COLORS.white1};
-	font-size: 13px;
+  color: ${COLORS.white1};
+  font-size: 13px;
 `;
 
 const Thumbnail = styled.Image`
-	width: 100%;
-	min-height: ${(p) => p.height || 200}px;
-	/* flex: 1; */
-	/* width: undefined;
+  width: 100%;
+  min-height: ${(p) => p.height || 200}px;
+  /* flex: 1; */
+  /* width: undefined;
 	height: undefined; */
-	margin: 15px 0px;
-	margin-bottom: 24px;
-	/* background-color: red; */
+  margin: 15px 0px;
+  margin-bottom: 24px;
+  /* background-color: red; */
 `;
 
 const Action = styled.View`
-	background-color: ${({ theme }) =>
-		theme.name === 'dark' ? COLORS.purple : COLORS.deepBlue1};
-	flex-direction: row;
-	padding: 8px;
-	border-radius: ${SIZES.radius + 2}px;
-	position: ${(p) => (p.bottom ? 'absolute' : 'relative')};
-	/* position: absolute; */
-	z-index: 1;
-	margin-top: ${(p) => (p.bottom ? 'auto' : '10px')};
-	bottom: ${(p) => (p.bottom ? 10 : 10)}px;
-	justify-content: center;
+  background-color: ${({ theme }) =>
+    theme.name === "dark" ? COLORS.purple : COLORS.deepBlue1};
+  flex-direction: row;
+  padding: 8px;
+  border-radius: ${SIZES.radius + 2}px;
+  position: ${(p) => (p.bottom ? "absolute" : "relative")};
+  /* position: absolute; */
+  z-index: 1;
+  margin-top: ${(p) => (p.bottom ? "auto" : "10px")};
+  bottom: ${(p) => (p.bottom ? 10 : 10)}px;
+  justify-content: center;
 `;
 
 const ActionBtn = styled.TouchableOpacity`
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	margin: 0px 10px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 10px;
 `;
 
 const ActionLabel = styled.Text`
-	color: ${COLORS.white1};
-	margin-left: 4px;
+  color: ${(p) => p.color || COLORS.white1};
+  margin-left: 4px;
 `;
