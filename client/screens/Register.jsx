@@ -46,6 +46,7 @@ const Register = ({ navigation }) => {
   };
 
   return (
+    <>
     <Container>
       <Formik
         validationSchema={loginValidationSchema}
@@ -112,25 +113,11 @@ const Register = ({ navigation }) => {
           </>
         )}
       </Formik>
-      <Snackbar onDismiss={onDismissSnackBar} visible={error.message != null}>
-        {error.message} 
-      </Snackbar>
-      {/* <Box>
-					<Label>Email ID</Label>
-					<Input value={email} onChangeText={(text) => setEmail(text)} />
-				</Box>
-
-				<Box>
-					<Label>Password</Label>
-					<Input
-						value={password}
-						secureTextEntry
-						onChangeText={(text) => setPassword(text)}
-					/>
-				</Box> */}
-      {/* </Fields> */}
-      {/* </KeyboardAvoidingScrollView> */}
     </Container>
+    <Snackbar onDismiss={onDismissSnackBar} visible={error.message != null} duration={1000}>
+    {error.message}
+      </Snackbar>
+    </>
   );
 };
 

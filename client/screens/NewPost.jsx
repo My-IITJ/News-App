@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { useGetProfileDetails } from '../apiCalls/user';
 import Loading from '../components/Loading';
 import { useEditPost, useNewPost } from '../apiCalls/post';
+import { Snackbar } from 'react-native-paper';
 
 // Camera
 import * as ImagePicker from 'expo-image-picker';
@@ -33,6 +34,10 @@ const NewPost = ({ navigation, route: { params } }) => {
 		video: null,
 		links: [],
 	});
+
+	const [visible, setVisible] = useState(false);
+  	const onToggleSnackBar = () => setVisible(!visible);
+  	const onDismissSnackBar = () => setVisible(false);
 
 	const user = useSelector((s) => s.user.data);
 
@@ -120,6 +125,7 @@ const NewPost = ({ navigation, route: { params } }) => {
 	}
 
 	return (
+		<>
 		<Container>
 			<Header>
 				<CancelBtn onPress={() => navigation.goBack()}>
@@ -133,6 +139,7 @@ const NewPost = ({ navigation, route: { params } }) => {
 				<Post
 					onPress={() => {
 						if (selectedTags.length === 0 || desc.length === 0) {
+							onToggleSnackBar();
 							console.log('error: invalid fields');
 							return;
 						}
@@ -347,7 +354,16 @@ const NewPost = ({ navigation, route: { params } }) => {
 				toggleModal={toggleModal}
 				toggleSelection={toggleSelection}
 			/>
+			
 		</Container>
+		<Snackbar
+				visible={visible}
+				onDismiss={onDismissSnackBar}
+				duration={1000}
+				>
+				Input Tags and Post Description can't be empty!!
+		</Snackbar>
+		</>
 	);
 };
 
