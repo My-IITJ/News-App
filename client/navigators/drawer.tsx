@@ -71,15 +71,15 @@ const drawerScreens: DrawerScreenConfig[] = [
 		}
 
 	},
-	{
-		name: "Interact",
-		Component: Interact,
-		options: {
-			drawerIcon: ({ color, size }) => {
-				return <Entypo name="chat" size={size} color={color} />;
-			},
-		}
-	},
+	// {
+	// 	name: "Interact",
+	// 	Component: Interact,
+	// 	options: {
+	// 		drawerIcon: ({ color, size }) => {
+	// 			return <Entypo name="chat" size={size} color={color} />;
+	// 		},
+	// 	}
+	// },
 	{
 		name: "Academics",
 		Component: Academics,
