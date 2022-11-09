@@ -26,6 +26,7 @@ import {
 	MaterialIcons,
 	AntDesign,
 	Ionicons,
+	MaterialCommunityIcons
 } from '@expo/vector-icons';
 import { COLORS, SIZES } from '../constants';
 import { useAppSelector } from '../redux/store';
@@ -160,7 +161,7 @@ const CustomDrawer = ({ props, userData, setProgress }: CustomDrawerProps) => {
 		  const result = await Share.share({
 		   title: 'App link',
 	  message: 'A social interaction app for the IIT Jodhpur community, AppLink :https://play.google.com/store/apps/details?id=com.blockgeeks.iitj_auth&hl=en_IN&gl=US', 
-	  url: 'https://play.google.com/store/apps/details?id=com.blockgeeks.iitj_auth&hl=en_IN&gl=US'
+	  url: 'https://www.iitj.ac.in/'
 		  });
 		  if (result.action === Share.sharedAction) {
 			if (result.activityType) {
@@ -294,7 +295,9 @@ const CustomDrawer = ({ props, userData, setProgress }: CustomDrawerProps) => {
 				<View style={{
 					marginBottom: 15
 				}}>
-					<DrawerItem Icon={<AntDesign name="appstore-o" size={22} color={COLORS.white} />} label="Version 1.0" onPress={() => { }} />
+					
+					<DrawerItem Icon={<MaterialCommunityIcons name="beta" size={24} color="white" />} label="Beta Version" onPress={() => { }} />
+					
 					<DrawerItem Icon={<Ionicons name="share-social-outline" size={22} color={COLORS.white} />} label="Share" onPress={onShare} />
 					<DrawerItem Icon={<Ionicons name="exit-outline" size={22} color={COLORS.white} />} label="Logout" onPress={() => { 
                 handleLogout()
