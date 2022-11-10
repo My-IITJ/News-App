@@ -6,6 +6,7 @@ import {
 	DrawerContentComponentProps,
 	useDrawerProgress,
 } from '@react-navigation/drawer';
+import { createStackNavigator} from "@react-navigation/stack";
 import Utilities from '../screens/Utilities';
 import Event from '../screens/Event';
 import Interact from '../screens/Interact';
@@ -37,11 +38,22 @@ import { useEffect, useState } from 'react';
 import Home from '../screens/Home';
 import { StackActions } from '@react-navigation/native';
 import Gallery from '../screens/Gallery';
+import Events from '../screens/Eventsgallery';
+
+
+const GallerStack = createStackNavigator<GalleryStackParams>()
+
+const GalleryStackScreen = () => (
+	<GallerStack.Navigator>
+		<GallerStack.Screen name="Eventsgallery" component={Events} options={{headerShown: false}}/>
+		<GallerStack.Screen name="Galleryfinal" component={Gallery} options={({route}) => ({title: route.params.name})}/>
+	</GallerStack.Navigator>
+)
 
 const drawerScreens: DrawerScreenConfig[] = [
 	{
 		name: "Latest",
-		Component: AppStack,
+		Component: AppStack, 
 		options: {
 			drawerIcon: ({ color, size }) => {
 				return (
@@ -56,7 +68,7 @@ const drawerScreens: DrawerScreenConfig[] = [
 	},
 	{
 		name: "Gallery",
-		Component: Gallery,
+		Component: GalleryStackScreen,
 		options: {
 			drawerIcon: ({ color, size }) => {
 				return (
@@ -379,4 +391,16 @@ type DrawerItemProps = {
 	label: string;
 	onPress: () => void;
 	focused?: boolean;
+}
+
+type GalleryStackParams ={
+	Eventsgallery: any;
+	Galleryfinal: {
+		name: string;
+		desc: string;
+		thumbnail: string;
+		original: string;
+		images?: string[];
+		videos?: string[];
+	}
 }

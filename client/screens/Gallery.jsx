@@ -16,7 +16,7 @@ import GalleryView from "./GalleryView";
 import { useSelector } from "react-redux";
 
  
- export default function Interact({drawerAnimatedStyle, navigation}) {
+ export default function Interact({drawerAnimatedStyle, navigation, route}) {
   const {theme} = useSelector(s => s.user);
   const [isImageFolderOpen, setIsImageFolderOpen] = useState(false);
    const images = [
@@ -31,8 +31,8 @@ import { useSelector } from "react-redux";
  
    return (
      <Container style={[drawerAnimatedStyle]}>
-      <NavBar/>
-      <GalleryView theme={theme}/>
+      {/* <NavBar/> */}
+      <GalleryView theme={theme} item={route.params}/>
      </Container>
    );
  }
