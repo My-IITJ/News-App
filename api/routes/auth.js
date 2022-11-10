@@ -1,10 +1,13 @@
 const router = require('express').Router();
 const User = require('../db/models/User');
+const admin = require("firebase-admin")
 
 router.post('/user-details', async (req, res) => {
 	try {
-		const { email, photoUrl, displayName, uid } = req.body;
-
+		const { email, photoUrl, displayName, uid, role } = req.body;
+		
+		// set custom user claims
+		await admin.auth().setCustomUserClaims(uid, { role });
 		const user = await User.findOne({ email });
 
 		if (user) {
@@ -25,6 +28,7 @@ router.post('/user-details', async (req, res) => {
 				.json({ _id: newUser._id, profileImg: user.profileImg });
 		}
 	} catch (error) {
+		console.error(error)
 		res.status(500).json(error);
 	}
 });

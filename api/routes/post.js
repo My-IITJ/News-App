@@ -8,7 +8,7 @@ const upload = require('../middlewares/multer');
 const subDays = require('date-fns/subDays');
 const cloudinary = require('../cloud');
 const { newPostValidator, validate } = require('../middlewares/validators');
-const { checkIfAuthenticated } = require('../middlewares/authenticate');
+const { checkIfAuthenticated, checkIfAdmin } = require('../middlewares/authenticate');
 
 //create a new Post : Sakshi
 router.post(
@@ -16,8 +16,8 @@ router.post(
 	upload.single('thumbnail'),
 	newPostValidator,
 	validate,
+	checkIfAdmin,
 	async (req, res) => {
-		console.log('first');
 		try {
 			let { author, content, tags, visibility, image } = req.body;
 
