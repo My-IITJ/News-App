@@ -54,17 +54,19 @@ export default function App() {
 		async (user) => {
 			let data = user;
 			if (user) {
+				const role = getUserRole(user.email)
 				const { _id, profileImg } = await updateUserData({
 					email: user.email,
 					displayName: user.displayName,
 					photoUrl: user.photoURL || defaultImgUrl,
+					role: role,
 					uid: user.uid,
 				});
 
 				data = {
 					_id,
 					profileImg,
-					role: getUserRole(user.email),
+					role: role,
 					email: user.email,
 				};
 			}

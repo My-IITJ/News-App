@@ -1,11 +1,5 @@
 // Firenase admin
 var admin = require("firebase-admin");
-var serviceAccount = require("../myiitj-firebase-adminsdk-wzehf-75b7416a30.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-
 
 const getAuthToken = (req, res, next) => {
   if (
@@ -37,3 +31,28 @@ exports.checkIfAuthenticated = (req, res, next) => {
     }
   });
 };
+
+exports.checkIfAdmin = (req, res, next) => {
+  getAuthToken(req, res, async () => {
+    try {
+      const { authToken } = req;
+      const userInfo = await admin
+        .auth()
+        .verifyIdToken(authToken);
+      req.authId = userInfo.uid;
+      console.log(userInfo)
+      if (userInfo.role === 'faculty') {
+        return next();
+      } else {
+        return res
+          .status(401)
+          .send({ error: 'You are not authorized to make this request' });
+      }
+    } catch (e) {
+      console.log(e);
+      return res
+        .status(401)
+        .send({ error: 'You are not authorized to make this request' });
+    }
+  });
+}

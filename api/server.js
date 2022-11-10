@@ -18,6 +18,7 @@ const commentRouter = require('./routes/comment');
 const tagRouter = require('./routes/tag');
 const authRouter = require('./routes/auth');
 const { checkIfAuthenticated } = require('./middlewares/authenticate');
+var admin = require("firebase-admin");
 
 //dotenv
 dotenv.config();
@@ -30,6 +31,14 @@ dbConnect();
 
 // PORT
 const PORT = process.env.PORT || 8080;
+
+var serviceAccount =JSON.parse(
+  process.env.FIREBASE_SERVICE_ACCOUNT_KEY
+);
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 // Middlewares
 app.use(bodyParser.json());

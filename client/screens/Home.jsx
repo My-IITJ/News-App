@@ -78,7 +78,7 @@ const Home = ({
 					page="Home"
 				/>
 			)}
-			{data2?.role !== ROLES.GUEST && (
+			{data2?.role === ROLES.FACULTY && (
 				<AnimatedFAB
 					icon={"plus"}
 					label={"Create Post"}
