@@ -1522,11 +1522,6 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@hashiprobr/expo-pdf-reader@^1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@hashiprobr/expo-pdf-reader/-/expo-pdf-reader-1.0.8.tgz#89d48428c98a35c78ebceb1a9f461853e5daddab"
-  integrity sha512-VZ6bTj+rEUrH6EDyAeVkxWCLB3nMeSZvi3ESgg0PGBIhlXiK/wOg6IFdVRkgXDmY76YhyiFbFGqFpI/hKvaj/g==
-
 "@humanwhocodes/config-array@^0.10.4":
   version "0.10.4"
   resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.10.4.tgz"
