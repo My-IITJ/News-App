@@ -45,7 +45,7 @@ const utilities = [
   {
     title: "Health Center",
     image:
-      "https://res.cloudinary.com/myiitj/image/upload/v1667922690/3_gr5qd2.jpg",
+      "https://res.cloudinary.com/myiitj/image/upload/v1668063758/hc_c4txqj.jpg",
     desc: "An ISO 9001:2005 certified health centre with OPD and ambulance service",
     options: {
       title: "Important Contacts",
@@ -93,7 +93,7 @@ const utilities = [
   {
     title: "Kendriya Bhandar",
     image:
-      "https://res.cloudinary.com/myiitj/image/upload/v1668003024/berm_aod8xi.jpg",
+      "https://res.cloudinary.com/myiitj/image/upload/v1668063758/kb_lyejas.jpg",
     desc: "Kendriya Bhandar store has a variety of grocery items from stationary to snacks.",
     options: {
       title: "Details",
@@ -169,7 +169,17 @@ const utilities = [
         {
           type: "call",
           name: "Addie's Bakery",
-          value: "12345678",
+          value: "7850968314",
+        },
+        {
+          type: "call",
+          name: "Nescafe shop",
+          value: "8005939376",
+        },
+        {
+          type: "call",
+          name: "Food Piper",
+          value: "8302186370",
         },
         // all other contacts
       ],
