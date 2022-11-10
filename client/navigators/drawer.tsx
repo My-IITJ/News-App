@@ -6,6 +6,7 @@ import {
   DrawerContentComponentProps,
   useDrawerProgress,
 } from "@react-navigation/drawer";
+import { createStackNavigator} from "@react-navigation/stack";
 import Utilities from "../screens/Utilities";
 import Event from "../screens/Event";
 import Interact from "../screens/Interact";
@@ -28,73 +29,93 @@ import { useAppSelector } from "../redux/store";
 import Icon from "../components/Icon";
 import { UserData } from "../redux/userSlice";
 
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-} from "react-native-reanimated";
-import { useEffect, useState } from "react";
-import Home from "../screens/Home";
-import { StackActions } from "@react-navigation/native";
-import Gallery from "../screens/Gallery";
+import Animated, { interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
+import { useEffect, useState } from 'react';
+import Home from '../screens/Home';
+import { StackActions } from '@react-navigation/native';
+import Gallery from '../screens/Gallery';
+import Events from '../screens/Eventsgallery';
+
+
+const GallerStack = createStackNavigator<GalleryStackParams>()
+
+const GalleryStackScreen = () => (
+	<GallerStack.Navigator>
+		<GallerStack.Screen name="Eventsgallery" component={Events} options={{headerShown: false}}/>
+		<GallerStack.Screen name="Galleryfinal" component={Gallery} options={({route}) => ({title: route.params.name})}/>
+	</GallerStack.Navigator>
+)
 
 const drawerScreens: DrawerScreenConfig[] = [
-  {
-    name: "Latest",
-    Component: AppStack,
-    options: {
-      drawerIcon: ({ color, size }) => {
-        return (
-          <Foundation name="social-designer-news" size={size} color={color} />
-        );
-      },
-    },
-  },
-  {
-    name: "Gallery",
-    Component: Gallery,
-    options: {
-      drawerIcon: ({ color, size }) => {
-        return <Entypo name="image" size={size} color={color} />;
-      },
-    },
-  },
-  // {
-  // 	name: "Interact",
-  // 	Component: Interact,
-  // 	options: {
-  // 		drawerIcon: ({ color, size }) => {
-  // 			return <Entypo name="chat" size={size} color={color} />;
-  // 		},
-  // 	}
-  // },
-  {
-    name: "Academics",
-    Component: Academics,
-    options: {
-      drawerIcon: ({ color, size }) => {
-        return <Entypo name="open-book" size={size} color={color} />;
-      },
-    },
-  },
-  {
-    name: "Events",
-    Component: Event,
-    options: {
-      drawerIcon: ({ color, size }) => {
-        return <MaterialIcons name="emoji-events" size={size} color={color} />;
-      },
-    },
-  },
-  {
-    name: "Utilities",
-    Component: Utilities,
-    options: {
-      drawerIcon: ({ color, size }) => {
-        return <Entypo name="box" size={size} color={color} />;
-      },
-    },
-  },
+	{
+		name: "Latest",
+		Component: AppStack, 
+		options: {
+			drawerIcon: ({ color, size }) => {
+				return (
+					<Foundation
+						name="social-designer-news"
+						size={size}
+						color={color}
+					/>
+				);
+			},
+		}
+	},
+	{
+		name: "Gallery",
+		Component: GalleryStackScreen,
+		options: {
+			drawerIcon: ({ color, size }) => {
+				return (
+					<Entypo
+						name="image"
+						size={size}
+						color={color}
+					/>
+				);
+			}
+		}
+
+	},
+	{
+		name: "Interact",
+		Component: Interact,
+		options: {
+			drawerIcon: ({ color, size }) => {
+				return <Entypo name="chat" size={size} color={color} />;
+			},
+		}
+	},
+	{
+		name: "Academics",
+		Component: Academics,
+		options: {
+			drawerIcon: ({ color, size }) => {
+				return <Entypo name="open-book" size={size} color={color} />;
+			},
+		}
+	},
+	{
+		name: "Events",
+		Component: Event,
+		options: {
+			drawerIcon: ({ color, size }) => {
+				return (
+					<MaterialIcons name="emoji-events" size={size} color={color} />
+				);
+			},
+		}
+	},
+	{
+		name: "Utilities",
+		Component: Utilities,
+		options: {
+			drawerIcon: ({ color, size }) => {
+				return <Entypo name="box" size={size} color={color} />;
+			},
+		}
+	}
 ];
 
 const Drawer = createDrawerNavigator();
@@ -458,10 +479,20 @@ type CustomDrawerProps = {
 };
 
 type DrawerItemProps = {
-  Icon: React.ReactNode;
-  label: string;
-  onPress: () => void;
-  focused?: boolean;
-  isBeta?: boolean;
-  inactiveColor: string;
-};
+	Icon: React.ReactNode;
+	label: string;
+	onPress: () => void;
+	focused?: boolean;
+}
+
+type GalleryStackParams ={
+	Eventsgallery: any;
+	Galleryfinal: {
+		name: string;
+		desc: string;
+		thumbnail: string;
+		original: string;
+		images?: string[];
+		videos?: string[];
+	}
+}

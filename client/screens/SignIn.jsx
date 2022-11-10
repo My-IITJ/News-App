@@ -58,6 +58,7 @@ const SignIn = ({ navigation }) => {
       });
     });
   return (
+	<>
     <Container>
       <Formik
         validationSchema={loginValidationSchema}
@@ -124,10 +125,11 @@ const SignIn = ({ navigation }) => {
       </>
         )}
       </Formik>
-      <Snackbar onDismiss={onDismissSnackBar} visible={error.message != null}>
-        {error.message}
-      </Snackbar>
     </Container>
+	<Snackbar onDismiss={onDismissSnackBar} visible={error.message != null} duration={1000}>
+	{error.message}
+  	</Snackbar>
+	</>
   );
 };
 
