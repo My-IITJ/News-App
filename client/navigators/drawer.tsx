@@ -12,6 +12,7 @@ import Interact from '../screens/Interact';
 import Academics from '../screens/Academics';
 import { AppStack } from './stack';
 import { useCallback } from 'react';
+import Constants from 'expo-constants';
 import auth from '@react-native-firebase/auth';
 import {
 	View,
@@ -294,7 +295,7 @@ const CustomDrawer = ({ props, userData, setProgress }: CustomDrawerProps) => {
 				<View style={{
 					marginBottom: 15
 				}}>
-					<DrawerItem Icon={<AntDesign name="appstore-o" size={22} color={COLORS.white} />} label="Version 1.0" onPress={() => { }} />
+					<DrawerItem Icon={<AntDesign name="appstore-o" size={22} color={COLORS.white} />} label={`Version ${Constants.expoConfig.version}`} onPress={() => { }} />
 					<DrawerItem Icon={<Ionicons name="share-social-outline" size={22} color={COLORS.white} />} label="Share" onPress={onShare} />
 					<DrawerItem Icon={<Ionicons name="exit-outline" size={22} color={COLORS.white} />} label="Logout" onPress={() => { 
                 handleLogout()

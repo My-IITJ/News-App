@@ -5,7 +5,7 @@ import Constants from "expo-constants";
 import auth from "@react-native-firebase/auth";
 import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
-import { Snackbar } from "react-native-paper";
+import { ActivityIndicator, Button, Snackbar } from "react-native-paper";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Text } from "react-native";
@@ -15,6 +15,7 @@ import { Text } from "react-native";
 const SignIn = ({ navigation }) => {
   const [error, setError] = useState({ message: null });
   const onDismissSnackBar = () => setError(false);
+  const [loading, setLoading] = useState(false);
 
   const loginValidationSchema = yup.object().shape({
     email: yup
@@ -27,13 +28,16 @@ const SignIn = ({ navigation }) => {
       .required("Password is required"),
   });
 
-  const handleSignIn = useCallback(({ email, password }) => {
+  const handleSignIn = (({ email, password }) => {
+    setLoading(true) 
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         console.log("User account signed in!");
+        setLoading(false)
       })
       .catch((error) => {
+        setLoading(false)
         if (error.code === "auth/invalid-email") {
           console.log("The email address is not valid!");
 		  setError({ message: "That email address is not valid!" });
@@ -50,11 +54,9 @@ const SignIn = ({ navigation }) => {
           console.log("Invalid password!");
 		  setError({ message: "Invalid password!" });
         }
-
         console.log(error);
       });
-  }, );
-
+    });
   return (
     <Container>
       <Formik
@@ -75,9 +77,11 @@ const SignIn = ({ navigation }) => {
           <>
       <KeyboardAvoidingScrollView
         stickyFooter={
-          <ButtonContainer style={{ backgroundColor: !isValid ? "grey" : COLORS.purple2 }} onPress={handleSubmit} disabled={!isValid}>
-            <Label1>Sign In</Label1>
-          </ButtonContainer>
+          <>
+            <Button style={{ backgroundColor: !isValid ? "grey" : COLORS.purple2 }} mode="contained" onPress={handleSubmit} loading={loading} disabled={!isValid}>
+          Sign In
+        </Button>
+          </>
         }
       >
         <WelcomeText>Hello Again!</WelcomeText>
@@ -116,10 +120,6 @@ const SignIn = ({ navigation }) => {
                   </Text>
                 )}
         </Fields>
-
-        {/* <ButtonContainer onPress={handleSignIn}>
-				<Label1>Sign In</Label1>
-			</ButtonContainer> */}
       </KeyboardAvoidingScrollView>
       </>
         )}
