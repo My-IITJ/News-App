@@ -9,7 +9,8 @@ import UtilityCard from "../components/UtilityCard";
 const utilities = [
   {
     title: "Socials",
-    image: "",
+    image:
+      "https://res.cloudinary.com/myiitj/image/upload/v1667922690/3_gr5qd2.jpg",
     desc: "Follow us on social media to get latest updates.",
     options: {
       title: "Links",
@@ -44,7 +45,7 @@ const utilities = [
   {
     title: "Health Center",
     image:
-      "https://res.cloudinary.com/myiitj/image/upload/v1667922690/3_gr5qd2.jpg",
+      "https://res.cloudinary.com/myiitj/image/upload/v1668063758/hc_c4txqj.jpg",
     desc: "An ISO 9001:2005 certified health centre with OPD and ambulance service",
     options: {
       title: "Important Contacts",
@@ -52,12 +53,12 @@ const utilities = [
         {
           type: "call",
           name: "Reception",
-          value: "12345678",
+          value: "+91 291 280 1190",
         },
         {
           type: "call",
           name: "Ambulance",
-          value: "12345678",
+          value: "+91 75688 15630",
         },
       ],
     },
@@ -79,7 +80,80 @@ const utilities = [
         {
           type: "call",
           name: "E Rickshaw",
+          value: "8003382240",
+        },
+        {
+          type: "call",
+          name: "Bus",
           value: "12345678",
+        },
+      ],
+    },
+  },
+  {
+    title: "Kendriya Bhandar",
+    image:
+      "https://res.cloudinary.com/myiitj/image/upload/v1668063758/kb_lyejas.jpg",
+    desc: "Kendriya Bhandar store has a variety of grocery items from stationary to snacks.",
+    options: {
+      title: "Details",
+      items: [
+        {
+          type: "call",
+          name: "Contact",
+          value: "6375723425",
+        },
+        {
+          type: "location",
+          name: "Near type-B housing",
+          value: "",
+        },
+      ],
+    },
+  },
+  {
+    title: "Grocery/Bakery shop",
+    image:
+      "https://res.cloudinary.com/myiitj/image/upload/v1668003024/berm_aod8xi.jpg",
+    desc: "A mini supermarket for all your daily needs as well as fresh baked products from 15 A.D",
+    options: {
+      title: "Details",
+      items: [
+        {
+          type: "call",
+          name: "Contact",
+          value: "12345678",
+        },
+        {
+          type: "location",
+          name: "W-21 Berm",
+          value: "",
+        },
+      ],
+    },
+  },
+  {
+    title: "Stationary",
+    image:
+      "https://res.cloudinary.com/myiitj/image/upload/v1668003024/berm_aod8xi.jpg",
+    desc: "You can get basic stationary and photocopies from here.",
+    options: {
+      title: "Details",
+      items: [
+        {
+          type: "call",
+          name: "Contact 1",
+          value: "7878592910",
+        },
+        {
+          type: "call",
+          name: "Contact 2",
+          value: "9785887445",
+        },
+        {
+          type: "location",
+          name: "E-21 Berm",
+          value: "",
         },
       ],
     },
@@ -95,8 +169,19 @@ const utilities = [
         {
           type: "call",
           name: "Addie's Bakery",
-          value: "12345678",
+          value: "7850968314",
         },
+        {
+          type: "call",
+          name: "Nescafe shop",
+          value: "8005939376",
+        },
+        {
+          type: "call",
+          name: "Food Piper",
+          value: "8302186370",
+        },
+        // all other contacts
       ],
     },
   },
