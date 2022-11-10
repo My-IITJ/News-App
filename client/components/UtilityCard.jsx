@@ -11,7 +11,7 @@ import { Card, Button, Title, Paragraph, List } from "react-native-paper";
 import { COLORS } from "../constants";
 
 const Utilities = ({ title, image, desc, options }) => {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(true);
 
   const call = (number) => {
     let phoneNumber = "";
@@ -44,9 +44,7 @@ const Utilities = ({ title, image, desc, options }) => {
           {title}
         </Title>
       </Card.Content>
-      <Card.Cover
-        source={{ uri: image } || require("../assets/images/HC.png")}
-      />
+      <Card.Cover source={image || require("../assets/images/HC.png")} />
       <Card.Content style={{ padding: 10 }}>
         <Paragraph style={{ marginBottom: 10 }}>{desc}</Paragraph>
         {options && (
@@ -79,17 +77,6 @@ const Utilities = ({ title, image, desc, options }) => {
                   />
                 );
               }
-
-              if (type === "location") {
-                return (
-                  <List.Item
-                    key={name}
-                    // onPress={() => social(value)}
-                    left={() => <List.Icon icon="map-marker" />}
-                    title={name}
-                  />
-                );
-              }
             })}
           </List.Accordion>
         )}
@@ -98,3 +85,27 @@ const Utilities = ({ title, image, desc, options }) => {
   );
 };
 export default Utilities;
+
+/* <Card style={Styles.container}>
+  <Card.Content>
+    <Title>Hostels</Title>
+  </Card.Content>
+  <Card.Cover source={require("../assets/images/Hostel.png")} />
+  <Card.Content>
+    <Paragraph>
+      
+    </Paragraph>
+  </Card.Content>
+</Card>
+<Card style={Styles.container}>
+  <Card.Content>
+    <Title>Transport</Title>
+  </Card.Content>
+  <Card.Cover source={require("../assets/images/Transport.png")} />
+  <Card.Content>
+    <Paragraph>
+      Bus facility for students to and fro from IIT J campus to Jodhpur
+      city on a daily basis
+    </Paragraph>
+  </Card.Content>
+</Card> */
