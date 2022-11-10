@@ -6,6 +6,7 @@ import Constants from "expo-constants";
 import PostsList from "../components/PostsList";
 import { useSelector } from "react-redux";
 import { useGetPosts } from "../apiCalls/post";
+
 // import { Text } from 'react-native';
 
 import Loading from "../components/Loading";
@@ -77,11 +78,11 @@ const Home = ({
 					page="Home"
 				/>
 			)}
-			{data2?.role !== ROLES.GUEST && (
+			{data2?.role === ROLES.FACULTY && (
 				<AnimatedFAB
 					icon={"plus"}
 					label={"Create Post"}
-					extended={isExtended}
+					// extended={isExtended}
 					onPress={() => navigation.navigate("NewPost")}
 					visible={visible}
 					animateFrom={"right"}

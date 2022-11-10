@@ -1,5 +1,5 @@
 import { COLORS, isSmall, SIZES } from "../constants";
-import React, {  } from "react";
+import React, { useState } from "react";
 import styled from "styled-components/native";
 import Constants from "expo-constants";
 import auth from "@react-native-firebase/auth";
@@ -8,11 +8,12 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { Formik } from "formik";
 import { Text } from "react-native";
 import * as yup from "yup";
-import { Snackbar } from "react-native-paper";
+import { Button, Snackbar } from "react-native-paper";
 
 const Register = ({ navigation }) => {
   const [error, setError] = React.useState({ message: null });
   const onDismissSnackBar = () => setError(false);
+  const [loading, setLoading] = useState(false);
 
   const loginValidationSchema = yup.object().shape({
     email: yup
@@ -26,12 +27,15 @@ const Register = ({ navigation }) => {
   });
 
   const handleRegistration = ({ email, password }) => {
+    setLoading(true);
     auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
+      setLoading(false);
         console.log("User account created & signed in!");
       })
       .catch((error) => {
+      setLoading(false);
         if (error.code === "auth/email-already-in-use") {
           console.log("That email address is already in use!");
           setError({ message: "That email address is already in use!" });
@@ -66,9 +70,11 @@ const Register = ({ navigation }) => {
           <>
             <KeyboardAvoidingScrollView
               stickyFooter={
-                <ButtonContainer style={{ backgroundColor: !isValid ? "grey" : COLORS.purple2 }} onPress={handleSubmit} disabled={!isValid}>
-                  <Label1>Register</Label1>
-                </ButtonContainer>
+                <>
+                <Button style={{ backgroundColor: !isValid ? "grey" : COLORS.purple2 }} mode="contained" onPress={handleSubmit} loading={loading} disabled={!isValid}>
+                Register
+          </Button>
+            </>
               }
             >
               <WelcomeText>Create Account</WelcomeText>

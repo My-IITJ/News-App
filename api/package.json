@@ -19,7 +19,7 @@
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "date-fns": "^2.28.0",
-    "dotenv": "^11.0.0",
+    "dotenv": "^16.0.3",
     "esm": "^3.2.25",
     "express": "^4.17.2",
     "express-async-errors": "^3.1.1",
