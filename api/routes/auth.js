@@ -5,11 +5,9 @@ const admin = require("firebase-admin")
 router.post('/user-details', async (req, res) => {
 	try {
 		const { email, photoUrl, displayName, uid, role } = req.body;
-		
 		// set custom user claims
 		await admin.auth().setCustomUserClaims(uid, { role });
 		const user = await User.findOne({ email });
-
 		if (user) {
 			return res
 				.status(200)
@@ -25,7 +23,7 @@ router.post('/user-details', async (req, res) => {
 			await newUser.save();
 			return res
 				.status(200)
-				.json({ _id: newUser._id, profileImg: user.profileImg });
+				.json({ _id: newUser._id, profileImg: newUser.profileImg });
 		}
 	} catch (error) {
 		console.error(error)

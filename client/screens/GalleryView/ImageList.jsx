@@ -8,6 +8,7 @@
 
  import React from "react";
  import { Image, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+ import FastImage from 'react-native-fast-image'
 import { RFValue } from "react-native-responsive-fontsize";
  
  const IMAGE_WIDTH = 150;
@@ -27,7 +28,11 @@ import { RFValue } from "react-native-responsive-fontsize";
          activeOpacity={0.8}
          onPress={() => onPress(index)}
        >
-         <Image source={{ uri: imageUrl }} style={styles.image} />
+         <FastImage
+            source={{ uri: imageUrl }}
+            style={styles.image}
+            resizeMode={FastImage.resizeMode.cover}
+         />
        </TouchableOpacity>
      ))}
    </ScrollView>
