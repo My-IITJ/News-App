@@ -33,6 +33,7 @@ const Register = ({ navigation }) => {
       .then(() => {
       setLoading(false);
         console.log("User account created & signed in!");
+        navigation.navigate("Latest", { screen: "Landing" });
       })
       .catch((error) => {
       setLoading(false);

@@ -3,7 +3,7 @@ export const fests = [
     name: "Varchas '22",
     desc: "Sports Festival",
     thumbnail:
-      "https://images.unsplash.com/photo-1445264918150-66a2371142a2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=80",
+      "https://res.cloudinary.com/myiitj/image/upload/v1668179668/Events/Varchas%2722/_MG_0194_bnmakc.jpg",
     original:
       "https://images.unsplash.com/photo-1445264918150-66a2371142a2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2800&q=80",
     images: [
@@ -16,25 +16,10 @@ export const fests = [
     videos: [],
   },
   {
-    name: "Aaftab '22",
-    desc: "Literary Festival",
-    thumbnail:
-      "https://images.unsplash.com/photo-1429823040067-2c31b1d637ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-    original:
-      "https://images.unsplash.com/photo-1429823040067-2c31b1d637ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2734&q=80",
-    images: [
-      "https://res.cloudinary.com/myiitj/image/upload/v1667997477/Events/Aaftaab%2722/IMG_1111_slam6r.jpg",
-      "https://res.cloudinary.com/myiitj/image/upload/v1667997454/Events/Aaftaab%2722/IMG_1065_xn23ce.jpg",
-      "https://res.cloudinary.com/myiitj/image/upload/v1667997450/Events/Aaftaab%2722/IMG_1414_icnbgy.jpg",
-      "https://res.cloudinary.com/myiitj/image/upload/v1667997375/Events/Aaftaab%2722/IMG_1111_vt3gqj.jpg",
-    ],
-    videos: [],
-  },
-  {
     name: "Youth Conclave '22",
     desc: "Emerging Technologies for Sustainable Future",
     thumbnail:
-      "https://images.unsplash.com/photo-1480374178950-b2c449be122e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+      "https://res.cloudinary.com/myiitj/image/upload/v1668179338/Events/Youth%20Conclave%2022/IMG_0008_jpcvta.jpg",
     original:
       "https://images.unsplash.com/photo-1480374178950-b2c449be122e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80",
     images: [
@@ -57,7 +42,7 @@ export const fests = [
     name: "Diwali '22",
     desc: "The Festival of Lights",
     thumbnail:
-      "https://images.unsplash.com/photo-1523540383849-4ae4125acd6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+      "https://res.cloudinary.com/myiitj/image/upload/v1668179875/Events/Diwali%2022/Image_1_-_Raj_Bhushan_Bara_M21CY020_khrixr.jpg",
     original:
       "https://images.unsplash.com/photo-1523540383849-4ae4125acd6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80",
     images: [
@@ -74,6 +59,20 @@ export const fests = [
       "https://res.cloudinary.com/myiitj/image/upload/v1668063978/Events/Diwali%2022/IMG_20221024_201748__01_-_Piyush_B21BB022_l3k262.jpg",
       "https://res.cloudinary.com/myiitj/image/upload/v1668063977/Events/Diwali%2022/IMG_20221024_230335_-_Manoj_Kumar_Ghosh_M21PH015_gj3m2b.jpg",
 
+    ],
+    videos: [],
+  },
+  {
+    name: "Aaftab '22",
+    desc: "Literary Festival",
+    thumbnail:
+    "https://res.cloudinary.com/myiitj/image/upload/v1667997450/Events/Aaftaab%2722/IMG_1414_icnbgy.jpg",
+    original:
+      "https://images.unsplash.com/photo-1429823040067-2c31b1d637ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2734&q=80",
+    images: [
+      "https://res.cloudinary.com/myiitj/image/upload/v1667997477/Events/Aaftaab%2722/IMG_1111_slam6r.jpg",
+      "https://res.cloudinary.com/myiitj/image/upload/v1667997454/Events/Aaftaab%2722/IMG_1065_xn23ce.jpg",
+      "https://res.cloudinary.com/myiitj/image/upload/v1667997375/Events/Aaftaab%2722/IMG_1111_vt3gqj.jpg",
     ],
     videos: [],
   },

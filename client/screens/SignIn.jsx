@@ -35,6 +35,8 @@ const SignIn = ({ navigation }) => {
       .then(() => {
         console.log("User account signed in!");
         setLoading(false)
+        // navigate to home screen
+        navigation.navigate("Latest", { screen: "Landing" });
       })
       .catch((error) => {
         setLoading(false)

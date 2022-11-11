@@ -13,21 +13,9 @@ import { fests } from "../data/events";
 
 
 export default function Events({drawerAnimatedStyle, navigation}) {
-    const {theme} = useSelector(s => s.user);
-    
-
     return (
        <Container style={[drawerAnimatedStyle]}>
         <NavBar/>
-        {/* <GalleryView theme={theme}/> */}
-      {/* {fests.map(fest => {
-        return (
-          <Text>
-            {fests.name}
-          </Text>
-        );
-      })} */}
-
         <FlatList
             data = {fests}
             keyExtractor={(item, index) => item.name}
@@ -56,19 +44,3 @@ const Container = styled(Animated.View)`
        theme.name === 'dark' ? COLORS.darkPurple : COLORS.white1};
    padding-top: ${Constants.statusBarHeight}px;
 `;
-
-const styles = StyleSheet.create({
-  about: {
-    flex: 1,
-    marginTop: -12,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  name: {
-    textAlign: "center",
-    fontSize: 24,
-    fontWeight: "200",
-    color: "white",
-    padding: 10,
-  },
-});
