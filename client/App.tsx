@@ -18,6 +18,7 @@ import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
 // import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAppState, useOnlineManager } from './apiCalls/hooks';
+import * as Sentry from "@sentry/react-native";
 
 // auth related imports
 import { useCallback, useEffect, useState } from 'react';
@@ -37,7 +38,15 @@ const queryClient = new QueryClient();
 
 SplashScreen.preventAutoHideAsync();
 
-export default function App() {
+Sentry.init({
+  dsn: "https://4dffedfebe5d4753aaa7f902566c6664@o4504106688315392.ingest.sentry.io/4504106690936832",
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  // We recommend adjusting this value in production.
+  tracesSampleRate: 1.0,
+});
+
+
+function App() {
 	useOnlineManager();
 	useAppState();
 	const [initializing, setInitializing] = useState(true);
@@ -117,3 +126,6 @@ export default function App() {
 		</View>
 	);
 }
+
+
+export default Sentry.wrap(App);

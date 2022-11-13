@@ -1,57 +1,67 @@
 /* eslint-disable no-unused-vars */
+import { useState } from 'react';
+import {Alert} from 'react-native'
 import styled, { useTheme } from 'styled-components/native';
 import { COLORS, icons, isSmall, SIZES } from '../constants';
 import Constants from 'expo-constants';
-import { useDispatch } from 'react-redux';
-import { updateData } from '../redux/userSlice';
+import * as Sentry from "@sentry/react-native";
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 //auth related imports
-import * as Linking from 'expo-linking';
-import * as WebBrowser from 'expo-web-browser';
-import { useEffect } from 'react';
-import { onGoogleButtonPress } from '../firebase';
+import { ActivityIndicator } from 'react-native-paper';
 
-WebBrowser.maybeCompleteAuthSession();
+
+// import statusCodes along with GoogleSignin
+const APP_TYPE = process.env.APP_TYPE;
+
+const getWebClientId = () => {
+	switch (APP_TYPE) {
+		case 'dev':
+			return '379614937476-76bdg50kjohnd7qni3o7odrpf46si1td.apps.googleusercontent.com';
+		case 'preview':
+			return '696540223154-md2pnvl7eegrgb68qle3ea447noqu76d.apps.googleusercontent.com';
+		default:
+			return '379614937476-76bdg50kjohnd7qni3o7odrpf46si1td.apps.googleusercontent.com';
+	}
+};
+
+GoogleSignin.configure({
+	webClientId: getWebClientId(),
+	scopes: ['profile', 'email'],
+});
+
+// Somewhere in your code
 
 const Welcome = ({ navigation }) => {
 	const theme = useTheme();
-	const dispatch = useDispatch();
+	const [loading, setLoading] = useState(false);
 
-	const handleRedirect = async (e) => {
-		let {
-			queryParams: { data },
-		} = Linking.parse(e.url);
-		data = JSON.parse(data);
-		console.log(data);
-		dispatch(updateData({ data }));
-	};
-
-	const addLinkingListener = () => {
-		Linking.addEventListener('url', handleRedirect);
-	};
-	const removeLinkingListener = () => {
-		Linking.removeEventListener('url', handleRedirect);
-	};
-
-	const handleLogin = async () => {
-		let authUrl = `https://myiitj-api.vercel.app/auth/google`;
+	const signIn = async () => {
 		try {
-			addLinkingListener();
-			await WebBrowser.openAuthSessionAsync(authUrl);
-		} catch (err) {
-			console.log(err);
+		  setLoading(true);
+		  await GoogleSignin.hasPlayServices();
+		  // Get the users ID token
+		  const { idToken } = await GoogleSignin.signIn();
+		  // Create a Google credential with the token
+		  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+		  // Sign-in the user with the credential
+		  auth().signInWithCredential(googleCredential);
+		  setLoading(false);
+		} catch (error) {
+			setLoading(false);
+			if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+			Alert.alert("Google Play Services not available");
+		  } else {
+			console.error(error)
+			Alert.alert("Something went wrong");
+			// report to sentry
+			Sentry.captureException(error);
 		}
-		removeLinkingListener();
-	};
-
-	useEffect(() => {
-		WebBrowser.warmUpAsync();
-		return () => {
-			WebBrowser.coolDownAsync();
-		};
-	}, []);
+		}
+	  };
 
 	return (
 		<Container>
@@ -83,9 +93,9 @@ const Welcome = ({ navigation }) => {
 				style={{ width: RFValue(200), height: RFValue(48) }}
 				size={GoogleSigninButton.Size.Wide}
 				color={GoogleSigninButton.Color.Dark}
-				onPress={onGoogleButtonPress}
+				onPress={signIn}
 				/>
-				
+				{loading && <ActivityIndicator/>}
 			</OuterBox>
 		</Container>
 	);

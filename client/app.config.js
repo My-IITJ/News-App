@@ -1,18 +1,19 @@
 const config = () => ({
-	name: 'MyIITJ',
+	name: 'My IITJ',
 	slug: 'my-iitj-v1',
 	owner: 'myiitj',
-	version: '1.0.0',
+	version: '1.0.2',
 	orientation: 'portrait',
-	icon: './assets/icons/icon.png',
+	icon: './assets/icon.png',
 	scheme: 'myiitj',
 	splash: {
-		image: './assets/icons/splash.png',
+		image: './assets/icon.png',
 		resizeMode: 'contain',
 		backgroundColor: '#ffffff',
 	},
 	updates: {
 		fallbackToCacheTimeout: 0,
+		url: "https://u.expo.dev/aaadadb2-b64f-4b09-b73e-4d36b8369836"
 	},
 	assetBundlePatterns: ['**/*'],
 	ios: {
@@ -21,12 +22,9 @@ const config = () => ({
 		googleServicesFile: "./GoogleService-Info.plist"
 	},
 	android: {
-		adaptiveIcon: {
-			foregroundImage: './assets/icons/adaptive-icon.png',
-			backgroundColor: '#FFFFFF',
-		},
 		package: 'com.iitj.myiitj',
 		googleServicesFile: "./google-services.json",
+		versionCode: 3,
 	},
 	web: {
 		favicon: './assets/icons/favicon.png',
@@ -35,7 +33,12 @@ const config = () => ({
 		'@react-native-firebase/app',
 		'@react-native-google-signin/google-signin',
 	],
-	jsEngine: "hermes"
+	jsEngine: "hermes",
+	extra: {	
+		"eas": {
+		  "projectId": "aaadadb2-b64f-4b09-b73e-4d36b8369836"
+		}
+	  },
 });
 
 export default config;

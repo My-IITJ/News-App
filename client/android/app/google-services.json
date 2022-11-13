@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "379614937476-ngs3qtci24jjlav2a4npcdg83503pr9j.apps.googleusercontent.com",
+          "client_id": "379614937476-q47bnme84tf9i0s5i6i2tl2fq13reakm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iitj.myiitj",
+            "certificate_hash": "a14189e961d0543b43879df02fb12e81490a98c4"
+          }
+        },
+        {
+          "client_id": "379614937476-vdbld0hc58u3umnu9sn2t7lleal6f4ng.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.iitj.myiitj",
@@ -37,6 +45,13 @@
             {
               "client_id": "379614937476-76bdg50kjohnd7qni3o7odrpf46si1td.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "379614937476-g7g2oqjr4tg8618dpqhft0q4bh04k7tq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.iitj.myiitj"
+              }
             }
           ]
         }
